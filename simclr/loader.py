@@ -26,11 +26,11 @@ class Loader:
         ])
 
     def load(self, data_flag, split_type):
-        DataClass = getattr(medmnist, INFO[data_flag]["python_class"])
+        DataClass = getattr(medmnist, INFO[data_flag.value]["python_class"])
 
         return DataClass(
             root=DATASET_PATH,
-            split=split_type,
+            split=split_type.value,
             transform=ContrastiveTransformations(self.contrast_transforms),
             download=True,
         )

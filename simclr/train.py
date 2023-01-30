@@ -2,7 +2,7 @@ import pytorch_lightning as pl
 
 from const import NUM_WORKERS, SEED
 from loader import Loader
-from utils import setup_device, show_example_images
+from utils import MedMNISTCategory, SplitType, setup_device, show_example_images
 
 if __name__ == "__main__":
     # Seed
@@ -15,7 +15,7 @@ if __name__ == "__main__":
 
     # Load data
     loader = Loader()
-    train_data = loader.load("dermamnist", "train")
+    train_data = loader.load(MedMNISTCategory.DERMA, SplitType.TRAIN)
 
     # Show example images
     show_example_images(train_data)

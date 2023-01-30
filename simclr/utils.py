@@ -1,9 +1,29 @@
+from enum import Enum
 import matplotlib.pyplot as plt
 import torch
 import torchvision
 
 from const import SEED
 
+
+class MedMNISTCategory(Enum):
+    PATH = "pathmnist"
+    CHEST = "chestmnist"
+    DERMA = "dermamnist"
+    OCT = "octmnist"
+    PNEUMONIA = "pneumoniamnist"
+    RETINA = "retinamnist"
+    BREAST = "breastmnist"
+    BLOOD = "bloodmnist"
+    TISSUE = "tissuemnist"
+    ORGANA = "organamnist"
+    ORGANC = "organcmnist"
+    ORGANS = "organsmnist"
+
+class SplitType(Enum):
+    TRAIN = "train"
+    VALIDATION = "validation"
+    TEST = "test"
 
 def setup_device():
     # Use GPU if available
