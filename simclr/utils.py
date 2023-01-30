@@ -1,17 +1,41 @@
-from const import SEED
+import matplotlib.pyplot as plt
 import torch
+import torchvision
+
+from const import SEED
+
 
 def setup_device():
-  # Use GPU if available
-  device = torch.device("cuda") if torch.cuda.is_available()\
-    else torch.device("cpu")
+    # Use GPU if available
+    device = torch.device("cuda") if torch.cuda.is_available()\
+        else torch.device("cpu")
 
-  if torch.cuda.is_available():
-    torch.cuda.manual_seed(SEED)
-    torch.cuda.manual_seed_all(SEED)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed(SEED)
+        torch.cuda.manual_seed_all(SEED)
 
-    # Enforce all operations to be deterministic on GPU for reproducibility
-    torch.backends.cudnn.determinstic = True
-    torch.backends.cudnn.benchmark = False
+        # Enforce all operations to be deterministic on GPU for reproducibility
+        torch.backends.cudnn.determinstic = True
+        torch.backends.cudnn.benchmark = False
 
-  return device
+    return device
+
+
+def show_example_images(data, num_examples=12):
+    imgs = torch.stack(
+        [img for idx in range(num_examples) for img in data[idx][0]],
+        dim=0
+    )
+
+    img_grid = torchvision.utils.make_grid(
+        imgs,
+        nrow=6,
+        normalize=True,
+        pad_value=0.9
+    )
+    img_grid = img_grid.permute(1, 2, 0)
+
+    plt.figure(figsize=(10, 5))
+    plt.imshow(img_grid)
+    plt.axis("off")
+    plt.show()
