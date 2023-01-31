@@ -22,7 +22,7 @@ class MedMNISTCategory(Enum):
 
 class SplitType(Enum):
     TRAIN = "train"
-    VALIDATION = "validation"
+    VALIDATION = "val"
     TEST = "test"
 
 def setup_device():
