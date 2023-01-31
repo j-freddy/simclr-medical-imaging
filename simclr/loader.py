@@ -1,5 +1,6 @@
 import medmnist
 from medmnist import INFO
+import os
 from torchvision import transforms
 
 from const import DATASET_PATH
@@ -14,8 +15,17 @@ class Loader:
             # Transformation 2: crop-and-resize
             transforms.RandomResizedCrop(size=96),
             # Transformation 3: colour distortion
-            transforms.RandomApply([transforms.ColorJitter(
-                brightness=0.5, contrast=0.5, saturation=0.5, hue=0.1)], p=0.8),
+            transforms.RandomApply(
+                [
+                    transforms.ColorJitter(
+                        brightness=0.5,
+                        contrast=0.5,
+                        saturation=0.5,
+                        hue=0.1
+                    )
+                ],
+                p=0.8
+            ),
             # Transformation 4: random greyscale
             transforms.RandomGrayscale(p=0.2),
             # Transformation 5: Gaussian blur
@@ -27,6 +37,9 @@ class Loader:
 
     def load(self, data_flag, split_type):
         DataClass = getattr(medmnist, INFO[data_flag.value]["python_class"])
+
+        if not os.path.exists(DATASET_PATH):
+            os.makedirs(DATASET_PATH)
 
         return DataClass(
             root=DATASET_PATH,
