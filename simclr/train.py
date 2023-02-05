@@ -16,7 +16,11 @@ def train_simclr(train_data, val_data, filepath, batch_size, max_epochs=100,
     if os.path.isfile(filepath):
         print(f"Found pretrained model at {filepath}, loading...")
         # Automatically load model with saved hyperparameters
-        return SimCLRLM.load_from_checkpoint(filepath)
+        # return SimCLRLM.load_from_checkpoint(filepath)
+        model = SimCLRLM(max_epochs=max_epochs, **kwargs)
+        checkpoint = torch.load(filepath)
+        model.load_state_dict(checkpoint)
+        return model
 
     print(f"No existing model found at: {filepath}")
 
@@ -75,7 +79,7 @@ def train_simclr(train_data, val_data, filepath, batch_size, max_epochs=100,
 
 
 if __name__ == "__main__":
-    data_flag = MedMNISTCategory.DERMA
+    data_flag = MedMNISTCategory.RETINA
 
     # Seed
     pl.seed_everything(SEED)
@@ -106,7 +110,7 @@ if __name__ == "__main__":
         filepath,
         # TODO
         # max_epochs=100,
-        max_epochs=1,
+        max_epochs=2,
         batch_size=256,
         hidden_dim=128,
         lr=5e-4,
