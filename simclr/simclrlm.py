@@ -6,7 +6,7 @@ import torch.optim as optim
 import torchvision
 
 class SimCLRLM(pl.LightningModule):
-  def __init__(self, **kwargs):
+  def __init__(self, hidden_dim, lr, temperature, weight_decay, max_epochs=100):
     super().__init__()
 
     # Save constructor parameters to self.hparams
