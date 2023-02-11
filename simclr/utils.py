@@ -59,3 +59,6 @@ def show_example_images(data, num_examples=12):
     plt.imshow(img_grid)
     plt.axis("off")
     plt.show()
+
+def summarise():
+    print("Done! :)")

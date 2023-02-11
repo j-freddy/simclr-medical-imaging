@@ -1,13 +1,18 @@
 import os
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
-import torch
 import torch.utils.data as data
 
 from const import CHECKPOINT_PATH, NUM_WORKERS, SEED
 from loader import Loader
 from simclrlm import SimCLRLM
-from utils import MedMNISTCategory, SplitType, setup_device, show_example_images
+from utils import (
+    MedMNISTCategory,
+    SplitType,
+    setup_device,
+    show_example_images,
+    summarise
+)
 
 
 def train_simclr(train_data, val_data, filepath, batch_size, max_epochs=100,
@@ -16,13 +21,11 @@ def train_simclr(train_data, val_data, filepath, batch_size, max_epochs=100,
     if os.path.isfile(filepath):
         print(f"Found pretrained model at {filepath}, loading...")
         # Automatically load model with saved hyperparameters
-        # return SimCLRLM.load_from_checkpoint(filepath)
-        model = SimCLRLM(max_epochs=max_epochs, **kwargs)
-        checkpoint = torch.load(filepath)
-        model.load_state_dict(checkpoint)
+        model = SimCLRLM.load_from_checkpoint(filepath)
+        print("Model loaded.")
         return model
 
-    print(f"No existing model found at: {filepath}")
+    print(f"No pretrained model found at {filepath}. Starting training...")
 
     trainer = pl.Trainer(
         default_root_dir=CHECKPOINT_PATH,
@@ -32,7 +35,7 @@ def train_simclr(train_data, val_data, filepath, batch_size, max_epochs=100,
         # What to log
         callbacks=[
             ModelCheckpoint(
-                save_weights_only=True,
+                save_weights_only=False,
                 mode="max",
                 monitor="val_acc_top5"
             ),
@@ -73,7 +76,8 @@ def train_simclr(train_data, val_data, filepath, batch_size, max_epochs=100,
     )
 
     # Save pretrained model
-    torch.save(model.state_dict(), filepath)
+    # torch.save(model.state_dict(), filepath)
+    trainer.save_checkpoint(filepath)
 
     return model
 
@@ -108,7 +112,7 @@ if __name__ == "__main__":
         train_data,
         val_data,
         filepath,
-        # TODO
+        # TODO Revert
         # max_epochs=100,
         max_epochs=2,
         batch_size=256,
@@ -118,4 +122,4 @@ if __name__ == "__main__":
         weight_decay=1e-4,
     )
 
-    print("Done :)")
+    summarise()

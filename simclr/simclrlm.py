@@ -6,9 +6,8 @@ import torch.optim as optim
 import torchvision
 
 class SimCLRLM(pl.LightningModule):
-  def __init__(self, hidden_dim, lr, temperature, weight_decay, max_epochs=500):
+  def __init__(self, **kwargs):
     super().__init__()
-    assert temperature > 0.0
 
     # Save constructor parameters to self.hparams
     self.save_hyperparameters()
@@ -16,15 +15,15 @@ class SimCLRLM(pl.LightningModule):
     # Base encoder
     # num_classes is output size of the last linear layer
     self.convnet = torchvision.models.resnet18(
-      pretrained=False,
-      num_classes=4 * hidden_dim
+      weights=None,
+      num_classes=4 * self.hparams.hidden_dim
     )
 
     self.convnet.fc = nn.Sequential(
       self.convnet.fc,
       # Attach projection head
       nn.ReLU(inplace=True),
-      nn.Linear(4 * hidden_dim, hidden_dim)
+      nn.Linear(4 * self.hparams.hidden_dim, self.hparams.hidden_dim)
     )
 
   def configure_optimizers(self):
