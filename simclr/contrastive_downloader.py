@@ -6,10 +6,10 @@ from torchvision import transforms
 from const import DATASET_PATH
 
 
-class Loader:
+class ContrastiveDownloader:
     def __init__(self):
         # Apply augmentation sequence
-        self.contrast_transforms = transforms.Compose([
+        self.transforms = transforms.Compose([
             # Transformation 1: random horizontal flip
             transforms.RandomHorizontalFlip(),
             # Transformation 2: crop-and-resize
@@ -44,7 +44,7 @@ class Loader:
         return DataClass(
             root=DATASET_PATH,
             split=split_type.value,
-            transform=ContrastiveTransformations(self.contrast_transforms),
+            transform=ContrastiveTransformations(self.transforms),
             download=True,
         )
 

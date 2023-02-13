@@ -1,10 +1,11 @@
 import os
+import sys
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
 import torch.utils.data as data
 
 from const import CHECKPOINT_PATH, NUM_WORKERS, SEED
-from loader import Loader
+from contrastive_downloader import ContrastiveDownloader
 from simclrlm import SimCLRLM
 from utils import (
     MedMNISTCategory,
@@ -95,15 +96,16 @@ if __name__ == "__main__":
     print(f"Number of workers: {NUM_WORKERS}")
 
     # Load data
-    loader = Loader()
-    train_data = loader.load(DATA_FLAG, SplitType.TRAIN)
-    val_data = loader.load(DATA_FLAG, SplitType.VALIDATION)
-    test_data = loader.load(DATA_FLAG, SplitType.TEST)
+    downloader = ContrastiveDownloader()
+    train_data = downloader.load(DATA_FLAG, SplitType.TRAIN)
+    val_data = downloader.load(DATA_FLAG, SplitType.VALIDATION)
+    test_data = downloader.load(DATA_FLAG, SplitType.TEST)
 
     # Show example images
-    # show_example_images(train_data)
-    # show_example_images(val_data)
-    # show_example_images(test_data)
+    show_example_images(train_data)
+    show_example_images(val_data)
+    show_example_images(test_data)
+    sys.exit()
 
     # Train model
     filename =f"pretrain-{DATA_FLAG.value}.ckpt"
