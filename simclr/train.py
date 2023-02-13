@@ -16,17 +16,24 @@ from utils import (
 )
 
 
-def train_simclr(train_data, val_data, filepath, batch_size, max_epochs=100,
-    **kwargs):
-    # Check if pretrained model exists
-    if os.path.isfile(filepath):
-        print(f"Found pretrained model at {filepath}, loading...")
-        # Automatically load model with saved hyperparameters
-        model = SimCLRLM.load_from_checkpoint(filepath)
-        print("Model loaded.")
-        return model
+def train_simclr(
+    train_data,
+    val_data,
+    destination_path,
+    batch_size,
+    max_epochs=100,
+    pretrained_path=None,
+    **kwargs
+):
+    # Check if model already exists
+    if os.path.isfile(destination_path):
+        print(f"Model already exists at: {destination_path}")
 
-    print(f"No pretrained model found at {filepath}. Starting training...")
+        # Automatically load model with saved hyperparameters
+        model = SimCLRLM.load_from_checkpoint(destination_path)
+
+        print("Model loaded")
+        return model
 
     trainer = pl.Trainer(
         default_root_dir=CHECKPOINT_PATH,
@@ -66,7 +73,23 @@ def train_simclr(train_data, val_data, filepath, batch_size, max_epochs=100,
     )
 
     pl.seed_everything(SEED)
-    model = SimCLRLM(max_epochs=max_epochs, **kwargs)
+
+    # Initialise model as a new model
+    # If pretrained_path specified, initialise model to pretrained model
+    model = None
+
+    if pretrained_path == None:
+        model = SimCLRLM(max_epochs=max_epochs, **kwargs)
+        print("Model initialised as new model")
+    else:
+        # Check if pretrained model exists
+        if not os.path.isfile(pretrained_path):
+            raise FileNotFoundError(
+                f"Pretrained model does not exist at: {pretrained_path}"
+            )
+
+        model = SimCLRLM.load_from_checkpoint(pretrained_path)
+        print(f"Model initialised to pretrained model at: {pretrained_path}")
     
     # Train model
     trainer.fit(model, train_loader, val_loader)
@@ -77,8 +100,8 @@ def train_simclr(train_data, val_data, filepath, batch_size, max_epochs=100,
     )
 
     # Save pretrained model
-    # torch.save(model.state_dict(), filepath)
-    trainer.save_checkpoint(filepath)
+    # torch.save(model.state_dict(), destination_path)
+    trainer.save_checkpoint(destination_path)
 
     return model
 
@@ -102,19 +125,19 @@ if __name__ == "__main__":
     test_data = downloader.load(DATA_FLAG, SplitType.TEST)
 
     # Show example images
-    show_example_images(train_data)
-    show_example_images(val_data)
-    show_example_images(test_data)
-    sys.exit()
+    # show_example_images(train_data)
+    # show_example_images(val_data)
+    # show_example_images(test_data)
+    # sys.exit()
 
     # Train model
     filename =f"pretrain-{DATA_FLAG.value}.ckpt"
-    filepath = os.path.join(CHECKPOINT_PATH, filename)
+    destination_path = os.path.join(CHECKPOINT_PATH, filename)
 
     model = train_simclr(
         train_data,
         val_data,
-        filepath,
+        destination_path,
         max_epochs=MAX_EPOCHS,
         batch_size=256,
         hidden_dim=128,
@@ -122,5 +145,16 @@ if __name__ == "__main__":
         temperature=0.07,
         weight_decay=1e-4,
     )
+
+    # Supports further pretraining from initial pretrained model
+
+    # model = train_simclr(
+    #     train_data,
+    #     val_data,
+    #     destination_path,
+    #     max_epochs=MAX_EPOCHS,
+    #     batch_size=256,
+    #     pretrained_path=os.path.join(CHECKPOINT_PATH, "initial-pretrain.ckpt")
+    # )
 
     summarise()

@@ -44,6 +44,7 @@ class ContrastiveDownloader:
         return DataClass(
             root=DATASET_PATH,
             split=split_type.value,
+            # transform=ContrastiveTransformations(self.transforms),
             transform=ContrastiveTransformations(self.transforms),
             download=True,
         )

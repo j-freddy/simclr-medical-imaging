@@ -41,11 +41,14 @@ def setup_device():
     return device
 
 
-def show_example_images(data, num_examples=12):
+def show_example_images(data, num_examples=12, reshape=False):
     imgs = torch.stack(
         [img for idx in range(num_examples) for img in data[idx][0]],
         dim=0
     )
+
+    if reshape:
+        imgs = imgs.reshape(-1, 3, imgs.shape[-1], imgs.shape[-1])
 
     img_grid = torchvision.utils.make_grid(
         imgs,
