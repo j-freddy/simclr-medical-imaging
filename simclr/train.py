@@ -8,10 +8,11 @@ from const import CHECKPOINT_PATH, NUM_WORKERS, SEED
 from contrastive_downloader import ContrastiveDownloader
 from simclrlm import SimCLRLM
 from utils import (
+    get_pretrained_model,
     MedMNISTCategory,
-    SplitType,
     setup_device,
     show_example_images,
+    SplitType,
     summarise
 )
 
@@ -82,15 +83,9 @@ def train_simclr(
         model = SimCLRLM(max_epochs=max_epochs, **kwargs)
         print("Model initialised as new model")
     else:
-        # Check if pretrained model exists
-        if not os.path.isfile(pretrained_path):
-            raise FileNotFoundError(
-                f"Pretrained model does not exist at: {pretrained_path}"
-            )
-
-        model = SimCLRLM.load_from_checkpoint(pretrained_path)
+        model = get_pretrained_model(pretrained_path)
         print(f"Model initialised to pretrained model at: {pretrained_path}")
-    
+
     # Train model
     trainer.fit(model, train_loader, val_loader)
 
@@ -122,17 +117,16 @@ if __name__ == "__main__":
     downloader = ContrastiveDownloader()
     train_data = downloader.load(DATA_FLAG, SplitType.TRAIN)
     val_data = downloader.load(DATA_FLAG, SplitType.VALIDATION)
-    test_data = downloader.load(DATA_FLAG, SplitType.TEST)
 
     # Show example images
     # show_example_images(train_data)
     # show_example_images(val_data)
-    # show_example_images(test_data)
     # sys.exit()
+    
+    filename = f"pretrain-{DATA_FLAG.value}.ckpt"
+    destination_path = os.path.join(CHECKPOINT_PATH, filename)
 
     # Train model
-    filename =f"pretrain-{DATA_FLAG.value}.ckpt"
-    destination_path = os.path.join(CHECKPOINT_PATH, filename)
 
     model = train_simclr(
         train_data,

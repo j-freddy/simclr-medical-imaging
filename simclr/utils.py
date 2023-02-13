@@ -1,9 +1,11 @@
 from enum import Enum
+import os
 import matplotlib.pyplot as plt
 import torch
 import torchvision
 
 from const import SEED
+from simclrlm import SimCLRLM
 
 
 class MedMNISTCategory(Enum):
@@ -20,10 +22,12 @@ class MedMNISTCategory(Enum):
     ORGANC = "organcmnist"
     ORGANS = "organsmnist"
 
+
 class SplitType(Enum):
     TRAIN = "train"
     VALIDATION = "val"
     TEST = "test"
+
 
 def setup_device():
     # Use GPU if available
@@ -63,5 +67,16 @@ def show_example_images(data, num_examples=12, reshape=False):
     plt.axis("off")
     plt.show()
 
+
 def summarise():
     print("Done! :)")
+
+
+def get_pretrained_model(path):
+    # Check if pretrained model exists
+    if not os.path.isfile(path):
+        raise FileNotFoundError(
+            f"Pretrained model does not exist at: {path}"
+        )
+
+    return SimCLRLM.load_from_checkpoint(path)
