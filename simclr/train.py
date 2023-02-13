@@ -83,7 +83,8 @@ def train_simclr(train_data, val_data, filepath, batch_size, max_epochs=100,
 
 
 if __name__ == "__main__":
-    data_flag = MedMNISTCategory.RETINA
+    DATA_FLAG = MedMNISTCategory.RETINA
+    MAX_EPOCHS = 2
 
     # Seed
     pl.seed_everything(SEED)
@@ -95,9 +96,9 @@ if __name__ == "__main__":
 
     # Load data
     loader = Loader()
-    train_data = loader.load(data_flag, SplitType.TRAIN)
-    val_data = loader.load(data_flag, SplitType.VALIDATION)
-    test_data = loader.load(data_flag, SplitType.TEST)
+    train_data = loader.load(DATA_FLAG, SplitType.TRAIN)
+    val_data = loader.load(DATA_FLAG, SplitType.VALIDATION)
+    test_data = loader.load(DATA_FLAG, SplitType.TEST)
 
     # Show example images
     # show_example_images(train_data)
@@ -105,16 +106,14 @@ if __name__ == "__main__":
     # show_example_images(test_data)
 
     # Train model
-    filename =f"pretrain-{data_flag.value}.ckpt"
+    filename =f"pretrain-{DATA_FLAG.value}.ckpt"
     filepath = os.path.join(CHECKPOINT_PATH, filename)
 
     model = train_simclr(
         train_data,
         val_data,
         filepath,
-        # TODO Revert
-        # max_epochs=100,
-        max_epochs=2,
+        max_epochs=MAX_EPOCHS,
         batch_size=256,
         hidden_dim=128,
         lr=5e-4,
