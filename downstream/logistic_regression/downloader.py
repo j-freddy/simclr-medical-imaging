@@ -3,7 +3,7 @@ from medmnist import INFO
 import os
 from torchvision import transforms
 
-from const import DATASET_PATH
+from utils import DATASET_PATH
 
 
 class Downloader:

@@ -4,8 +4,10 @@ import matplotlib.pyplot as plt
 import torch
 import torchvision
 
-from const import SEED
-from simclrlm import SimCLRLM
+
+SEED = 1969
+NUM_WORKERS = os.cpu_count()
+DATASET_PATH = os.environ.get("PATH_DATASETS", "data/")
 
 
 class MedMNISTCategory(Enum):
@@ -66,17 +68,3 @@ def show_example_images(data, num_examples=12, reshape=False):
     plt.imshow(img_grid)
     plt.axis("off")
     plt.show()
-
-
-def summarise():
-    print("Done! :)")
-
-
-def get_pretrained_model(path):
-    # Check if pretrained model exists
-    if not os.path.isfile(path):
-        raise FileNotFoundError(
-            f"Pretrained model does not exist at: {path}"
-        )
-
-    return SimCLRLM.load_from_checkpoint(path)

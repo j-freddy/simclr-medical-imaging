@@ -4,18 +4,14 @@ import pytorch_lightning as pl
 from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
 import torch.utils.data as data
 
-from const import CHECKPOINT_PATH, NUM_WORKERS, SEED
-from contrastive_downloader import ContrastiveDownloader
-from simclrlm import SimCLRLM
-from utils import (
+from pretrain.simclr.contrastive_downloader import ContrastiveDownloader
+from pretrain.simclr.simclrlm import SimCLRLM
+from pretrain.simclr.utils import (
+    CHECKPOINT_PATH,
     get_pretrained_model,
-    MedMNISTCategory,
-    setup_device,
-    show_example_images,
-    SplitType,
-    summarise
+    summarise,
 )
-
+from utils import NUM_WORKERS, SEED, MedMNISTCategory, SplitType, setup_device
 
 def train_simclr(
     train_data,

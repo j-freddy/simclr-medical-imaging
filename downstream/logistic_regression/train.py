@@ -4,15 +4,16 @@ import pytorch_lightning as pl
 import sys
 import torch.nn as nn
 
-from const import CHECKPOINT_PATH, NUM_WORKERS, SEED
-from downloader import Downloader
+from downstream.logistic_regression.downloader import Downloader
+from downstream.logistic_regression.utils import summarise
+from pretrain.simclr.utils import CHECKPOINT_PATH, get_pretrained_model
 from utils import (
-    get_pretrained_model,
+    NUM_WORKERS,
+    SEED,
     MedMNISTCategory,
     setup_device,
     show_example_images,
     SplitType,
-    summarise,
 )
 
 def prepare_data_features(pretrained_model, dataset):
