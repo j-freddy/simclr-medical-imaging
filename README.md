@@ -23,6 +23,22 @@ Python 3.10.9
 $ pip install -r requirements.txt
 ```
 
+## Pretrain
+
+### SimCLR
+
+```bash
+$ python -m pretrain.simclr.train
+```
+
+## Downstream
+
+### Logistic Regression
+
+```bash
+$ python -m downstream.logistic_regression.train
+```
+
 ## Contribute
 
 ### Update requirements
