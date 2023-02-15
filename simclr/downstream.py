@@ -1,6 +1,8 @@
+from copy import deepcopy
 import os
-import sys
 import pytorch_lightning as pl
+import sys
+import torch.nn as nn
 
 from const import CHECKPOINT_PATH, NUM_WORKERS, SEED
 from downloader import Downloader
@@ -12,6 +14,17 @@ from utils import (
     SplitType,
     summarise,
 )
+
+def prepare_data_features(pretrained_model, dataset):
+    # Deep copy convolutional network
+    network = deepcopy(pretrained_model.convnet)
+
+    # Remove projection head g(.)
+    network.fc = nn.Identity()
+    # Set network to evaluation mode
+    network.eval()
+    # Move network to specified device
+    network.to(device)
 
 if __name__ == "__main__":
     DATA_FLAG = MedMNISTCategory.RETINA
