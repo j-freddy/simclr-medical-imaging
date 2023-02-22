@@ -27,13 +27,23 @@ $ pip install -r requirements.txt
 
 ### SimCLR
 
+**Train**
+
 ```bash
 $ python -m pretrain.simclr.train
+```
+
+**TensorBoard**
+
+```bash
+$ tensorboard --logdir pretrain/simclr/models/tb_logs
 ```
 
 ## Downstream
 
 ### Logistic Regression
+
+**Train**
 
 ```bash
 $ python -m downstream.logistic_regression.train

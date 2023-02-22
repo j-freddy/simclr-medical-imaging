@@ -47,10 +47,10 @@ if __name__ == "__main__":
     test_data = downloader.load(DATA_FLAG, SplitType.TEST)
 
     # Show example images
-    # show_example_images(train_data, reshape=True)
-    # show_example_images(val_data, reshape=True)
-    # show_example_images(test_data, reshape=True)
-    # sys.exit()
+    show_example_images(train_data, reshape=True)
+    show_example_images(val_data, reshape=True)
+    show_example_images(test_data, reshape=True)
+    sys.exit()
 
     filename = f"downstream-{DATA_FLAG.value}.ckpt"
 

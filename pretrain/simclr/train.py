@@ -2,6 +2,7 @@ import os
 import sys
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
+from pytorch_lightning.loggers import TensorBoardLogger
 import torch.utils.data as data
 
 from pretrain.simclr.contrastive_downloader import ContrastiveDownloader
@@ -11,17 +12,27 @@ from pretrain.simclr.utils import (
     get_pretrained_model,
     summarise,
 )
-from utils import NUM_WORKERS, SEED, MedMNISTCategory, SplitType, setup_device
+from utils import (
+    NUM_WORKERS,
+    SEED,
+    MedMNISTCategory,
+    SplitType,
+    setup_device,
+    show_example_images
+)
 
 def train_simclr(
     train_data,
     val_data,
-    destination_path,
+    model_name,
     batch_size,
     max_epochs=100,
     pretrained_path=None,
     **kwargs
 ):
+    destination_path = os.path.join(CHECKPOINT_PATH, f"{model_name}.ckpt")
+    tb_path = os.path.join(CHECKPOINT_PATH, "tb_logs")
+
     # Check if model already exists
     if os.path.isfile(destination_path):
         print(f"Model already exists at: {destination_path}")
@@ -32,18 +43,23 @@ def train_simclr(
         print("Model loaded")
         return model
 
+    # Tensorboard
+    logger = TensorBoardLogger(save_dir=tb_path, name=model_name)
+
     trainer = pl.Trainer(
         default_root_dir=CHECKPOINT_PATH,
         # TODO Deprecated
         gpus=1 if str(device) == "cuda:0" else 0,
         max_epochs=max_epochs,
-        # What to log
+        logger=logger,
         callbacks=[
+            # Save model as checkpoint periodically under checkpoints folder
             ModelCheckpoint(
                 save_weights_only=False,
                 mode="max",
                 monitor="val_acc_top5"
             ),
+            # Auto-logs learning rate
             LearningRateMonitor("epoch"),
         ],
     )
@@ -91,7 +107,6 @@ def train_simclr(
     )
 
     # Save pretrained model
-    # torch.save(model.state_dict(), destination_path)
     trainer.save_checkpoint(destination_path)
 
     return model
@@ -119,15 +134,14 @@ if __name__ == "__main__":
     # show_example_images(val_data)
     # sys.exit()
     
-    filename = f"pretrain-{DATA_FLAG.value}.ckpt"
-    destination_path = os.path.join(CHECKPOINT_PATH, filename)
+    model_name = f"pretrain-{DATA_FLAG.value}"
 
     # Train model
 
     model = train_simclr(
         train_data,
         val_data,
-        destination_path,
+        model_name,
         max_epochs=MAX_EPOCHS,
         batch_size=256,
         hidden_dim=128,
@@ -136,7 +150,7 @@ if __name__ == "__main__":
         weight_decay=1e-4,
     )
 
-    # Supports further pretraining from initial pretrained model
+    # Further pretraining from initial pretrained model
 
     # model = train_simclr(
     #     train_data,
