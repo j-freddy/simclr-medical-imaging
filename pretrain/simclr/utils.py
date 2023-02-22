@@ -2,7 +2,7 @@ import os
 from pretrain.simclr.simclrlm import SimCLRLM
 
 
-CHECKPOINT_PATH = os.environ.get("PATH_CHECKPOINT", "pretrain/simclr/models/")
+CHECKPOINT_PATH = "pretrain/simclr/models/"
 
 
 def get_pretrained_model(path):

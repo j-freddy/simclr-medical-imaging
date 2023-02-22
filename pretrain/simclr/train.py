@@ -19,7 +19,7 @@ from utils import (
     SplitType,
     get_accelerator_info,
     setup_device,
-    show_example_images
+    show_example_images,
 )
 
 def train_simclr(
@@ -29,7 +29,7 @@ def train_simclr(
     batch_size,
     max_epochs=100,
     pretrained_path=None,
-    **kwargs
+    **kwargs,
 ):
     destination_path = os.path.join(CHECKPOINT_PATH, f"{model_name}.ckpt")
     tb_path = os.path.join(CHECKPOINT_PATH, "tb_logs")
