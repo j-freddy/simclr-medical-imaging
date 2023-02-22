@@ -17,6 +17,7 @@ from utils import (
     SEED,
     MedMNISTCategory,
     SplitType,
+    get_accelerator_info,
     setup_device,
     show_example_images
 )
@@ -46,10 +47,13 @@ def train_simclr(
     # Tensorboard
     logger = TensorBoardLogger(save_dir=tb_path, name=model_name)
 
+    # Trainer
+    accelerator, num_threads = get_accelerator_info()
+
     trainer = pl.Trainer(
         default_root_dir=CHECKPOINT_PATH,
-        # TODO Deprecated
-        gpus=1 if str(device) == "cuda:0" else 0,
+        accelerator=accelerator,
+        devices=num_threads,
         max_epochs=max_epochs,
         logger=logger,
         callbacks=[

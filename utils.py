@@ -47,6 +47,20 @@ def setup_device():
     return device
 
 
+def get_accelerator_info():
+    if torch.cuda.is_available():
+        accelerator = "gpu"
+        num_threads = torch.cuda.device_count()
+    else:
+        accelerator = "cpu"
+        num_threads = torch.get_num_threads()
+
+    # TODO Getting error when setting devices > 1
+    num_threads = 1
+
+    return accelerator, num_threads
+
+
 def show_example_images(data, num_examples=12, reshape=False):
     imgs = torch.stack(
         [img for idx in range(num_examples) for img in data[idx][0]],
