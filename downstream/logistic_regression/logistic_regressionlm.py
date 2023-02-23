@@ -20,7 +20,7 @@ class LogisticRegression(pl.LightningModule):
         )
         return [optimizer], [lr_scheduler]
 
-    def _calculate_loss(self, batch, mode="train"):
+    def loss(self, batch, mode="train"):
         feats, labels = batch
         preds = self.model(feats)
         loss = F.cross_entropy(preds, labels)
@@ -31,10 +31,10 @@ class LogisticRegression(pl.LightningModule):
         return loss
 
     def training_step(self, batch, batch_idx):
-        return self._calculate_loss(batch, mode="train")
+        return self.loss(batch, mode="train")
 
     def validation_step(self, batch, batch_idx):
-        self._calculate_loss(batch, mode="val")
+        self.loss(batch, mode="val")
 
     def test_step(self, batch, batch_idx):
-        self._calculate_loss(batch, mode="test")
+        self.loss(batch, mode="test")

@@ -22,6 +22,17 @@ from utils import (
     show_example_images,
 )
 
+
+def set_args():
+    DATA_FLAG = MedMNISTCategory.RETINA
+    MAX_EPOCHS = 2
+
+    return (
+        DATA_FLAG,
+        MAX_EPOCHS,
+    )
+
+
 def train_simclr(
     train_data,
     val_data,
@@ -117,8 +128,7 @@ def train_simclr(
 
 
 if __name__ == "__main__":
-    DATA_FLAG = MedMNISTCategory.RETINA
-    MAX_EPOCHS = 2
+    DATA_FLAG, MAX_EPOCHS = set_args()
 
     # Seed
     pl.seed_everything(SEED)
@@ -137,7 +147,7 @@ if __name__ == "__main__":
     # show_example_images(train_data)
     # show_example_images(val_data)
     # sys.exit()
-    
+
     model_name = f"pretrain-{DATA_FLAG.value}"
 
     # Train model

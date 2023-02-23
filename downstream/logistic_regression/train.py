@@ -10,6 +10,7 @@ import torch.utils.data as data
 from downstream.logistic_regression.downloader import Downloader
 from downstream.logistic_regression.logistic_regressionlm import LogisticRegression
 from downstream.logistic_regression.utils import CHECKPOINT_PATH, summarise
+from pretrain.simclr.downstream import encode_data_features
 from pretrain.simclr.utils import get_pretrained_model
 from utils import (
     NUM_WORKERS,
@@ -22,52 +23,29 @@ from utils import (
 )
 
 
-def prepare_data_features(pretrained_model, dataset, batch_size=64):
-    # Deep copy convolutional network
-    network = deepcopy(pretrained_model.convnet)
+def set_args():
+    DATA_FLAG = MedMNISTCategory.RETINA
+    PRETRAINED_FILE = f"pretrain-retinamnist.ckpt"
+    # TODO Infer this from dataset
+    NUM_CLASSES = 2
+    MAX_EPOCHS = 100
 
-    # Remove projection head g(.)
-    network.fc = nn.Identity()
-    # Set network to evaluation mode
-    network.eval()
-    # Move network to specified device
-    network.to(device)
-
-    data_loader = data.DataLoader(
-        dataset,
-        batch_size=batch_size,
-        shuffle=False,
-        drop_last=False,
-        num_workers=NUM_WORKERS,
+    return (
+        DATA_FLAG,
+        PRETRAINED_FILE,
+        NUM_CLASSES,
+        MAX_EPOCHS,
     )
-
-    feats, labels = [], []
-
-    for batch_imgs, batch_labels in data_loader:
-        # TODO Understand this
-        batch_imgs = batch_imgs.to(device)
-        batch_feats = network(batch_imgs)
-        feats.append(batch_feats.detach().cpu())
-        labels.append(batch_labels)
-
-    feats = torch.cat(feats, dim=0)
-    labels = torch.cat(labels, dim=0)
-
-    # Sort images by labels
-    labels, indexes = labels.sort()
-    feats = feats[indexes]
-
-    return data.TensorDataset(feats, labels)
 
 
 def train_logistic_regression(
     batch_size,
     train_feats_data,
     test_feats_data,
-    model_suffix,
     max_epochs=100,
     **kwargs,
 ):
+    destination_path = os.path.join(CHECKPOINT_PATH, f"{model_name}.ckpt")
     model = None
 
     # Check if model already exists
@@ -133,6 +111,9 @@ def train_logistic_regression(
         trainer.checkpoint_callback.best_model_path
     )
 
+    # Save pretrained model
+    trainer.save_checkpoint(destination_path)
+
     # Test best model on train and validation set
     train_result = trainer.test(model, dataloaders=train_loader, verbose=False)
     test_result = trainer.test(model, dataloaders=test_loader, verbose=False)
@@ -145,9 +126,7 @@ def train_logistic_regression(
 
 
 if __name__ == "__main__":
-    DATA_FLAG = MedMNISTCategory.RETINA
-    PRETRAINED_FILE = f"pretrain-retinamnist.ckpt"
-    MAX_EPOCHS = 2
+    DATA_FLAG, PRETRAINED_FILE, NUM_CLASSES, MAX_EPOCHS = set_args()
 
     # Seed
     pl.seed_everything(SEED)
@@ -169,43 +148,34 @@ if __name__ == "__main__":
     # show_example_images(test_data, reshape=True)
     # sys.exit()
 
-    filename = f"downstream-{DATA_FLAG.value}.ckpt"
-
-    pretrained_path = os.path.join(CHECKPOINT_PATH, PRETRAINED_FILE)
-    destination_path = os.path.join(CHECKPOINT_PATH, filename)
+    model_name = f"downstream-{DATA_FLAG.value}"
 
     # Get pretrained model
     # TODO This function should be in root/utils.py and should be able to load
     # models other than SimCLR
+    pretrained_path = os.path.join(CHECKPOINT_PATH, PRETRAINED_FILE)
     pretrained_model = get_pretrained_model(pretrained_path)
 
     print("Preparing data features...")
 
-    train_feats = prepare_data_features(pretrained_model, train_data)
-    test_feats = prepare_data_features(pretrained_model, test_data)
+    train_feats = encode_data_features(pretrained_model, train_data, device)
+    test_feats = encode_data_features(pretrained_model, test_data, device)
 
     print("Preparing data features: Done!")
 
     # Train model
 
-    # TODO
+    _, d = train_feats.tensors[0].shape
 
-    # for num_imgs_per_label in [10, 20, 50]:
-    #     print(f"Training: {num_imgs_per_label}")
-        
-    #     sub_train_set = get_smaller_dataset(train_feats_simclr, num_imgs_per_label)
-
-    #     _, small_set_results = train_logreg(
-    #         batch_size=64,
-    #         train_feats_data=sub_train_set,
-    #         test_feats_data=test_feats_simclr,
-    #         model_suffix=num_imgs_per_label,
-    #         feature_dim=train_feats_simclr.tensors[0].shape[1],
-    #         num_classes=10,
-    #         lr=1e-3,
-    #         weight_decay=1e-3,
-    #     )
-
-    # results[num_imgs_per_label] = small_set_results
+    model, results = train_logistic_regression(
+        batch_size=64,
+        train_feats_data=train_feats,
+        test_feats_data=test_feats,
+        max_epochs=MAX_EPOCHS,
+        feature_dim=d,
+        num_classes=NUM_CLASSES,
+        lr=1e-3,
+        weight_decay=1e-3,
+    )
 
     summarise()
