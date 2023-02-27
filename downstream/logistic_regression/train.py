@@ -9,12 +9,14 @@ import torch.utils.data as data
 
 from downstream.logistic_regression.downloader import Downloader
 from downstream.logistic_regression.logistic_regressionlm import LogisticRegression
-from downstream.logistic_regression.utils import CHECKPOINT_PATH, summarise
+from downstream.logistic_regression.utils import summarise
 from pretrain.simclr.downstream import encode_data_features
 from pretrain.simclr.utils import get_pretrained_model
 from utils import (
+    LOGISTIC_REGRESSION_CHECKPOINT_PATH,
     NUM_WORKERS,
     SEED,
+    SIMCLR_CHECKPOINT_PATH,
     MedMNISTCategory,
     get_accelerator_info,
     setup_device,
@@ -25,9 +27,9 @@ from utils import (
 
 def set_args():
     DATA_FLAG = MedMNISTCategory.RETINA
-    PRETRAINED_FILE = f"pretrain-retinamnist.ckpt"
+    PRETRAINED_FILE = f"pretrain-dermamnist-thousand.ckpt"
     # TODO Infer this from dataset
-    NUM_CLASSES = 2
+    NUM_CLASSES = 7
     MAX_EPOCHS = 100
 
     return (
@@ -45,7 +47,10 @@ def train_logistic_regression(
     max_epochs=100,
     **kwargs,
 ):
-    destination_path = os.path.join(CHECKPOINT_PATH, f"{model_name}.ckpt")
+    destination_path = os.path.join(
+        LOGISTIC_REGRESSION_CHECKPOINT_PATH,
+        f"{model_name}.ckpt"
+    )
     model = None
 
     # Check if model already exists
@@ -63,7 +68,7 @@ def train_logistic_regression(
     accelerator, num_threads = get_accelerator_info()
 
     trainer = pl.Trainer(
-        default_root_dir=CHECKPOINT_PATH,
+        default_root_dir=LOGISTIC_REGRESSION_CHECKPOINT_PATH,
         accelerator=accelerator,
         devices=num_threads,
         max_epochs=max_epochs,
@@ -153,7 +158,7 @@ if __name__ == "__main__":
     # Get pretrained model
     # TODO This function should be in root/utils.py and should be able to load
     # models other than SimCLR
-    pretrained_path = os.path.join(CHECKPOINT_PATH, PRETRAINED_FILE)
+    pretrained_path = os.path.join(SIMCLR_CHECKPOINT_PATH, PRETRAINED_FILE)
     pretrained_model = get_pretrained_model(pretrained_path)
 
     print("Preparing data features...")
@@ -177,5 +182,7 @@ if __name__ == "__main__":
         lr=1e-3,
         weight_decay=1e-3,
     )
+
+    print(results)
 
     summarise()

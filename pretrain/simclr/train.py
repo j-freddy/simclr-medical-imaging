@@ -8,13 +8,13 @@ import torch.utils.data as data
 from pretrain.simclr.contrastive_downloader import ContrastiveDownloader
 from pretrain.simclr.simclrlm import SimCLRLM
 from pretrain.simclr.utils import (
-    CHECKPOINT_PATH,
     get_pretrained_model,
     summarise,
 )
 from utils import (
     NUM_WORKERS,
     SEED,
+    SIMCLR_CHECKPOINT_PATH,
     MedMNISTCategory,
     SplitType,
     get_accelerator_info,
@@ -42,8 +42,11 @@ def train_simclr(
     pretrained_path=None,
     **kwargs,
 ):
-    destination_path = os.path.join(CHECKPOINT_PATH, f"{model_name}.ckpt")
-    tb_path = os.path.join(CHECKPOINT_PATH, "tb_logs")
+    destination_path = os.path.join(
+        SIMCLR_CHECKPOINT_PATH,
+        f"{model_name}.ckpt"
+    )
+    tb_path = os.path.join(SIMCLR_CHECKPOINT_PATH, "tb_logs")
 
     # Check if model already exists
     if os.path.isfile(destination_path):
@@ -62,7 +65,7 @@ def train_simclr(
     accelerator, num_threads = get_accelerator_info()
 
     trainer = pl.Trainer(
-        default_root_dir=CHECKPOINT_PATH,
+        default_root_dir=SIMCLR_CHECKPOINT_PATH,
         accelerator=accelerator,
         devices=num_threads,
         max_epochs=max_epochs,
@@ -151,7 +154,6 @@ if __name__ == "__main__":
     model_name = f"pretrain-{DATA_FLAG.value}"
 
     # Train model
-
     model = train_simclr(
         train_data,
         val_data,
@@ -172,7 +174,10 @@ if __name__ == "__main__":
     #     destination_path,
     #     max_epochs=MAX_EPOCHS,
     #     batch_size=256,
-    #     pretrained_path=os.path.join(CHECKPOINT_PATH, "initial-pretrain.ckpt")
+    #     pretrained_path=os.path.join(
+    #         SIMCLR_CHECKPOINT_PATH,
+    #         "initial-pretrain.ckpt"
+    #     )
     # )
 
     summarise()

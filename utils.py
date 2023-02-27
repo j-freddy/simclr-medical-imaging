@@ -9,6 +9,9 @@ SEED = 1969
 NUM_WORKERS = os.cpu_count()
 DATASET_PATH = "data/"
 
+SIMCLR_CHECKPOINT_PATH = "pretrain/simclr/models/"
+LOGISTIC_REGRESSION_CHECKPOINT_PATH = "downstream/logistic_regression/models/"
+
 
 class MedMNISTCategory(Enum):
     PATH = "pathmnist"
