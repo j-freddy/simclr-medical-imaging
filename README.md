@@ -49,6 +49,12 @@ $ tensorboard --logdir pretrain/simclr/models/tb_logs
 $ python -m downstream.logistic_regression.train
 ```
 
+**TensorBoard**
+
+```bash
+$ tensorboard --logdir downstream/logistic_regression/models/tb_logs
+```
+
 ## Contribute
 
 ### Update requirements

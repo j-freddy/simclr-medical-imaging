@@ -36,29 +36,11 @@ def encode_data_features(pretrained_model, dataset, device, batch_size=64):
         feats.append(batch_feats.detach().cpu())
         labels.append(batch_labels)
 
-        # TODO Temporary
-
-        # [64, 512] (batch size = 64)
-        # [64, 512] for STL-10
-        # print(batch_feats.detach().cpu().shape)
-        # [64, 1]
-        # [64] for STL-10
-        # print(batch_labels.shape)
-        # assert False
-
     feats = torch.cat(feats, dim=0)
     labels = torch.cat(labels, dim=0)
 
-    # TODO Temporary
-
-    # [1080, 512]
-    # [5000, 512] for STL-10
-    print(feats.shape)
-    # [1080, 1]
-    # [5000] for STL-10
-    print(labels.shape)
-
-    assert False
+    # Remove extra axis
+    labels = labels.squeeze()
 
     # Sort images by labels
     labels, indexes = labels.sort()

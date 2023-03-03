@@ -2,6 +2,7 @@ from copy import deepcopy
 import os
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
+from pytorch_lightning.loggers import TensorBoardLogger
 import sys
 import torch
 import torch.nn as nn
@@ -51,6 +52,8 @@ def train_logistic_regression(
         LOGISTIC_REGRESSION_CHECKPOINT_PATH,
         f"{model_name}.ckpt"
     )
+    tb_path = os.path.join(LOGISTIC_REGRESSION_CHECKPOINT_PATH, "tb_logs")
+
     model = None
 
     # Check if model already exists
@@ -63,6 +66,9 @@ def train_logistic_regression(
     else:
         model = LogisticRegression(**kwargs)
         print("Model created")
+    
+    # Tensorboard
+    logger = TensorBoardLogger(save_dir=tb_path, name=model_name)
 
     # Trainer
     accelerator, num_threads = get_accelerator_info()
@@ -72,12 +78,13 @@ def train_logistic_regression(
         accelerator=accelerator,
         devices=num_threads,
         max_epochs=max_epochs,
+        logger=logger,
         callbacks=[
             # Save model as checkpoint periodically under checkpoints folder
             ModelCheckpoint(
                 save_weights_only=False,
                 mode="max",
-                monitor="val_acc_top5"
+                monitor="val_acc"
             ),
             # Auto-logs learning rate
             LearningRateMonitor("epoch"),
@@ -94,7 +101,7 @@ def train_logistic_regression(
         shuffle=True,
         drop_last=False,
         pin_memory=True,
-        num_workers=0
+        num_workers=NUM_WORKERS,
     )
 
     test_loader = data.DataLoader(
@@ -103,7 +110,7 @@ def train_logistic_regression(
         shuffle=False,
         drop_last=False,
         pin_memory=True,
-        num_workers=0
+        num_workers=NUM_WORKERS,
     )
 
     pl.seed_everything(SEED)
@@ -169,17 +176,6 @@ if __name__ == "__main__":
     print("Preparing data features: Done!")
 
     # Train model
-
-    # TODO Temporary
-
-    print("Shape of train features")
-
-    # MedMNIST: [1080, 1, 512]        (extra 1 compared to STL10)
-    # STL10: [5000, 512]
-    # STL10 smaller: [100, 512]    (10 images per label, 10 labels)
-    print(train_feats.tensors[0].shape)
-
-    sys.exit()
 
     _, d = train_feats.tensors[0].shape
 
