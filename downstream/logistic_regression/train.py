@@ -170,6 +170,17 @@ if __name__ == "__main__":
 
     # Train model
 
+    # TODO Temporary
+
+    print("Shape of train features")
+
+    # MedMNIST: [1080, 1, 512]        (extra 1 compared to STL10)
+    # STL10: [5000, 512]
+    # STL10 smaller: [100, 512]    (10 images per label, 10 labels)
+    print(train_feats.tensors[0].shape)
+
+    sys.exit()
+
     _, d = train_feats.tensors[0].shape
 
     model, results = train_logistic_regression(
