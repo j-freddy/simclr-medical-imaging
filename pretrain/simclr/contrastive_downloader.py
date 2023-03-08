@@ -1,15 +1,17 @@
 import medmnist
 from medmnist import INFO
 import os
+import torch
 from torchvision import transforms
 
-from utils import DATASET_PATH
+from utils import DATASET_PATH, convert_to_rgb
 
 
 class ContrastiveDownloader:
     def __init__(self):
         # Apply augmentation sequence
         self.transforms = transforms.Compose([
+            transforms.Lambda(convert_to_rgb),
             # Transformation 1: random horizontal flip
             transforms.RandomHorizontalFlip(),
             # Transformation 2: crop-and-resize
@@ -36,7 +38,9 @@ class ContrastiveDownloader:
         ])
 
     def load(self, data_flag, split_type):
-        DataClass = getattr(medmnist, INFO[data_flag.value]["python_class"])
+        info = INFO[data_flag.value]
+        n_channels = info["n_channels"]
+        DataClass = getattr(medmnist, info["python_class"])
 
         if not os.path.exists(DATASET_PATH):
             os.makedirs(DATASET_PATH)

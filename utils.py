@@ -85,3 +85,7 @@ def show_example_images(data, num_examples=12, reshape=False):
     plt.imshow(img_grid)
     plt.axis("off")
     plt.show()
+
+
+def convert_to_rgb(img):
+    return img.convert("RGB")

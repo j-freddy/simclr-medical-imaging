@@ -24,7 +24,7 @@ from utils import (
 
 
 def set_args():
-    DATA_FLAG = MedMNISTCategory.RETINA
+    DATA_FLAG = MedMNISTCategory.BREAST
     MAX_EPOCHS = 2
 
     return (
