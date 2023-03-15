@@ -11,6 +11,7 @@ DATASET_PATH = "data/"
 
 SIMCLR_CHECKPOINT_PATH = "pretrain/simclr/models/"
 LOGISTIC_REGRESSION_CHECKPOINT_PATH = "downstream/logistic_regression/models/"
+RESNET_TRANSFER_CHECKPOINT_PATH = "downstream/resnet/models/"
 
 
 class MedMNISTCategory(Enum):

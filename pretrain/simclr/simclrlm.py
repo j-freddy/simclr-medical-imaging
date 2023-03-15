@@ -33,7 +33,7 @@ class SimCLRLM(pl.LightningModule):
         optimizer = optim.AdamW(
             self.parameters(),
             lr=self.hparams.lr,
-            weight_decay=self.hparams.weight_decay
+            weight_decay=self.hparams.weight_decay,
         )
 
         # Set learning rate using a cosine annealing schedule

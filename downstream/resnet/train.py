@@ -1,20 +1,18 @@
 from copy import deepcopy
 import os
+import sys
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
 from pytorch_lightning.loggers import TensorBoardLogger
-import sys
-import torch
-import torch.nn as nn
 import torch.utils.data as data
 
 from downloader import Downloader
-from downstream.logistic_regression.logistic_regressionlm import LogisticRegression
-from downstream.logistic_regression.utils import summarise
-from pretrain.simclr.utils import encode_data_features, get_pretrained_model
+from downstream.resnet.ResNetTransferLM import ResNetTransferLM
+from downstream.resnet.utils import summarise
+from pretrain.simclr.utils import get_pretrained_model
 from utils import (
-    LOGISTIC_REGRESSION_CHECKPOINT_PATH,
     NUM_WORKERS,
+    RESNET_TRANSFER_CHECKPOINT_PATH,
     SEED,
     SIMCLR_CHECKPOINT_PATH,
     MedMNISTCategory,
@@ -40,18 +38,19 @@ def set_args():
     )
 
 
-def train_logistic_regression(
-    batch_size,
-    train_feats_data,
-    test_feats_data,
-    max_epochs=100,
-    **kwargs,
-):
+def finetune_resnet(
+        network,
+        batch_size,
+        train_data,
+        test_data,
+        max_epochs=100,
+        **kwargs
+    ):
     destination_path = os.path.join(
-        LOGISTIC_REGRESSION_CHECKPOINT_PATH,
+        RESNET_TRANSFER_CHECKPOINT_PATH,
         f"{model_name}.ckpt"
     )
-    tb_path = os.path.join(LOGISTIC_REGRESSION_CHECKPOINT_PATH, "tb_logs")
+    tb_path = os.path.join(RESNET_TRANSFER_CHECKPOINT_PATH, "tb_logs")
 
     model = None
 
@@ -60,12 +59,15 @@ def train_logistic_regression(
         print(f"Model already exists at: {destination_path}")
 
         # Automatically load model with saved hyperparameters
-        model = LogisticRegression.load_from_checkpoint(destination_path)
+        model = ResNetTransferLM.load_from_checkpoint(destination_path)
         print("Model loaded")
     else:
-        model = LogisticRegression(**kwargs)
+        # Move network to specified device
+        network.to(device)
+
+        model = ResNetTransferLM(network, NUM_CLASSES, **kwargs)
         print("Model created")
-    
+
     # Tensorboard
     logger = TensorBoardLogger(save_dir=tb_path, name=model_name)
 
@@ -73,7 +75,7 @@ def train_logistic_regression(
     accelerator, num_threads = get_accelerator_info()
 
     trainer = pl.Trainer(
-        default_root_dir=LOGISTIC_REGRESSION_CHECKPOINT_PATH,
+        default_root_dir=RESNET_TRANSFER_CHECKPOINT_PATH,
         accelerator=accelerator,
         devices=num_threads,
         max_epochs=max_epochs,
@@ -95,7 +97,7 @@ def train_logistic_regression(
     trainer.logger._default_hp_metric = None
 
     train_loader = data.DataLoader(
-        train_feats_data,
+        train_data,
         batch_size=batch_size,
         shuffle=True,
         drop_last=False,
@@ -104,7 +106,7 @@ def train_logistic_regression(
     )
 
     test_loader = data.DataLoader(
-        test_feats_data,
+        test_data,
         batch_size=batch_size,
         shuffle=False,
         drop_last=False,
@@ -118,7 +120,7 @@ def train_logistic_regression(
     trainer.fit(model, train_loader, test_loader)
 
     # Load best checkpoint after training
-    model = LogisticRegression.load_from_checkpoint(
+    model = ResNetTransferLM.load_from_checkpoint(
         trainer.checkpoint_callback.best_model_path
     )
 
@@ -159,7 +161,7 @@ if __name__ == "__main__":
     # show_example_images(test_data, reshape=True)
     # sys.exit()
 
-    model_name = f"downstream-{DATA_FLAG.value}"
+    model_name = f"downstream-unfixed-{DATA_FLAG.value}"
 
     # Get pretrained model
     # TODO This function should be in root/utils.py and should be able to load
@@ -167,28 +169,17 @@ if __name__ == "__main__":
     pretrained_path = os.path.join(SIMCLR_CHECKPOINT_PATH, PRETRAINED_FILE)
     pretrained_model = get_pretrained_model(pretrained_path)
 
-    print("Preparing data features...")
+    # Deep copy convolutional network
+    network = deepcopy(pretrained_model.convnet)
 
-    train_feats = encode_data_features(pretrained_model, train_data, device)
-    test_feats = encode_data_features(pretrained_model, test_data, device)
-
-    print("Preparing data features: Done!")
-
-    # Train model
-
-    _, d = train_feats.tensors[0].shape
-
-    model, results = train_logistic_regression(
-        batch_size=64,
-        train_feats_data=train_feats,
-        test_feats_data=test_feats,
+    model, result = finetune_resnet(
+        network,
+        batch_size=128,
+        train_data=train_data,
+        test_data=test_data,
         max_epochs=MAX_EPOCHS,
-        feature_dim=d,
-        num_classes=NUM_CLASSES,
-        lr=1e-3,
-        weight_decay=1e-3,
+        lr=0.001,
+        momentum=0.9,
     )
-
-    print(results)
 
     summarise()

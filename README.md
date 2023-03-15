@@ -23,38 +23,6 @@ Python 3.10.9
 $ pip install -r requirements.txt
 ```
 
-## Pretrain
-
-### SimCLR
-
-**Train**
-
-```bash
-$ python -m pretrain.simclr.train
-```
-
-**TensorBoard**
-
-```bash
-$ tensorboard --logdir pretrain/simclr/models/tb_logs
-```
-
-## Downstream
-
-### Logistic Regression
-
-**Train**
-
-```bash
-$ python -m downstream.logistic_regression.train
-```
-
-**TensorBoard**
-
-```bash
-$ tensorboard --logdir downstream/logistic_regression/models/tb_logs
-```
-
 ## Contribute
 
 ### Update requirements
