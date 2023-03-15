@@ -3,12 +3,14 @@ from medmnist import INFO
 import os
 from torchvision import transforms
 
-from utils import DATASET_PATH
+from utils import DATASET_PATH, convert_to_rgb
 
 
 class Downloader:
     def __init__(self):
         self.transforms = transforms.Compose([
+            # Normalise to 3 channels
+            transforms.Lambda(convert_to_rgb),
             transforms.ToTensor(),
             transforms.Normalize((0.5,), (0.5,)),
         ])

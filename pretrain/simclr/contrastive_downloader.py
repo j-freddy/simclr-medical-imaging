@@ -9,8 +9,9 @@ from utils import DATASET_PATH, convert_to_rgb
 
 class ContrastiveDownloader:
     def __init__(self):
-        # Apply augmentation sequence
+        # Define augmentation sequence
         self.transforms = transforms.Compose([
+            # Normalise to 3 channels
             transforms.Lambda(convert_to_rgb),
             # Transformation 1: random horizontal flip
             transforms.RandomHorizontalFlip(),
@@ -48,7 +49,6 @@ class ContrastiveDownloader:
         return DataClass(
             root=DATASET_PATH,
             split=split_type.value,
-            # transform=ContrastiveTransformations(self.transforms),
             transform=ContrastiveTransformations(self.transforms),
             download=True,
         )

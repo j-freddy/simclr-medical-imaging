@@ -23,6 +23,7 @@ class SimCLRLM(pl.LightningModule):
         self.convnet.fc = nn.Sequential(
             self.convnet.fc,
             # Attach projection head
+            # TODO Sometimes ReLU is not used
             nn.ReLU(inplace=True),
             nn.Linear(4 * self.hparams.hidden_dim, self.hparams.hidden_dim)
         )

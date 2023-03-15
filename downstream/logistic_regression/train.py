@@ -27,11 +27,11 @@ from utils import (
 
 
 def set_args():
-    DATA_FLAG = MedMNISTCategory.DERMA
+    DATA_FLAG = MedMNISTCategory.BREAST
     PRETRAINED_FILE = f"pretrain-dermamnist-thousand.ckpt"
     # TODO Infer this from dataset
-    NUM_CLASSES = 7
-    MAX_EPOCHS = 2000
+    NUM_CLASSES = 2
+    MAX_EPOCHS = 50
 
     return (
         DATA_FLAG,
@@ -171,18 +171,20 @@ if __name__ == "__main__":
     print("Preparing data features...")
 
     train_feats = encode_data_features(pretrained_model, train_data, device)
-    test_feats = encode_data_features(pretrained_model, test_data, device)
+    # test_feats = encode_data_features(pretrained_model, test_data, device)
 
     print("Preparing data features: Done!")
 
     # Train model
 
-    _, d = train_feats.tensors[0].shape
+    # _, d = train_data.tensors[0].shape
+    d = 28
+    # _, d = train_feats.tensors[0].shape
 
     model, results = train_logistic_regression(
         batch_size=64,
-        train_feats_data=train_feats,
-        test_feats_data=test_feats,
+        train_feats_data=train_data,
+        test_feats_data=test_data,
         max_epochs=MAX_EPOCHS,
         feature_dim=d,
         num_classes=NUM_CLASSES,
