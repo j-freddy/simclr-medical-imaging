@@ -30,7 +30,7 @@ def set_args():
     PRETRAINED_FILE = f"pretrain-dermamnist-thousand.ckpt"
     # TODO Infer this from dataset
     NUM_CLASSES = 2
-    MAX_EPOCHS = 50
+    MAX_EPOCHS = 2
 
     return (
         DATA_FLAG,

@@ -14,7 +14,10 @@ class ResNetTransferLM(LightningModule):
         # ResNet model
         self.backbone = backbone
         # Replace projection head with linear layer
-        self.backbone.fc = nn.Linear(self.backbone.fc.in_features, num_classes)
+        self.backbone.fc = nn.Linear(
+            self.backbone.fc[0].in_features,
+            num_classes,
+        )
     
     def configure_optimizers(self):
         optimizer = optim.SGD(
@@ -33,7 +36,11 @@ class ResNetTransferLM(LightningModule):
 
     def loss(self, batch, mode="train"):
         feats, labels = batch
-        preds = self.model(feats)
+        preds = self.backbone(feats)
+
+        # TODO Temporary fix
+        labels = labels.squeeze()
+
         loss = F.cross_entropy(preds, labels)
         acc = (preds.argmax(dim=-1) == labels).float().mean()
 

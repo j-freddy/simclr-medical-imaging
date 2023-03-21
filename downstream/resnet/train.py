@@ -7,7 +7,7 @@ from pytorch_lightning.loggers import TensorBoardLogger
 import torch.utils.data as data
 
 from downloader import Downloader
-from downstream.resnet.ResNetTransferLM import ResNetTransferLM
+from downstream.resnet.resnet_transferlm import ResNetTransferLM
 from downstream.resnet.utils import summarise
 from pretrain.simclr.utils import get_pretrained_model
 from utils import (
@@ -28,7 +28,7 @@ def set_args():
     PRETRAINED_FILE = f"pretrain-dermamnist-thousand.ckpt"
     # TODO Infer this from dataset
     NUM_CLASSES = 2
-    MAX_EPOCHS = 50
+    MAX_EPOCHS = 1
 
     return (
         DATA_FLAG,
