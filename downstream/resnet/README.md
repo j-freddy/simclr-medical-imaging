@@ -11,8 +11,18 @@ finetuned during transfer learning.
 
 ## Train
 
+Train a model starting from a pretrained ResNet-18 architecture.
+
 ```bash
 $ python -m downstream.resnet.train
+```
+
+## Baseline
+
+Train a model starting from a newly initialised ResNet-18 architecture.
+
+```bash
+$ python -m downstream.resnet.baseline
 ```
 
 ## TensorBoard
