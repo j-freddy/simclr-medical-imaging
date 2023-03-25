@@ -27,22 +27,22 @@ class LogisticRegression(pl.LightningModule):
         #     gamma=0.1,
         # )
 
-        # optimizer = optim.SGD(
-        #     self.parameters(),
-        #     lr=self.hparams.lr,
-        #     momentum=self.hparams.momentum,
-        # )
+        optimizer = optim.SGD(
+            self.parameters(),
+            lr=self.hparams.lr,
+            momentum=self.hparams.momentum,
+        )
 
-        # lr_scheduler = optim.lr_scheduler.StepLR(
-        #     optimizer,
-        #     step_size=7,
-        #     gamma=0.1,
-        # )
+        lr_scheduler = optim.lr_scheduler.StepLR(
+            optimizer,
+            step_size=7,
+            gamma=0.1,
+        )
 
-        optimizer = optim.Adam(self.parameters(), lr=0.001)
+        # optimizer = optim.Adam(self.parameters(), lr=0.001)
 
-        # return [optimizer], [lr_scheduler]
-        return optimizer
+        return [optimizer], [lr_scheduler]
+        # return optimizer
 
     def loss(self, batch, mode="train"):
         feats, labels = batch
