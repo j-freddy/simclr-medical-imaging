@@ -12,34 +12,34 @@ class LogisticRegression(pl.LightningModule):
         self.model = nn.Linear(feature_dim, num_classes)
 
     def configure_optimizers(self):
-        optimizer = optim.AdamW(
-            self.parameters(),
-            lr=self.hparams.lr,
-            weight_decay=self.hparams.weight_decay,
-        )
+        # optimizer = optim.AdamW(
+        #     self.parameters(),
+        #     lr=self.hparams.lr,
+        #     weight_decay=self.hparams.weight_decay,
+        # )
 
-        lr_scheduler = optim.lr_scheduler.MultiStepLR(
-            optimizer,
-            milestones=[
-                int(self.hparams.max_epochs * 0.6),
-                int(self.hparams.max_epochs * 0.8),
-            ],
-            gamma=0.1,
-        )
+        # lr_scheduler = optim.lr_scheduler.MultiStepLR(
+        #     optimizer,
+        #     milestones=[
+        #         int(self.hparams.max_epochs * 0.6),
+        #         int(self.hparams.max_epochs * 0.8),
+        #     ],
+        #     gamma=0.1,
+        # )
 
         # TODO Try Adam
 
-        # optimizer = optim.SGD(
-        #     self.backbone.parameters(),
-        #     lr=self.hparams.lr,
-        #     momentum=self.hparams.momentum,
-        # )
+        optimizer = optim.SGD(
+            self.backbone.parameters(),
+            lr=self.hparams.lr,
+            momentum=self.hparams.momentum,
+        )
 
-        # lr_scheduler = optim.lr_scheduler.StepLR(
-        #     optimizer,
-        #     step_size=7,
-        #     gamma=0.1,
-        # )
+        lr_scheduler = optim.lr_scheduler.StepLR(
+            optimizer,
+            step_size=7,
+            gamma=0.1,
+        )
 
         return [optimizer], [lr_scheduler]
 
