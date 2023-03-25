@@ -29,8 +29,8 @@ def set_args():
     DATA_FLAG = MedMNISTCategory.BREAST
     PRETRAINED_FILE = f"pretrain-dermamnist-thousand.ckpt"
     # TODO Infer this from dataset
-    NUM_CLASSES = 2
-    MAX_EPOCHS = 2
+    NUM_CLASSES = 7
+    MAX_EPOCHS = 2000
 
     return (
         DATA_FLAG,
