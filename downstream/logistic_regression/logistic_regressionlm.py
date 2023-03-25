@@ -28,7 +28,7 @@ class LogisticRegression(pl.LightningModule):
         # )
 
         # optimizer = optim.SGD(
-        #     self.backbone.parameters(),
+        #     self.parameters(),
         #     lr=self.hparams.lr,
         #     momentum=self.hparams.momentum,
         # )
@@ -39,7 +39,7 @@ class LogisticRegression(pl.LightningModule):
         #     gamma=0.1,
         # )
 
-        optimizer = optim.Adam(self.backbone.parameters(), lr=0.001)
+        optimizer = optim.Adam(self.parameters(), lr=0.001)
 
         # return [optimizer], [lr_scheduler]
         return optimizer
