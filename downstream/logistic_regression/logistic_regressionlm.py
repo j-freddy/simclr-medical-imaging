@@ -28,22 +28,22 @@ class LogisticRegression(pl.LightningModule):
         # )
 
         # TODO Move lr and momentum to hyperparameters
-        optimizer = optim.SGD(
-            self.parameters(),
-            lr=0.001,
-            momentum=0.9,
-        )
+        # optimizer = optim.SGD(
+        #     self.parameters(),
+        #     lr=0.001,
+        #     momentum=0.9,
+        # )
 
-        lr_scheduler = optim.lr_scheduler.StepLR(
-            optimizer,
-            step_size=7,
-            gamma=0.1,
-        )
+        # lr_scheduler = optim.lr_scheduler.StepLR(
+        #     optimizer,
+        #     step_size=7,
+        #     gamma=0.1,
+        # )
 
-        # optimizer = optim.Adam(self.parameters(), lr=0.001)
+        optimizer = optim.Adam(self.parameters(), lr=0.001)
 
-        return [optimizer], [lr_scheduler]
-        # return optimizer
+        # return [optimizer], [lr_scheduler]
+        return optimizer
 
     def loss(self, batch, mode="train"):
         feats, labels = batch
