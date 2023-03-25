@@ -52,6 +52,8 @@ if __name__ == "__main__":
     # show_example_images(test_data, reshape=True)
     # sys.exit()
 
+    model_name = f"baseline-{DATA_FLAG.value}"
+
     # Initialise new ResNet-18 model
     hidden_dim = 128
 
@@ -65,6 +67,7 @@ if __name__ == "__main__":
         batch_size=128,
         train_data=train_data,
         test_data=test_data,
+        model_name=model_name,
         max_epochs=MAX_EPOCHS,
         lr=0.001,
         momentum=0.9,

@@ -4,7 +4,9 @@ import sys
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
 from pytorch_lightning.loggers import TensorBoardLogger
+import torch.nn as nn
 import torch.utils.data as data
+import torchvision
 
 from downloader import Downloader
 from downstream.resnet.resnet_transferlm import ResNetTransferLM
@@ -43,6 +45,7 @@ def finetune_resnet(
         batch_size,
         train_data,
         test_data,
+        model_name,
         max_epochs=100,
         **kwargs
     ):
@@ -120,8 +123,24 @@ def finetune_resnet(
     trainer.fit(model, train_loader, test_loader)
 
     # Load best checkpoint after training
+    # TODO Start of Temp code (Otherwise getting errors due to missing backbone
+    # parameter)
+    hidden_dim = 128
+
+    resnet_base = torchvision.models.resnet18(
+        weights=None,
+        num_classes=4 * hidden_dim
+    )
+
+    resnet_base.fc = nn.Sequential(
+        resnet_base.fc,
+        nn.ReLU(inplace=True),
+    )
+    # TODO End of Temp code
+    
     model = ResNetTransferLM.load_from_checkpoint(
-        trainer.checkpoint_callback.best_model_path
+        trainer.checkpoint_callback.best_model_path,
+        backbone=resnet_base
     )
 
     # Save model
@@ -177,9 +196,13 @@ if __name__ == "__main__":
         batch_size=128,
         train_data=train_data,
         test_data=test_data,
+        model_name=model_name,
         max_epochs=MAX_EPOCHS,
         lr=0.001,
         momentum=0.9,
     )
 
+    # TODO Print result
+
     summarise()
+    print(result)

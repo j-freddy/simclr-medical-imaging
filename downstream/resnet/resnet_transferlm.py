@@ -9,7 +9,7 @@ class ResNetTransferLM(LightningModule):
         super().__init__()
 
         # Save constructor parameters to self.hparams
-        self.save_hyperparameters("lr", "momentum")
+        self.save_hyperparameters(ignore=["backbone"])
 
         # ResNet model
         self.backbone = backbone
