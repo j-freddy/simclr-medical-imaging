@@ -27,10 +27,11 @@ class LogisticRegression(pl.LightningModule):
         #     gamma=0.1,
         # )
 
+        # TODO Move lr and momentum to hyperparameters
         optimizer = optim.SGD(
             self.parameters(),
-            lr=self.hparams.lr,
-            momentum=self.hparams.momentum,
+            lr=0.001,
+            momentum=0.9,
         )
 
         lr_scheduler = optim.lr_scheduler.StepLR(
