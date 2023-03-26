@@ -1,6 +1,7 @@
 from copy import deepcopy
 import sys
 import pytorch_lightning as pl
+import torch.nn as nn
 import torchvision
 
 from downloader import Downloader
@@ -59,15 +60,22 @@ if __name__ == "__main__":
 
     backbone = torchvision.models.resnet18(
         weights=None,
-        num_classes=4 * hidden_dim
+        num_classes=4 * hidden_dim,
+    )
+
+    backbone.fc = nn.Sequential(
+        backbone.fc,
+        nn.ReLU(inplace=True),
     )
 
     model, result = finetune_resnet(
         backbone,
+        device,
         batch_size=128,
         train_data=train_data,
         test_data=test_data,
         model_name=model_name,
+        num_classes=NUM_CLASSES,
         max_epochs=MAX_EPOCHS,
         lr=0.001,
         momentum=0.9,

@@ -42,10 +42,13 @@ def set_args():
 
 def finetune_resnet(
         network,
+        device,
         batch_size,
         train_data,
         test_data,
         model_name,
+        # TODO Infer from data
+        num_classes,
         max_epochs=100,
         **kwargs
     ):
@@ -68,7 +71,7 @@ def finetune_resnet(
         # Move network to specified device
         network.to(device)
 
-        model = ResNetTransferLM(network, NUM_CLASSES, **kwargs)
+        model = ResNetTransferLM(network, num_classes, **kwargs)
         print("Model created")
 
     # Tensorboard
@@ -193,10 +196,12 @@ if __name__ == "__main__":
 
     model, result = finetune_resnet(
         network,
+        device,
         batch_size=128,
         train_data=train_data,
         test_data=test_data,
         model_name=model_name,
+        num_classes=NUM_CLASSES,
         max_epochs=MAX_EPOCHS,
         lr=0.001,
         momentum=0.9,
