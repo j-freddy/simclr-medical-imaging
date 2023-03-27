@@ -1,4 +1,5 @@
 from copy import deepcopy
+from medmnist import INFO
 import sys
 import pytorch_lightning as pl
 import torch.nn as nn
@@ -20,18 +21,15 @@ from utils import (
 
 def set_args():
     DATA_FLAG = MedMNISTCategory.DERMA
-    # TODO Infer this from dataset
-    NUM_CLASSES = 7
     MAX_EPOCHS = 2000
 
     return (
         DATA_FLAG,
-        NUM_CLASSES,
         MAX_EPOCHS,
     )
 
 if __name__ == "__main__":
-    DATA_FLAG, NUM_CLASSES, MAX_EPOCHS = set_args()
+    DATA_FLAG, MAX_EPOCHS = set_args()
 
     # Seed
     pl.seed_everything(SEED)
@@ -75,7 +73,7 @@ if __name__ == "__main__":
         train_data=train_data,
         test_data=test_data,
         model_name=model_name,
-        num_classes=NUM_CLASSES,
+        num_classes=len(INFO[DATA_FLAG.value]["label"]),
         max_epochs=MAX_EPOCHS,
         lr=0.001,
         momentum=0.9,

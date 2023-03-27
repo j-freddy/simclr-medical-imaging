@@ -39,9 +39,7 @@ class ContrastiveDownloader:
         ])
 
     def load(self, data_flag, split_type):
-        info = INFO[data_flag.value]
-        n_channels = info["n_channels"]
-        DataClass = getattr(medmnist, info["python_class"])
+        DataClass = getattr(medmnist, INFO[data_flag.value]["python_class"])
 
         if not os.path.exists(DATASET_PATH):
             os.makedirs(DATASET_PATH)

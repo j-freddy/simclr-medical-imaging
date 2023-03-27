@@ -1,4 +1,5 @@
 from copy import deepcopy
+from medmnist import INFO
 import os
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
@@ -28,14 +29,11 @@ from utils import (
 def set_args():
     DATA_FLAG = MedMNISTCategory.DERMA
     PRETRAINED_FILE = f"pretrain-dermamnist-thousand.ckpt"
-    # TODO Infer this from dataset
-    NUM_CLASSES = 7
     MAX_EPOCHS = 2000
 
     return (
         DATA_FLAG,
         PRETRAINED_FILE,
-        NUM_CLASSES,
         MAX_EPOCHS,
     )
 
@@ -137,7 +135,7 @@ def train_logistic_regression(
 
 
 if __name__ == "__main__":
-    DATA_FLAG, PRETRAINED_FILE, NUM_CLASSES, MAX_EPOCHS = set_args()
+    DATA_FLAG, PRETRAINED_FILE, MAX_EPOCHS = set_args()
 
     # Seed
     pl.seed_everything(SEED)
@@ -184,7 +182,7 @@ if __name__ == "__main__":
         test_feats_data=test_feats,
         max_epochs=MAX_EPOCHS,
         feature_dim=d,
-        num_classes=NUM_CLASSES,
+        num_classes=len(INFO[DATA_FLAG.value]["label"]),
         lr=1e-3,
         weight_decay=1e-3,
     )
