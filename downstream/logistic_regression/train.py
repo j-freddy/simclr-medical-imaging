@@ -26,7 +26,7 @@ from utils import (
 
 
 def set_args():
-    DATA_FLAG = MedMNISTCategory.BREAST
+    DATA_FLAG = MedMNISTCategory.DERMA
     PRETRAINED_FILE = f"pretrain-dermamnist-thousand.ckpt"
     # TODO Infer this from dataset
     NUM_CLASSES = 7
@@ -159,7 +159,7 @@ if __name__ == "__main__":
     # show_example_images(test_data, reshape=True)
     # sys.exit()
 
-    model_name = f"downstream-{DATA_FLAG.value}"
+    model_name = f"downstream-{DATA_FLAG.value}-sgd-steplr"
 
     # Get pretrained model
     # TODO This function should be in root/utils.py and should be able to load
