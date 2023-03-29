@@ -31,7 +31,7 @@ class ResNetTransferLM(LightningModule):
         # TODO Temporary fix
         labels = labels.squeeze()
 
-        loss = F.cross_entropy(preds, labels)
+        loss = F.cross_entropy(preds, labels.long())
         acc = (preds.argmax(dim=-1) == labels).float().mean()
 
         self.log(mode + "_loss", loss)

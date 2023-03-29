@@ -51,7 +51,7 @@ You must have an existing pretrained model. If not, read
 
 ```bash
 # Quick demo: takes 5 minutes to train
-$ python -m downstream.logistic_regression.train -c breastmnist -epochs 3 -samples 20 -fin simclr-demo -fout simclr-demo
+$ python -m downstream.logistic_regression.train -c breastmnist -epochs 12 -samples 20 -fin simclr-demo -fout simclr-demo
 # Takes 1 hour to train on GPU
 $ python -m downstream.logistic_regression.train -c dermamnist -epochs 50 -samples 100 -fin pretrain-dermamnist
 ```

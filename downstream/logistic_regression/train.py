@@ -18,7 +18,6 @@ from utils import (
     NUM_WORKERS,
     SEED,
     SIMCLR_CHECKPOINT_PATH,
-    MedMNISTCategory,
     get_accelerator_info,
     parse_args,
     setup_device,
@@ -52,7 +51,7 @@ def train_logistic_regression(
     else:
         model = LogisticRegression(**kwargs)
         print("Model created")
-    
+
     # Tensorboard
     logger = TensorBoardLogger(save_dir=tb_path, name=model_name)
 
@@ -144,11 +143,7 @@ if __name__ == "__main__":
     num_samples = NUM_SAMPLES or -1
 
     downloader = Downloader()
-    train_data = downloader.load(
-        DATA_FLAG,
-        SplitType.TRAIN,
-        num_samples=num_samples
-    )
+    train_data = downloader.load(DATA_FLAG, SplitType.TRAIN, num_samples)
     val_data = downloader.load(DATA_FLAG, SplitType.VALIDATION)
     test_data = downloader.load(DATA_FLAG, SplitType.TEST)
 

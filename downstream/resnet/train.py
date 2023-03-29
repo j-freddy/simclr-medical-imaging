@@ -18,25 +18,12 @@ from utils import (
     RESNET_TRANSFER_CHECKPOINT_PATH,
     SEED,
     SIMCLR_CHECKPOINT_PATH,
-    MedMNISTCategory,
     get_accelerator_info,
-    get_smaller_dataset,
+    parse_args,
     setup_device,
     show_example_images,
     SplitType,
 )
-
-
-def set_args():
-    DATA_FLAG = MedMNISTCategory.DERMA
-    PRETRAINED_FILE = f"pretrain-dermamnist-thousand.ckpt"
-    MAX_EPOCHS = 2000
-
-    return (
-        DATA_FLAG,
-        PRETRAINED_FILE,
-        MAX_EPOCHS,
-    )
 
 
 def finetune_resnet(
@@ -160,7 +147,13 @@ def finetune_resnet(
 
 
 if __name__ == "__main__":
-    DATA_FLAG, PRETRAINED_FILE, MAX_EPOCHS = set_args()
+    (
+        DATA_FLAG,
+        MAX_EPOCHS,
+        NUM_SAMPLES,
+        PRETRAINED_FILE,
+        MODEL_NAME,
+    ) = parse_args(downstream=True)
 
     # Seed
     pl.seed_everything(SEED)
@@ -171,8 +164,10 @@ if __name__ == "__main__":
     print(f"Number of workers: {NUM_WORKERS}")
 
     # Load data
+    num_samples = NUM_SAMPLES or -1
+
     downloader = Downloader()
-    train_data = downloader.load(DATA_FLAG, SplitType.TRAIN)
+    train_data = downloader.load(DATA_FLAG, SplitType.TRAIN, num_samples)
     val_data = downloader.load(DATA_FLAG, SplitType.VALIDATION)
     test_data = downloader.load(DATA_FLAG, SplitType.TEST)
 
@@ -182,7 +177,7 @@ if __name__ == "__main__":
     # show_example_images(test_data, reshape=True)
     # sys.exit()
 
-    model_name = f"downstream-unfixed-{DATA_FLAG.value}"
+    model_name = MODEL_NAME or f"downstream-{DATA_FLAG}"
 
     # Get pretrained model
     # TODO This function should be in root/utils.py and should be able to load
@@ -196,11 +191,11 @@ if __name__ == "__main__":
     model, result = finetune_resnet(
         network,
         device,
-        batch_size=128,
+        batch_size=min(128, len(train_data)),
         train_data=train_data,
         test_data=test_data,
         model_name=model_name,
-        num_classes=len(INFO[DATA_FLAG.value]["label"]),
+        num_classes=len(INFO[DATA_FLAG]["label"]),
         max_epochs=MAX_EPOCHS,
         lr=0.001,
         momentum=0.9,

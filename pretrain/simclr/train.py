@@ -15,7 +15,6 @@ from utils import (
     NUM_WORKERS,
     SEED,
     SIMCLR_CHECKPOINT_PATH,
-    MedMNISTCategory,
     SplitType,
     get_accelerator_info,
     parse_args,
@@ -140,11 +139,7 @@ if __name__ == "__main__":
     num_samples = NUM_SAMPLES or -1
 
     downloader = ContrastiveDownloader()
-    train_data = downloader.load(
-        DATA_FLAG,
-        SplitType.TRAIN,
-        num_samples=num_samples
-    )
+    train_data = downloader.load(DATA_FLAG, SplitType.TRAIN, num_samples)
     val_data = downloader.load(DATA_FLAG, SplitType.VALIDATION)
 
     # Show example images

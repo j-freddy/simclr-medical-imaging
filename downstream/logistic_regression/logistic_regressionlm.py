@@ -32,7 +32,7 @@ class LogisticRegression(pl.LightningModule):
     def loss(self, batch, mode="train"):
         feats, labels = batch
         preds = self.model(feats)
-        loss = F.cross_entropy(preds, labels)
+        loss = F.cross_entropy(preds, labels.long())
         acc = (preds.argmax(dim=-1) == labels).float().mean()
 
         self.log(mode + "_loss", loss)

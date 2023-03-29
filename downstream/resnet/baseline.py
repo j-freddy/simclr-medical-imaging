@@ -12,24 +12,19 @@ from pretrain.simclr.utils import get_pretrained_model
 from utils import (
     NUM_WORKERS,
     SEED,
-    MedMNISTCategory,
+    parse_args,
     setup_device,
     show_example_images,
     SplitType,
 )
 
-
-def set_args():
-    DATA_FLAG = MedMNISTCategory.DERMA
-    MAX_EPOCHS = 2000
-
-    return (
+if __name__ == "__main__":
+    (
         DATA_FLAG,
         MAX_EPOCHS,
-    )
-
-if __name__ == "__main__":
-    DATA_FLAG, MAX_EPOCHS = set_args()
+        NUM_SAMPLES,
+        MODEL_NAME,
+    ) = parse_args()
 
     # Seed
     pl.seed_everything(SEED)
@@ -40,8 +35,10 @@ if __name__ == "__main__":
     print(f"Number of workers: {NUM_WORKERS}")
 
     # Load data
+    num_samples = NUM_SAMPLES or -1
+
     downloader = Downloader()
-    train_data = downloader.load(DATA_FLAG, SplitType.TRAIN)
+    train_data = downloader.load(DATA_FLAG, SplitType.TRAIN, num_samples)
     val_data = downloader.load(DATA_FLAG, SplitType.VALIDATION)
     test_data = downloader.load(DATA_FLAG, SplitType.TEST)
 
@@ -51,7 +48,7 @@ if __name__ == "__main__":
     # show_example_images(test_data, reshape=True)
     # sys.exit()
 
-    model_name = f"baseline-{DATA_FLAG.value}"
+    model_name = MODEL_NAME or f"baseline-{DATA_FLAG.value}"
 
     # Initialise new ResNet-18 model
     hidden_dim = 128
@@ -69,11 +66,11 @@ if __name__ == "__main__":
     model, result = finetune_resnet(
         backbone,
         device,
-        batch_size=128,
+        batch_size=min(128, len(train_data)),
         train_data=train_data,
         test_data=test_data,
         model_name=model_name,
-        num_classes=len(INFO[DATA_FLAG.value]["label"]),
+        num_classes=len(INFO[DATA_FLAG]["label"]),
         max_epochs=MAX_EPOCHS,
         lr=0.001,
         momentum=0.9,
