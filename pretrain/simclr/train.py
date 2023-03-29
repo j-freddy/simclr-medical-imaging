@@ -18,20 +18,10 @@ from utils import (
     MedMNISTCategory,
     SplitType,
     get_accelerator_info,
+    parse_args,
     setup_device,
     show_example_images,
 )
-
-
-def set_args():
-    DATA_FLAG = MedMNISTCategory.BREAST
-    MAX_EPOCHS = 2
-
-    return (
-        DATA_FLAG,
-        MAX_EPOCHS,
-    )
-
 
 def train_simclr(
     train_data,
@@ -131,7 +121,7 @@ def train_simclr(
 
 
 if __name__ == "__main__":
-    DATA_FLAG, MAX_EPOCHS = set_args()
+    DATA_FLAG, MAX_EPOCHS, NUM_SAMPLES, MODEL_NAME = parse_args()
 
     # Seed
     pl.seed_everything(SEED)
@@ -142,8 +132,14 @@ if __name__ == "__main__":
     print(f"Number of workers: {NUM_WORKERS}")
 
     # Load data
+    num_samples = NUM_SAMPLES or -1
+
     downloader = ContrastiveDownloader()
-    train_data = downloader.load(DATA_FLAG, SplitType.TRAIN)
+    train_data = downloader.load(
+        DATA_FLAG,
+        SplitType.TRAIN,
+        num_samples=num_samples
+    )
     val_data = downloader.load(DATA_FLAG, SplitType.VALIDATION)
 
     # Show example images
@@ -151,7 +147,7 @@ if __name__ == "__main__":
     # show_example_images(val_data)
     # sys.exit()
 
-    model_name = f"pretrain-{DATA_FLAG.value}"
+    model_name = MODEL_NAME or f"pretrain-{DATA_FLAG}"
 
     # Train model
     model = train_simclr(
@@ -159,7 +155,7 @@ if __name__ == "__main__":
         val_data,
         model_name,
         max_epochs=MAX_EPOCHS,
-        batch_size=256,
+        batch_size=min(256, len(train_data)),
         hidden_dim=128,
         lr=5e-4,
         temperature=0.07,

@@ -1,3 +1,4 @@
+import argparse
 from enum import Enum
 import os
 import matplotlib.pyplot as plt
@@ -34,6 +35,25 @@ class SplitType(Enum):
     VALIDATION = "val"
     TEST = "test"
 
+def parse_args(downstream=False):
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-c", type=str, help="Data category", required=True)
+    parser.add_argument("-epochs", type=int, help="Maximum number of epochs", required=True)
+    # Optional. Default is to use all samples
+    parser.add_argument("-samples", type=int, help="Number of samples")
+
+    if downstream:
+        parser.add_argument("-fin", type=str, help="Pretrained model filename", required=True)
+    
+    # Optional. Default is "[pretrain/downstream]-[category]"
+    parser.add_argument("-fout", type=str, help="Output model filename")
+
+    args = parser.parse_args()
+
+    if downstream:
+        return args.c, args.epochs, args.samples, args.fin, args.fout
+
+    return args.c, args.epochs, args.samples, args.fout
 
 def setup_device():
     # Use GPU if available

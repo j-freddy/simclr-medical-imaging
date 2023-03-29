@@ -16,8 +16,43 @@ We use ResNet-18 as the CNN architecture.
 ## Train
 
 ```bash
-$ python -m pretrain.simclr.train
+$ python -m pretrain.simclr.train -c C -epochs EPOCHS [-samples SAMPLES] [-fout FOUT]
+# Run for help/description
+$ python -m pretrain.simclr.train -h
 ```
+
+If training successful, the model can be found in `models/`.
+
+`-c`
+- Specifies MedMNIST2D dataset to be used: https://medmnist.com/
+- Accepted arguments below
+```py
+pathmnist, chestmnist, dermamnist, octmnist, pneumoniamnist, retinamnist, 
+breastmnist, bloodmnist, tissuemnist, organamnist, organcmnist, organsmnist
+```
+
+`epochs`
+- Maximum number of epochs
+
+`samples`
+- Number of training samples
+- Default: uses all training samples
+
+`fout`
+- Output model filename
+- Default: `pretrain-[category]`
+
+### Example
+
+```bash
+# Quick demo: takes 5 minutes to train
+$ python -m pretrain.simclr.train -c breastmnist -epochs 3 -samples 20 -fout simclr-demo
+# Takes 1 day to train on GPU
+$ python -m pretrain.simclr.train -c dermamnist -epochs 50
+```
+
+If training successful for the demo, the model can be found as
+`models/simclr-demo.ckpt`.
 
 ## TensorBoard
 
