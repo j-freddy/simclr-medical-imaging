@@ -121,7 +121,12 @@ def train_simclr(
 
 
 if __name__ == "__main__":
-    DATA_FLAG, MAX_EPOCHS, NUM_SAMPLES, MODEL_NAME = parse_args()
+    (
+        DATA_FLAG,
+        MAX_EPOCHS,
+        NUM_SAMPLES,
+        MODEL_NAME,
+    ) = parse_args()
 
     # Seed
     pl.seed_everything(SEED)
@@ -154,8 +159,8 @@ if __name__ == "__main__":
         train_data,
         val_data,
         model_name,
-        max_epochs=MAX_EPOCHS,
         batch_size=min(256, len(train_data)),
+        max_epochs=MAX_EPOCHS,
         hidden_dim=128,
         lr=5e-4,
         temperature=0.07,

@@ -51,6 +51,7 @@ def parse_args(downstream=False):
     args = parser.parse_args()
 
     if downstream:
+        args.fin += ".ckpt"
         return args.c, args.epochs, args.samples, args.fin, args.fout
 
     return args.c, args.epochs, args.samples, args.fout

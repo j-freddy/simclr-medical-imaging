@@ -20,28 +20,17 @@ from utils import (
     SIMCLR_CHECKPOINT_PATH,
     MedMNISTCategory,
     get_accelerator_info,
+    parse_args,
     setup_device,
     show_example_images,
     SplitType,
 )
 
 
-def set_args():
-    DATA_FLAG = MedMNISTCategory.DERMA
-    PRETRAINED_FILE = f"pretrain-dermamnist-thousand.ckpt"
-    MAX_EPOCHS = 2000
-
-    return (
-        DATA_FLAG,
-        PRETRAINED_FILE,
-        MAX_EPOCHS,
-    )
-
-
 def train_logistic_regression(
-    batch_size,
     train_feats_data,
     test_feats_data,
+    batch_size,
     max_epochs=100,
     **kwargs,
 ):
@@ -135,7 +124,13 @@ def train_logistic_regression(
 
 
 if __name__ == "__main__":
-    DATA_FLAG, PRETRAINED_FILE, MAX_EPOCHS = set_args()
+    (
+        DATA_FLAG,
+        MAX_EPOCHS,
+        NUM_SAMPLES,
+        PRETRAINED_FILE,
+        MODEL_NAME,
+    ) = parse_args(downstream=True)
 
     # Seed
     pl.seed_everything(SEED)
@@ -146,8 +141,14 @@ if __name__ == "__main__":
     print(f"Number of workers: {NUM_WORKERS}")
 
     # Load data
+    num_samples = NUM_SAMPLES or -1
+
     downloader = Downloader()
-    train_data = downloader.load(DATA_FLAG, SplitType.TRAIN)
+    train_data = downloader.load(
+        DATA_FLAG,
+        SplitType.TRAIN,
+        num_samples=num_samples
+    )
     val_data = downloader.load(DATA_FLAG, SplitType.VALIDATION)
     test_data = downloader.load(DATA_FLAG, SplitType.TEST)
 
@@ -157,7 +158,7 @@ if __name__ == "__main__":
     # show_example_images(test_data, reshape=True)
     # sys.exit()
 
-    model_name = f"downstream-{DATA_FLAG.value}-sgd-steplr"
+    model_name = MODEL_NAME or f"downstream-{DATA_FLAG}"
 
     # Get pretrained model
     # TODO This function should be in root/utils.py and should be able to load
@@ -177,12 +178,12 @@ if __name__ == "__main__":
     _, d = train_feats.tensors[0].shape
 
     model, results = train_logistic_regression(
-        batch_size=64,
         train_feats_data=train_feats,
         test_feats_data=test_feats,
+        batch_size=min(64, len(train_data)),
         max_epochs=MAX_EPOCHS,
         feature_dim=d,
-        num_classes=len(INFO[DATA_FLAG.value]["label"]),
+        num_classes=len(INFO[DATA_FLAG]["label"]),
         lr=1e-3,
         weight_decay=1e-3,
     )

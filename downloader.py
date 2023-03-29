@@ -18,7 +18,7 @@ class Downloader:
         ])
 
     def load(self, data_flag, split_type, num_samples=-1):
-        DataClass = getattr(medmnist, INFO[data_flag.value]["python_class"])
+        DataClass = getattr(medmnist, INFO[data_flag]["python_class"])
 
         if not os.path.exists(DATASET_PATH):
             os.makedirs(DATASET_PATH)
