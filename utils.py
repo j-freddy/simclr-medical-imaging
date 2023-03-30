@@ -42,6 +42,10 @@ def parse_args(downstream=False):
     # Optional. Default is to use all samples
     parser.add_argument("-samples", type=int, help="Number of samples")
 
+    if not downstream:
+        # Optional. Default is new ResNet model.
+        parser.add_argument("-fin", type=str, help="Initial model (to further pretrain)")
+
     if downstream:
         parser.add_argument("-fin", type=str, help="Pretrained model filename", required=True)
     
@@ -50,11 +54,9 @@ def parse_args(downstream=False):
 
     args = parser.parse_args()
 
-    if downstream:
+    if args.fin:
         args.fin += ".ckpt"
-        return args.c, args.epochs, args.samples, args.fin, args.fout
-
-    return args.c, args.epochs, args.samples, args.fout
+    return args.c, args.epochs, args.samples, args.fin, args.fout
 
 def setup_device():
     # Use GPU if available

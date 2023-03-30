@@ -16,7 +16,7 @@ We use ResNet-18 as the CNN architecture.
 ## Train
 
 ```bash
-$ python -m pretrain.simclr.train -c C -epochs EPOCHS [-samples SAMPLES] [-fout FOUT]
+$ python -m pretrain.simclr.train -c C -epochs EPOCHS [-samples SAMPLES] [-fin FIN] [-fout FOUT]
 # Run for help/description
 $ python -m pretrain.simclr.train -h
 ```
@@ -38,6 +38,11 @@ breastmnist, bloodmnist, tissuemnist, organamnist, organcmnist, organsmnist
 - Number of training samples
 - Default: uses all training samples
 
+`fin`
+- Input pretrained model filename used as a starting point for further
+  pretraining
+- Default: newly initialised ResNet-18
+
 `fout`
 - Output model filename
 - Default: `pretrain-[category]`
@@ -49,6 +54,8 @@ breastmnist, bloodmnist, tissuemnist, organamnist, organcmnist, organsmnist
 $ python -m pretrain.simclr.train -c breastmnist -epochs 3 -samples 20 -fout simclr-demo
 # Takes 1 day to train on GPU
 $ python -m pretrain.simclr.train -c dermamnist -epochs 50
+# Perform further pretraining on a pretrained model
+$ python -m pretrain.simclr.train -c breastmnist -epochs 50 -fin pretrain-dermamnist
 ```
 
 If training successful for the demo, the model can be found as

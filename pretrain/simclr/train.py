@@ -98,12 +98,12 @@ def train_simclr(
     # If pretrained_path specified, initialise model to pretrained model
     model = None
 
-    if pretrained_path == None:
-        model = SimCLRLM(max_epochs=max_epochs, **kwargs)
-        print("Model initialised as new model")
-    else:
+    if pretrained_path:
         model = get_pretrained_model(pretrained_path)
         print(f"Model initialised to pretrained model at: {pretrained_path}")
+    else:
+        model = SimCLRLM(max_epochs=max_epochs, **kwargs)
+        print("Model initialised as new model")
 
     # Train model
     trainer.fit(model, train_loader, val_loader)
@@ -124,6 +124,7 @@ if __name__ == "__main__":
         DATA_FLAG,
         MAX_EPOCHS,
         NUM_SAMPLES,
+        INITIAL_PRETRAIN,
         MODEL_NAME,
     ) = parse_args()
 
@@ -149,6 +150,13 @@ if __name__ == "__main__":
 
     model_name = MODEL_NAME or f"pretrain-{DATA_FLAG}"
 
+    # Specifies path to model for further pretraining
+    # Otherwise perform pretraining from a newly initialised resnet model
+    initial_pretrain_path = os.path.join(
+        SIMCLR_CHECKPOINT_PATH,
+        INITIAL_PRETRAIN
+    ) if INITIAL_PRETRAIN else None
+
     # Train model
     model = train_simclr(
         train_data,
@@ -156,24 +164,11 @@ if __name__ == "__main__":
         model_name,
         batch_size=min(256, len(train_data)),
         max_epochs=MAX_EPOCHS,
+        pretrained_path=initial_pretrain_path,
         hidden_dim=128,
         lr=5e-4,
         temperature=0.07,
         weight_decay=1e-4,
     )
-
-    # Further pretraining from initial pretrained model
-
-    # model = train_simclr(
-    #     train_data,
-    #     val_data,
-    #     destination_path,
-    #     max_epochs=MAX_EPOCHS,
-    #     batch_size=256,
-    #     pretrained_path=os.path.join(
-    #         SIMCLR_CHECKPOINT_PATH,
-    #         "initial-pretrain.ckpt"
-    #     )
-    # )
 
     summarise()
