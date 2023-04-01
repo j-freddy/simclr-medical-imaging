@@ -24,7 +24,7 @@ if __name__ == "__main__":
         MAX_EPOCHS,
         NUM_SAMPLES,
         MODEL_NAME,
-    ) = parse_args()
+    ) = parse_args(baseline=True)
 
     # Seed
     pl.seed_everything(SEED)

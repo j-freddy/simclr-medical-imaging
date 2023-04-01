@@ -35,14 +35,14 @@ class SplitType(Enum):
     VALIDATION = "val"
     TEST = "test"
 
-def parse_args(downstream=False):
+def parse_args(downstream=False, baseline=False):
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", type=str, help="Data category", required=True)
     parser.add_argument("-epochs", type=int, help="Maximum number of epochs", required=True)
     # Optional. Default is to use all samples
     parser.add_argument("-samples", type=int, help="Number of samples")
 
-    if not downstream:
+    if not downstream and not baseline:
         # Optional. Default is new ResNet model.
         parser.add_argument("-fin", type=str, help="Initial model (to further pretrain)")
 
@@ -53,6 +53,9 @@ def parse_args(downstream=False):
     parser.add_argument("-fout", type=str, help="Output model filename")
 
     args = parser.parse_args()
+
+    if baseline:
+        return args.c, args.epochs, args.samples, args.fout
 
     if args.fin:
         args.fin += ".ckpt"
