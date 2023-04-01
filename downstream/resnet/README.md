@@ -1,5 +1,8 @@
 # ResNet
 
+`TODO` This file is deprecated. `baseline.py` is merged with `train.py`. Update
+this file.
+
 Make sure you are currently in the `root` folder.
 
 ## Background

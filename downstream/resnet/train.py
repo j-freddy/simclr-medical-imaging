@@ -26,6 +26,15 @@ from utils import (
 )
 
 
+def initialise_new_network():
+    hidden_dim = 128
+
+    return torchvision.models.resnet18(
+        weights=None,
+        num_classes=4 * hidden_dim,
+    )
+
+
 def finetune_resnet(
         network,
         device,
@@ -112,20 +121,13 @@ def finetune_resnet(
     trainer.fit(model, train_loader, test_loader)
 
     # Load best checkpoint after training
-    # TODO Start of Temp code (Otherwise getting errors due to missing backbone
-    # parameter)
-    hidden_dim = 128
-
-    resnet_base = torchvision.models.resnet18(
-        weights=None,
-        num_classes=4 * hidden_dim
-    )
+    # Without this, getting errors due to missing backbone parameter)
+    resnet_base = initialise_new_network()
 
     resnet_base.fc = nn.Sequential(
         resnet_base.fc,
         nn.ReLU(inplace=True),
     )
-    # TODO End of Temp code
     
     model = ResNetTransferLM.load_from_checkpoint(
         trainer.checkpoint_callback.best_model_path,
@@ -182,11 +184,21 @@ if __name__ == "__main__":
     # Get pretrained model
     # TODO This function should be in root/utils.py and should be able to load
     # models other than SimCLR
-    pretrained_path = os.path.join(SIMCLR_CHECKPOINT_PATH, PRETRAINED_FILE)
-    pretrained_model = get_pretrained_model(pretrained_path)
+    pretrained_path = os.path.join(
+        SIMCLR_CHECKPOINT_PATH,
+        PRETRAINED_FILE
+    ) if PRETRAINED_FILE else None
 
-    # Deep copy convolutional network
-    network = deepcopy(pretrained_model.convnet)
+    if pretrained_path:
+        pretrained_model = get_pretrained_model(pretrained_path)
+
+        # Deep copy convolutional network
+        network = deepcopy(pretrained_model.convnet)
+    else:
+        # Baseline supervised model
+        network = initialise_new_network()
+        # For compatibility (SimCLR has a Sequential fc)
+        network.fc = nn.Sequential(network.fc)
 
     model, result = finetune_resnet(
         network,
