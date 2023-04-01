@@ -53,7 +53,7 @@ You must have an existing pretrained model. If not, read
 # Quick demo: takes 5 minutes to train
 $ python -m downstream.logistic_regression.train -c breastmnist -epochs 12 -samples 20 -fin simclr-demo -fout simclr-demo
 # Takes 1 hour to train on GPU
-$ python -m downstream.logistic_regression.train -c dermamnist -epochs 50 -samples 100 -fin pretrain-dermamnist
+$ python -m downstream.logistic_regression.train -c dermamnist -epochs 1000 -samples 100 -fin pretrain-dermamnist
 ```
 
 If training successful for the demo, the model can be found as

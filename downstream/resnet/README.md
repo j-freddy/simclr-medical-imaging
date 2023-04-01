@@ -51,8 +51,8 @@ You must have an existing pretrained model. If not, read
 ```bash
 # Quick demo: takes 5 minutes to train
 $ python -m downstream.resnet.train -c breastmnist -epochs 12 -samples 20 -fin simclr-demo -fout simclr-demo
-# Takes 2 hours to train on GPU
-$ python -m downstream.resnet.train -c dermamnist -epochs 50 -samples 100 -fin pretrain-dermamnist
+# Takes 1 hour to train on GPU
+$ python -m downstream.resnet.train -c dermamnist -epochs 1000 -samples 100 -fin pretrain-dermamnist
 ```
 
 If training successful for the demo, the model can be found as
@@ -67,8 +67,8 @@ Train a model starting from a newly initialised ResNet-18 architecture.
 ```bash
 # Quick demo: takes 5 minutes to train
 $ python -m downstream.resnet.baseline -c breastmnist -epochs 12 -samples 20 -fout simclr-demo
-# Takes 2 hours to train on GPU
-$ python -m downstream.resnet.baseline -c dermamnist -epochs 50 -samples 100
+# Takes 1 hour to train on GPU
+$ python -m downstream.resnet.baseline -c dermamnist -epochs 1000 -samples 100
 ```
 
 If training successful for the demo, the model can be found as
