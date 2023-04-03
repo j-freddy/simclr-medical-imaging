@@ -23,7 +23,6 @@ class SimCLRLM(pl.LightningModule):
         self.convnet.fc = nn.Sequential(
             self.convnet.fc,
             # Attach projection head
-            # TODO Sometimes ReLU is not used
             nn.ReLU(inplace=True),
             nn.Linear(4 * self.hparams.hidden_dim, self.hparams.hidden_dim)
         )
@@ -50,7 +49,8 @@ class SimCLRLM(pl.LightningModule):
         imgs, _ = batch
         # Concatenates tensors into 1D
         imgs = torch.cat(imgs, dim=0)
-        # Apply base encoder and projection head to imgs to get embedded encoders
+        # Apply base encoder and projection head to imgs to get embedded
+        # encoders
         zs = self.convnet(imgs)
         # Calculate cosine similarity
         cos_sim = F.cosine_similarity(zs[:, None, :], zs[None, :, :], dim=-1)
