@@ -53,9 +53,9 @@ breastmnist, bloodmnist, tissuemnist, organamnist, organcmnist, organsmnist
 # Quick demo: takes 5 minutes to train
 $ python -m pretrain.simclr.train -c breastmnist -epochs 3 -samples 20 -fout simclr-demo
 # Takes 1 day to train on GPU
-$ python -m pretrain.simclr.train -c dermamnist -epochs 50
+$ python -m pretrain.simclr.train -c dermamnist -epochs 2000
 # Perform further pretraining on a pretrained model
-$ python -m pretrain.simclr.train -c breastmnist -epochs 50 -fin pretrain-dermamnist
+$ python -m pretrain.simclr.train -c breastmnist -epochs 2000 -fin pretrain-dermamnist
 ```
 
 If training successful for the demo, the model can be found as
