@@ -10,7 +10,7 @@ import torch.nn as nn
 import torch.utils.data as data
 
 from downloader import Downloader
-from downstream.logistic_regression.logistic_regressionlm import LogisticRegression
+from downstream.logistic_regression.logistic_regressionlm import LogisticRegressionLM
 from downstream.logistic_regression.utils import summarise
 from pretrain.simclr.utils import encode_data_features, get_pretrained_model
 from utils import (
@@ -46,10 +46,10 @@ def train_logistic_regression(
         print(f"Model already exists at: {destination_path}")
 
         # Automatically load model with saved hyperparameters
-        model = LogisticRegression.load_from_checkpoint(destination_path)
+        model = LogisticRegressionLM.load_from_checkpoint(destination_path)
         print("Model loaded")
     else:
-        model = LogisticRegression(**kwargs)
+        model = LogisticRegressionLM(**kwargs)
         print("Model created")
 
     # Tensorboard
@@ -104,7 +104,7 @@ def train_logistic_regression(
     trainer.fit(model, train_loader, test_loader)
 
     # Load best checkpoint after training
-    model = LogisticRegression.load_from_checkpoint(
+    model = LogisticRegressionLM.load_from_checkpoint(
         trainer.checkpoint_callback.best_model_path
     )
 

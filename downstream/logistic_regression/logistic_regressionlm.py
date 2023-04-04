@@ -4,7 +4,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 
 
-class LogisticRegression(pl.LightningModule):
+class LogisticRegressionLM(pl.LightningModule):
     def __init__(self, feature_dim, num_classes, lr, weight_decay, max_epochs=100):
         super().__init__()
         self.save_hyperparameters()
