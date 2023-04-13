@@ -9,3 +9,6 @@ data/
 
 # Testing
 sandbox.py
+
+# Lightning logs
+lightning_logs/

@@ -59,6 +59,16 @@ def parse_args(downstream=False):
         args.fin += ".ckpt"
     return args.c, args.epochs, args.samples, args.fin, args.fout
 
+def parse_args_test():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-c", type=str, help="Data category", required=True)
+    parser.add_argument("-fin", type=str, help="Model filename", required=True)
+
+    args = parser.parse_args()
+
+    return args.c, args.fin
+
+
 def setup_device():
     # Use GPU if available
     device = torch.device("cuda") if torch.cuda.is_available()\

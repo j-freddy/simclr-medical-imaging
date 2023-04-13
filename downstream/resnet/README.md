@@ -64,6 +64,14 @@ $ python -m downstream.resnet.train -c dermamnist -epochs 1000 -samples 100
 If training successful for the demo, the model can be found as
 `models/simclr-demo.ckpt`.
 
+## Test
+
+### Example
+
+```bash
+python -m downstream.resnet.test -c breastmnist -fin simclr-demo
+```
+
 ## TensorBoard
 
 ```bash
