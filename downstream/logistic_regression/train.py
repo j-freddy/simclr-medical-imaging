@@ -42,6 +42,8 @@ def train_logistic_regression(
     model = None
 
     # Check if model already exists
+    use_existing_model = os.path.isfile(destination_path)
+
     if os.path.isfile(destination_path):
         print(f"Model already exists at: {destination_path}")
 
@@ -101,15 +103,16 @@ def train_logistic_regression(
     pl.seed_everything(SEED)
 
     # Train model
-    trainer.fit(model, train_loader, test_loader)
+    if not use_existing_model:
+        trainer.fit(model, train_loader, test_loader)
 
-    # Load best checkpoint after training
-    model = LogisticRegressionLM.load_from_checkpoint(
-        trainer.checkpoint_callback.best_model_path
-    )
+        # Load best checkpoint after training
+        model = LogisticRegressionLM.load_from_checkpoint(
+            trainer.checkpoint_callback.best_model_path
+        )
 
-    # Save model
-    trainer.save_checkpoint(destination_path)
+        # Save model
+        trainer.save_checkpoint(destination_path)
 
     # Test best model on train and test set
     train_result = trainer.test(model, dataloaders=train_loader, verbose=False)
