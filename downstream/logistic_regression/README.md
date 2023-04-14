@@ -59,6 +59,14 @@ $ python -m downstream.logistic_regression.train -c dermamnist -epochs 1000 -sam
 If training successful for the demo, the model can be found as
 `models/simclr-demo.ckpt`.
 
+## Test
+
+### Example
+
+```bash
+python -m downstream.logistic_regression.test -c bloodmnist -fencoder pretrain-bloodmnist -fin downstream-bloodmnist
+```
+
 ## TensorBoard
 
 ```bash

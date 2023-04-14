@@ -59,13 +59,21 @@ def parse_args(downstream=False):
         args.fin += ".ckpt"
     return args.c, args.epochs, args.samples, args.fin, args.fout
 
-def parse_args_test():
+def parse_args_test(logistic_regression=False):
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", type=str, help="Data category", required=True)
+
+    if logistic_regression:
+        # Logistic regression model requires a separate base encoder
+        parser.add_argument("-fencoder", type=str, help="Base encoder filename", required=True)
+
     parser.add_argument("-fin", type=str, help="Model filename", required=True)
 
     args = parser.parse_args()
+    args.fin += ".ckpt"
 
+    if logistic_regression:
+        return args.c, args.fencoder, args.fin
     return args.c, args.fin
 
 

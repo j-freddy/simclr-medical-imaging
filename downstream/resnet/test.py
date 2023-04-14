@@ -24,7 +24,7 @@ if __name__ == "__main__":
 
     pretrained_path = os.path.join(
         RESNET_TRANSFER_CHECKPOINT_PATH,
-        f"{MODEL_NAME}.ckpt",
+        MODEL_NAME,
     )
 
     # Load model
