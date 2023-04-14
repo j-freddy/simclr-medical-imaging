@@ -15,7 +15,7 @@ class SimCLRLM(pl.LightningModule):
 
         # Base encoder
         # num_classes is output size of the last linear layer
-        self.convnet = torchvision.models.resnet18(
+        self.convnet = torchvision.models.resnet34(
             weights=None,
             num_classes=4 * self.hparams.hidden_dim
         )

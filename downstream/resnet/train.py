@@ -29,7 +29,7 @@ from utils import (
 def initialise_new_network():
     hidden_dim = 128
 
-    return torchvision.models.resnet18(
+    return torchvision.models.resnet34(
         weights=None,
         num_classes=4 * hidden_dim,
     )
