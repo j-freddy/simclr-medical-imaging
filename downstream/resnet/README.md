@@ -69,7 +69,7 @@ If training successful for the demo, the model can be found as
 ### Example
 
 ```bash
-python -m downstream.resnet.test -c bloodmnist -fin downstream-bloodmnist
+python -m downstream.resnet.test -c bloodmnist -fin baseline-bloodmnist-18
 ```
 
 ## TensorBoard

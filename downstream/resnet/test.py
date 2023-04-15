@@ -28,7 +28,7 @@ if __name__ == "__main__":
     )
 
     # Load model
-    # Without this, getting errors due to missing backbone parameter)
+    # Without this, getting errors due to missing backbone parameter
     resnet_base = initialise_new_network()
 
     resnet_base.fc = nn.Sequential(

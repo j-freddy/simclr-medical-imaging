@@ -12,7 +12,7 @@ import torch.utils.data as data
 from downloader import Downloader
 from downstream.logistic_regression.logistic_regressionlm import LogisticRegressionLM
 from downstream.logistic_regression.utils import summarise
-from pretrain.simclr.utils import encode_data_features, get_pretrained_model
+from pretrain.simclr.utils import get_data_features_from_pretrained_model, get_pretrained_model
 from utils import (
     LOGISTIC_REGRESSION_CHECKPOINT_PATH,
     NUM_WORKERS,
@@ -166,8 +166,8 @@ if __name__ == "__main__":
 
     print("Preparing data features...")
 
-    train_feats = encode_data_features(pretrained_model, train_data, device)
-    test_feats = encode_data_features(pretrained_model, test_data, device)
+    train_feats = get_data_features_from_pretrained_model(pretrained_model, train_data, device)
+    test_feats = get_data_features_from_pretrained_model(pretrained_model, test_data, device)
 
     print("Preparing data features: Done!")
 

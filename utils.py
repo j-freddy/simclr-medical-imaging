@@ -3,6 +3,8 @@ from enum import Enum
 import os
 import matplotlib.pyplot as plt
 import torch
+import torch.nn as nn
+import torch.utils.data as data
 import torchvision
 
 
@@ -132,3 +134,73 @@ def show_example_images(data, num_examples=12, reshape=False):
 
 def convert_to_rgb(img):
     return img.convert("RGB")
+
+
+def get_feats(feats_data):
+    data_loader = data.DataLoader(
+        feats_data,
+        batch_size=64,
+        shuffle=False
+    )
+
+    features = []
+
+    for batch in data_loader:
+        features.append(batch[0])
+
+    features = torch.cat(features, dim=0)
+
+    return features.numpy()
+
+
+def get_labels(dataset):
+    dataloader = data.DataLoader(
+        dataset,
+        batch_size=64,
+        shuffle=False
+    )
+
+    return torch.cat([
+        batch_labels for _, batch_labels in dataloader
+    ]).flatten().numpy()
+
+
+def encode_data_features(network, dataset, device, batch_size=64):
+    # Remove projection head g(.)
+    network.fc = nn.Identity()
+    # Set network to evaluation mode
+    network.eval()
+    # Move network to specified device
+    network.to(device)
+
+    data_loader = data.DataLoader(
+        dataset,
+        batch_size=batch_size,
+        shuffle=False,
+        drop_last=False,
+        num_workers=NUM_WORKERS,
+    )
+
+    feats, labels = [], []
+
+    for batch_imgs, batch_labels in data_loader:
+        # Move images to specified device
+        batch_imgs = batch_imgs.to(device)
+        # f(.)
+        batch_feats = network(batch_imgs)
+        # Detach tensor from current graph and move to CPU
+        feats.append(batch_feats.detach().cpu())
+        labels.append(batch_labels)
+
+    feats = torch.cat(feats, dim=0)
+    labels = torch.cat(labels, dim=0)
+
+    # Remove extra axis
+    labels = labels.squeeze()
+
+    # Sort images by labels
+    labels, indexes = labels.sort()
+    feats = feats[indexes]
+
+    return data.TensorDataset(feats, labels)
+
