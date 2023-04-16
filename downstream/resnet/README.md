@@ -72,6 +72,39 @@ If training successful for the demo, the model can be found as
 python -m downstream.resnet.test -c bloodmnist -fin baseline-bloodmnist-18
 ```
 
+## Feature analysis
+
+Perform feature analysis on learned representations using dimensionality
+reduction techniques like principal component analysis (PCA).
+
+You must have an existing downstream/baseline model.
+
+```bash
+$ python -m downstream.resnet.feature_analysis -c C -fin FIN
+# Run for help/description
+$ python -m downstream.resnet.feature_analysis -h
+```
+
+`-c`
+- Specifies MedMNIST2D dataset to be used: https://medmnist.com/
+- Accepted arguments below
+```py
+pathmnist, chestmnist, dermamnist, octmnist, pneumoniamnist, retinamnist, 
+breastmnist, bloodmnist, tissuemnist, organamnist, organcmnist, organsmnist
+```
+
+`fin`
+- Input downstream/baseline model filename. Data is passed through base encoder
+  to output features. Components are learned on train features and reduced test
+  features are visualised.
+
+### Example
+
+```bash
+$ python -m downstream.resnet.feature_analysis -c breastmnist -fin simclr-demo
+$ python -m downstream.resnet.feature_analysis -c pathmnist -fin baseline-pathmnist-18
+```
+
 ## TensorBoard
 
 ```bash

@@ -1,18 +1,22 @@
+from copy import deepcopy
 from matplotlib import pyplot as plt
 from medmnist import INFO
 import os
 import pytorch_lightning as pl
-from sklearn import decomposition
-import sys
 
 from dimensionality_reduction import perform_pca
 from downloader import Downloader
-from pretrain.simclr.utils import get_data_features_from_pretrained_model, get_pretrained_model
-from utils import SEED, SIMCLR_CHECKPOINT_PATH, SplitType, get_feats, get_labels, parse_args_test, setup_device
-
-
-# TODO Write a README.md for this file
-# python -m pretrain.simclr.feature_analysis -c pathmnist -fin pretrain-pathmnist
+from pretrain.simclr.utils import get_pretrained_model
+from utils import (
+    SEED,
+    SIMCLR_CHECKPOINT_PATH,
+    SplitType,
+    encode_data_features,
+    get_feats,
+    get_labels,
+    parse_args_test,
+    setup_device,
+)
 
 
 if __name__ == "__main__":
@@ -43,8 +47,9 @@ if __name__ == "__main__":
     print("SimCLR model loaded")
 
     print("Preparing data features...")
-    train_feats_data = get_data_features_from_pretrained_model(encoder_model, train_data, device)
-    test_feats_data = get_data_features_from_pretrained_model(encoder_model, test_data, device)
+    network = deepcopy(encoder_model.convnet)
+    train_feats_data = encode_data_features(network, train_data, device)
+    test_feats_data = encode_data_features(network, test_data, device)
     print("Preparing data features: Done!")
 
     train_feats = get_feats(train_feats_data)

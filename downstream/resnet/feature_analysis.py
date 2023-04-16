@@ -3,20 +3,22 @@ from matplotlib import pyplot as plt
 from medmnist import INFO
 import os
 import pytorch_lightning as pl
-from sklearn import decomposition
-import sys
 import torch.nn as nn
 
 from dimensionality_reduction import perform_pca
 from downloader import Downloader
 from downstream.resnet.resnet_transferlm import ResNetTransferLM
 from downstream.resnet.train import initialise_new_network
-from pretrain.simclr.utils import get_data_features_from_pretrained_model, get_pretrained_model
-from utils import SEED, RESNET_TRANSFER_CHECKPOINT_PATH, SplitType, encode_data_features, get_feats, get_labels, parse_args_test, setup_device
-
-
-# TODO Write a README.md for this file
-# python -m downstream.resnet.feature_analysis -c pathmnist -fin baseline-pathmnist-18
+from utils import (
+    SEED,
+    RESNET_TRANSFER_CHECKPOINT_PATH,
+    SplitType,
+    encode_data_features,
+    get_feats,
+    get_labels,
+    parse_args_test,
+    setup_device,
+)
 
 
 if __name__ == "__main__":
@@ -51,7 +53,7 @@ if __name__ == "__main__":
         resnet_base.fc,
         nn.ReLU(inplace=True),
     )
-    
+
     encoder_model = ResNetTransferLM.load_from_checkpoint(
         encoder_path,
         backbone=resnet_base,

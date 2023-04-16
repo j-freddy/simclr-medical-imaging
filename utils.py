@@ -37,21 +37,24 @@ class SplitType(Enum):
     VALIDATION = "val"
     TEST = "test"
 
+
 def parse_args(downstream=False):
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", type=str, help="Data category", required=True)
-    parser.add_argument("-epochs", type=int, help="Maximum number of epochs", required=True)
+    parser.add_argument("-epochs", type=int,
+                        help="Maximum number of epochs", required=True)
     # Optional. Default is to use all samples
     parser.add_argument("-samples", type=int, help="Number of samples")
 
     if not downstream:
         # Optional. Default is new ResNet model.
-        parser.add_argument("-fin", type=str, help="Initial model (to further pretrain)")
+        parser.add_argument(
+            "-fin", type=str, help="Initial model (to further pretrain)")
 
     if downstream:
         # Optional. Default is new ResNet model.
         parser.add_argument("-fin", type=str, help="Pretrained model filename")
-    
+
     # Optional. Default is "[pretrain/downstream]-[category]"
     parser.add_argument("-fout", type=str, help="Output model filename")
 
@@ -61,13 +64,15 @@ def parse_args(downstream=False):
         args.fin += ".ckpt"
     return args.c, args.epochs, args.samples, args.fin, args.fout
 
+
 def parse_args_test(logistic_regression=False):
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", type=str, help="Data category", required=True)
 
     if logistic_regression:
         # Logistic regression model requires a separate base encoder
-        parser.add_argument("-fencoder", type=str, help="Base encoder filename", required=True)
+        parser.add_argument("-fencoder", type=str,
+                            help="Base encoder filename", required=True)
 
     parser.add_argument("-fin", type=str, help="Model filename", required=True)
 
@@ -203,4 +208,3 @@ def encode_data_features(network, dataset, device, batch_size=64):
     feats = feats[indexes]
 
     return data.TensorDataset(feats, labels)
-
