@@ -64,8 +64,8 @@ if __name__ == "__main__":
     network = deepcopy(encoder_model.backbone)
 
     print("Preparing data features...")
-    train_feats_data = encode_data_features(network, train_data, device)
-    test_feats_data = encode_data_features(network, test_data, device)
+    train_feats_data = encode_data_features(network, train_data, device, sort=False)
+    test_feats_data = encode_data_features(network, test_data, device, sort=False)
     print("Preparing data features: Done!")
 
     train_feats = get_feats(train_feats_data)

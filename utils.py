@@ -170,7 +170,7 @@ def get_labels(dataset):
     ]).flatten().numpy()
 
 
-def encode_data_features(network, dataset, device, batch_size=64):
+def encode_data_features(network, dataset, device, batch_size=64, sort=True):
     # Remove projection head g(.)
     network.fc = nn.Identity()
     # Set network to evaluation mode
@@ -204,7 +204,8 @@ def encode_data_features(network, dataset, device, batch_size=64):
     labels = labels.squeeze()
 
     # Sort images by labels
-    labels, indexes = labels.sort()
-    feats = feats[indexes]
+    if sort:
+        labels, indexes = labels.sort()
+        feats = feats[indexes]
 
     return data.TensorDataset(feats, labels)
