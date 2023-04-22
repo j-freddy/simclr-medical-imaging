@@ -17,7 +17,7 @@ class ContrastiveDownloader:
             # Transformation 1: random horizontal flip
             transforms.RandomHorizontalFlip(),
             # Transformation 2: crop-and-resize
-            transforms.RandomResizedCrop(size=96),
+            transforms.RandomResizedCrop(size=28),
             # Transformation 3: colour distortion
             transforms.RandomApply(
                 [
@@ -28,7 +28,7 @@ class ContrastiveDownloader:
                         hue=0.1
                     )
                 ],
-                p=0.8
+                p=0.8,
             ),
             # Transformation 4: random greyscale
             transforms.RandomGrayscale(p=0.2),

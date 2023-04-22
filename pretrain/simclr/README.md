@@ -94,6 +94,16 @@ $ python -m pretrain.simclr.feature_analysis -c breastmnist -fin simclr-demo
 $ python -m pretrain.simclr.feature_analysis -c pathmnist -fin pretrain-pathmnist
 ```
 
+## Data preview
+
+<!-- TODO Write this fully -->
+
+### Example
+
+```bash
+$ python -m pretrain.simclr.data_preview -c pathmnist
+```
+
 ## TensorBoard
 
 ```bash

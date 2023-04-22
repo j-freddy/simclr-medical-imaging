@@ -19,7 +19,7 @@ from utils import (
     SEED,
     SIMCLR_CHECKPOINT_PATH,
     get_accelerator_info,
-    parse_args,
+    parse_args_train,
     setup_device,
     show_example_images,
     SplitType,
@@ -161,7 +161,7 @@ if __name__ == "__main__":
         NUM_SAMPLES,
         PRETRAINED_FILE,
         MODEL_NAME,
-    ) = parse_args(downstream=True)
+    ) = parse_args_train(downstream=True)
 
     # Seed
     pl.seed_everything(SEED)

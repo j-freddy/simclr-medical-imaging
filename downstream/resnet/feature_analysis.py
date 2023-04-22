@@ -16,7 +16,7 @@ from utils import (
     encode_data_features,
     get_feats,
     get_labels,
-    parse_args_test,
+    parse_args_feature_analysis,
     setup_device,
 )
 
@@ -25,7 +25,7 @@ if __name__ == "__main__":
     (
         DATA_FLAG,
         MODEL_NAME,
-    ) = parse_args_test()
+    ) = parse_args_feature_analysis()
 
     # Seed
     pl.seed_everything(SEED)

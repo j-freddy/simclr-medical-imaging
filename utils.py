@@ -17,15 +17,15 @@ LOGISTIC_REGRESSION_CHECKPOINT_PATH = "downstream/logistic_regression/models/"
 RESNET_TRANSFER_CHECKPOINT_PATH = "downstream/resnet/models/"
 
 COLORS = [
-    "#212529", # Black
-    "#c92a2a", # Red
-    "#862e9c", # Grape
-    "#5f3dc4", # Violet
-    "#4263eb", # Indigo
-    "#1864ab", # Blue
-    "#1098ad", # Cyan
-    "#2b8a3e", # Green
-    "#f08c00", # Yellow
+    "#212529",  # Black
+    "#c92a2a",  # Red
+    "#862e9c",  # Grape
+    "#5f3dc4",  # Violet
+    "#4263eb",  # Indigo
+    "#1864ab",  # Blue
+    "#1098ad",  # Cyan
+    "#2b8a3e",  # Green
+    "#f08c00",  # Yellow
 ]
 
 
@@ -50,7 +50,7 @@ class SplitType(Enum):
     TEST = "test"
 
 
-def parse_args(downstream=False):
+def parse_args_train(downstream=False):
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", type=str, help="Data category", required=True)
     parser.add_argument("-epochs", type=int,
@@ -96,6 +96,18 @@ def parse_args_test(logistic_regression=False):
     return args.c, args.fin
 
 
+def parse_args_feature_analysis():
+    return parse_args_test()
+
+
+def parse_args_img_viewer():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-c", type=str, help="Data category", required=True)
+
+    args = parser.parse_args()
+    return args.c
+
+
 def setup_device():
     # Use GPU if available
     device = torch.device("cuda") if torch.cuda.is_available()\
@@ -137,13 +149,57 @@ def show_example_images(data, num_examples=12, reshape=False):
 
     img_grid = torchvision.utils.make_grid(
         imgs,
-        nrow=6,
+        # Number of images per row
+        nrow=2,
         normalize=True,
-        pad_value=0.9
+        pad_value=0.9,
     )
     img_grid = img_grid.permute(1, 2, 0)
 
-    plt.figure(figsize=(10, 5))
+    plt.figure(figsize=(8, 8))
+    plt.imshow(img_grid)
+    plt.axis("off")
+    plt.show()
+
+def show_original_and_augmented_example_images(
+    data,
+    augmented_data,
+    num_examples=6,
+):
+    imgs = torch.stack(
+        [img for idx in range(num_examples) for img in data[idx][0]],
+        dim=0
+    )
+
+    augmented_imgs = torch.stack(
+        [img for idx in range(num_examples) for img in augmented_data[idx][0]],
+        dim=0
+    )
+
+    # Reshape non-augmented images
+    imgs = imgs.reshape(-1, 3, imgs.shape[-1], imgs.shape[-1])
+
+    # Combine images and augmented images
+    # TODO Concatenated in the wrong order
+    # We want:
+    #
+    # Original Augmented Augmented
+    # Original Augmented Augmented
+    # Original Augmented Augmented
+    #
+    # etc.
+    combined_imgs = torch.cat((imgs, augmented_imgs), dim=0)
+
+    img_grid = torchvision.utils.make_grid(
+        combined_imgs,
+        # Number of images per row
+        nrow=3,
+        normalize=True,
+        pad_value=0.9,
+    )
+    img_grid = img_grid.permute(1, 2, 0)
+
+    plt.figure(figsize=(8, 8))
     plt.imshow(img_grid)
     plt.axis("off")
     plt.show()
