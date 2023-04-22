@@ -16,6 +16,18 @@ SIMCLR_CHECKPOINT_PATH = "pretrain/simclr/models/"
 LOGISTIC_REGRESSION_CHECKPOINT_PATH = "downstream/logistic_regression/models/"
 RESNET_TRANSFER_CHECKPOINT_PATH = "downstream/resnet/models/"
 
+COLORS = [
+    "#212529", # Black
+    "#c92a2a", # Red
+    "#862e9c", # Grape
+    "#5f3dc4", # Violet
+    "#4263eb", # Indigo
+    "#1864ab", # Blue
+    "#1098ad", # Cyan
+    "#2b8a3e", # Green
+    "#f08c00", # Yellow
+]
+
 
 class MedMNISTCategory(Enum):
     PATH = "pathmnist"

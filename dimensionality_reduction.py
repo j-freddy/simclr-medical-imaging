@@ -1,24 +1,44 @@
 from matplotlib import pyplot as plt
+from medmnist import INFO
 import numpy as np
 from sklearn import decomposition
 
-def perform_pca(train_feats, test_feats, test_labels, num_classes):
+from utils import COLORS
+
+def perform_pca(train_feats, test_feats, test_labels, data_flag, legend=True):
+    labels_dict = INFO[data_flag]["label"]
+
     pca = decomposition.PCA(n_components=2)
     pca.fit(train_feats)
 
     test_feats_reduced = pca.transform(test_feats)
 
-    # TODO Refactor
+    # Use stylish plots
+    plt.style.use("ggplot")
+
+    num_classes = len(labels_dict)
+
     # Plot the data points coloured by their labels
-    plt.figure(figsize=(8, 8))
-    colors = plt.cm.rainbow(np.linspace(0, 1, num_classes))
+    colors = COLORS
+    
     for i in range(num_classes):
+        curr_label = labels_dict[str(i)]
+
+        # BloodMNIST: The original 3rd label is very long
+        # if i == 3:
+        #     curr_label = "immature granulocytes"
+
         plt.scatter(
             test_feats_reduced[test_labels == i, 0],
             test_feats_reduced[test_labels == i, 1],
             color=colors[i],
-            label=i,
-            alpha=0.2,
+            label=curr_label,
+            alpha=0.5,
         )
-    plt.legend()
+
+        plt.xlabel("principle component 1")
+        plt.ylabel("principle component 2")
+
+    if legend:
+        plt.legend()
     plt.show()

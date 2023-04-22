@@ -27,9 +27,6 @@ if __name__ == "__main__":
         MODEL_NAME,
     ) = parse_args_test()
 
-    # Use stylish plots
-    plt.style.use("ggplot")
-
     # Seed
     pl.seed_everything(SEED)
 
@@ -40,6 +37,7 @@ if __name__ == "__main__":
     # Load data
     downloader = Downloader()
     train_data = downloader.load(DATA_FLAG, SplitType.TRAIN)
+    # Take first 1000 test samples
     test_data = downloader.load(DATA_FLAG, SplitType.TRAIN, num_samples=1000)
     test_labels = get_labels(test_data)
 
@@ -75,7 +73,5 @@ if __name__ == "__main__":
     assert train_feats.shape[1] == 512
     assert test_feats.shape[1] == 512
 
-    num_classes = len(INFO[DATA_FLAG]["label"])
-
     # Perform PCA
-    perform_pca(train_feats, test_feats, test_labels, num_classes)
+    perform_pca(train_feats, test_feats, test_labels, DATA_FLAG)
