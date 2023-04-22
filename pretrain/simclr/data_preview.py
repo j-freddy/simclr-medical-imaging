@@ -42,11 +42,19 @@ if __name__ == "__main__":
         SplitType.TRAIN,
     )
 
+    # 5 different augmentations of same image
+    VIEWS = 5
+
     contrastive_downloader = ContrastiveDownloader()
     augmented_train_data = contrastive_downloader.load(
         DATA_FLAG,
         SplitType.TRAIN,
+        views=VIEWS,
     )
 
     # Show example images
-    show_original_and_augmented_example_images(train_data, augmented_train_data)
+    show_original_and_augmented_example_images(
+        train_data,
+        augmented_train_data,
+        views=VIEWS
+    )

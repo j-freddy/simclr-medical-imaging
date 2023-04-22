@@ -39,7 +39,7 @@ class ContrastiveDownloader:
             transforms.Normalize((0.5,), (0.5,)),
         ])
 
-    def load(self, data_flag, split_type, num_samples=-1):
+    def load(self, data_flag, split_type, num_samples=-1, views=2):
         DataClass = getattr(medmnist, INFO[data_flag]["python_class"])
 
         if not os.path.exists(DATASET_PATH):
@@ -48,7 +48,7 @@ class ContrastiveDownloader:
         dataclass = DataClass(
             root=DATASET_PATH,
             split=split_type.value,
-            transform=ContrastiveTransformations(self.transforms),
+            transform=ContrastiveTransformations(self.transforms, views),
             download=True,
         )
 

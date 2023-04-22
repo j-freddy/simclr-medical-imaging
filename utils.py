@@ -165,6 +165,7 @@ def show_original_and_augmented_example_images(
     data,
     augmented_data,
     num_examples=6,
+    views=2,
 ):
     imgs = torch.stack(
         [img for idx in range(num_examples) for img in data[idx][0]],
@@ -179,29 +180,34 @@ def show_original_and_augmented_example_images(
     # Reshape non-augmented images
     imgs = imgs.reshape(-1, 3, imgs.shape[-1], imgs.shape[-1])
 
-    # Combine images and augmented images
-    # TODO Concatenated in the wrong order
-    # We want:
-    #
-    # Original Augmented Augmented
-    # Original Augmented Augmented
-    # Original Augmented Augmented
-    #
-    # etc.
-    combined_imgs = torch.cat((imgs, augmented_imgs), dim=0)
-
     img_grid = torchvision.utils.make_grid(
-        combined_imgs,
-        # Number of images per row
-        nrow=3,
+        imgs,
+        nrow=1,
         normalize=True,
         pad_value=0.9,
     )
-    img_grid = img_grid.permute(1, 2, 0)
 
-    plt.figure(figsize=(8, 8))
-    plt.imshow(img_grid)
-    plt.axis("off")
+    augmented_img_grid = torchvision.utils.make_grid(
+        augmented_imgs,
+        # Number of images per row
+        nrow=views,
+        normalize=True,
+        pad_value=0.9,
+    )
+
+    img_grid = img_grid.permute(1, 2, 0)
+    augmented_img_grid = augmented_img_grid.permute(1, 2, 0)
+
+    _, ax = plt.subplots(1, 2, gridspec_kw = {
+        "width_ratios": [1, views],
+        "wspace": 0,
+        "hspace": 0,
+    })
+    ax[0].imshow(img_grid)
+    ax[0].axis("off")
+    ax[1].imshow(augmented_img_grid)
+    ax[1].axis("off")
+    plt.subplots_adjust(wspace=0, hspace=0)
     plt.show()
 
 
