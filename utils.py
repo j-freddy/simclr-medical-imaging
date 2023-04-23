@@ -92,6 +92,7 @@ def parse_args_test(logistic_regression=False):
     args.fin += ".ckpt"
 
     if logistic_regression:
+        args.fencoder += ".ckpt"
         return args.c, args.fencoder, args.fin
     return args.c, args.fin
 
