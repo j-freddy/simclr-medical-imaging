@@ -10,6 +10,7 @@ from downloader import Downloader
 from downstream.resnet.resnet_transferlm import ResNetTransferLM
 from downstream.resnet.train import initialise_new_network
 from utils import (
+    PCA_SAMPLES,
     SEED,
     RESNET_TRANSFER_CHECKPOINT_PATH,
     SplitType,
@@ -37,8 +38,7 @@ if __name__ == "__main__":
     # Load data
     downloader = Downloader()
     train_data = downloader.load(DATA_FLAG, SplitType.TRAIN)
-    # Take first 1000 test samples
-    test_data = downloader.load(DATA_FLAG, SplitType.TRAIN, num_samples=1000)
+    test_data = downloader.load(DATA_FLAG, SplitType.TRAIN, num_samples=PCA_SAMPLES)
     test_labels = get_labels(test_data)
 
     # Load ResNet model

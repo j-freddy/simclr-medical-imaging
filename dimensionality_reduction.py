@@ -3,7 +3,7 @@ from medmnist import INFO
 import numpy as np
 from sklearn import decomposition
 
-from utils import COLORS
+from utils import COLORS, MedMNISTCategory
 
 def perform_pca(train_feats, test_feats, test_labels, data_flag, legend=True):
     labels_dict = INFO[data_flag]["label"]
@@ -25,15 +25,18 @@ def perform_pca(train_feats, test_feats, test_labels, data_flag, legend=True):
         curr_label = labels_dict[str(i)]
 
         # BloodMNIST: The original 3rd label is very long
-        # if i == 3:
-        #     curr_label = "immature granulocytes"
+        if i == 3 and data_flag == MedMNISTCategory.BLOOD.value:
+            curr_label = "immature granulocytes"
 
         plt.scatter(
             test_feats_reduced[test_labels == i, 0],
             test_feats_reduced[test_labels == i, 1],
             color=colors[i],
             label=curr_label,
-            alpha=0.5,
+            alpha=0.75,
+            # Default marker area: 50
+            # Make it smaller
+            s=16,
         )
 
         plt.xlabel("principle component 1")

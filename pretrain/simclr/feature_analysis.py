@@ -6,6 +6,7 @@ from dimensionality_reduction import perform_pca
 from downloader import Downloader
 from pretrain.simclr.utils import get_pretrained_model
 from utils import (
+    PCA_SAMPLES,
     SEED,
     SIMCLR_CHECKPOINT_PATH,
     SplitType,
@@ -33,8 +34,7 @@ if __name__ == "__main__":
     # Load data
     downloader = Downloader()
     train_data = downloader.load(DATA_FLAG, SplitType.TRAIN)
-    # Take first 1000 test samples
-    test_data = downloader.load(DATA_FLAG, SplitType.TRAIN, num_samples=1000)
+    test_data = downloader.load(DATA_FLAG, SplitType.TRAIN, num_samples=PCA_SAMPLES)
     test_labels = get_labels(test_data)
 
     # Load SimCLR model
