@@ -8,6 +8,7 @@ import torch.utils.data as data
 from pretrain.simclr.contrastive_downloader import ContrastiveDownloader
 from pretrain.simclr.simclrlm import SimCLRLM
 from pretrain.simclr.utils import (
+    get_contrastive_downloader,
     get_pretrained_model,
     summarise,
 )
@@ -123,6 +124,7 @@ if __name__ == "__main__":
     (
         DATA_FLAG,
         MAX_EPOCHS,
+        AUG_TYPE,
         NUM_SAMPLES,
         INITIAL_PRETRAIN,
         MODEL_NAME,
@@ -139,7 +141,7 @@ if __name__ == "__main__":
     # Load data
     num_samples = NUM_SAMPLES or -1
 
-    downloader = ContrastiveDownloader()
+    downloader = get_contrastive_downloader(AUG_TYPE)
     train_data = downloader.load(DATA_FLAG, SplitType.TRAIN, num_samples)
     val_data = downloader.load(DATA_FLAG, SplitType.VALIDATION)
 

@@ -16,7 +16,7 @@ We use ResNet-18 as the CNN architecture.
 ## Train
 
 ```bash
-$ python -m pretrain.simclr.train -c C -epochs EPOCHS [-samples SAMPLES] [-fin FIN] [-fout FOUT]
+$ python -m pretrain.simclr.train -c C -epochs EPOCHS -aug AUG [-samples SAMPLES] [-fin FIN] [-fout FOUT]
 # Run for help/description
 $ python -m pretrain.simclr.train -h
 ```
@@ -33,6 +33,11 @@ breastmnist, bloodmnist, tissuemnist, organamnist, organcmnist, organsmnist
 
 `epochs`
 - Maximum number of epochs
+
+`aug`
+- Specifies which augmentation sequence to use. Accepted inputs: `natural`,
+  `novel`. Use [Data preview](#data-preview) environment to see effect of
+  augmentations.
 
 `samples`
 - Number of training samples
@@ -51,11 +56,11 @@ breastmnist, bloodmnist, tissuemnist, organamnist, organcmnist, organsmnist
 
 ```bash
 # Quick demo: takes 5 minutes to train
-$ python -m pretrain.simclr.train -c breastmnist -epochs 3 -samples 20 -fout simclr-demo
+$ python -m pretrain.simclr.train -c breastmnist -epochs 3 -aug natural -samples 20 -fout simclr-demo
 # Takes 1 day to train on GPU
-$ python -m pretrain.simclr.train -c dermamnist -epochs 2000
+$ python -m pretrain.simclr.train -c dermamnist -epochs 2000 -aug natural
 # Perform further pretraining on a pretrained model
-$ python -m pretrain.simclr.train -c breastmnist -epochs 2000 -fin pretrain-dermamnist
+$ python -m pretrain.simclr.train -c breastmnist -epochs 2000 -aug natural -fin pretrain-dermamnist
 ```
 
 If training successful for the demo, the model can be found as
@@ -101,7 +106,7 @@ $ python -m pretrain.simclr.feature_analysis -c pathmnist -fin pretrain-pathmnis
 ### Example
 
 ```bash
-$ python -m pretrain.simclr.data_preview -c pathmnist
+$ python -m pretrain.simclr.data_preview -c pathmnist -aug novel
 ```
 
 ## TensorBoard

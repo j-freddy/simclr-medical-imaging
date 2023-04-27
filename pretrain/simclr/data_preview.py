@@ -1,7 +1,8 @@
 import pytorch_lightning as pl
-from downloader import Downloader
+import sys
 
-from pretrain.simclr.contrastive_downloader import ContrastiveDownloader
+from downloader import Downloader
+from pretrain.simclr.utils import get_contrastive_downloader
 from utils import (
     NUM_WORKERS,
     SEED,
@@ -13,7 +14,7 @@ from utils import (
 
 
 if __name__ == "__main__":
-    DATA_FLAG = parse_args_img_viewer()
+    DATA_FLAG, AUG_TYPE = parse_args_img_viewer()
 
     # Seed
     pl.seed_everything(SEED)
@@ -32,7 +33,7 @@ if __name__ == "__main__":
     # 5 different augmentations of same image
     VIEWS = 5
 
-    contrastive_downloader = ContrastiveDownloader()
+    contrastive_downloader = get_contrastive_downloader(AUG_TYPE)
     augmented_train_data = contrastive_downloader.load(
         DATA_FLAG,
         SplitType.TRAIN,
