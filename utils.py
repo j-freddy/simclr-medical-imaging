@@ -16,7 +16,7 @@ SIMCLR_CHECKPOINT_PATH = "pretrain/simclr/models/"
 LOGISTIC_REGRESSION_CHECKPOINT_PATH = "downstream/logistic_regression/models/"
 RESNET_TRANSFER_CHECKPOINT_PATH = "downstream/resnet/models-baseline/"
 
-PCA_SAMPLES = 2000
+DIMENSIONALITY_REDUCTION_SAMPLES = 2000
 
 COLORS = [
     "#212529",  # Black

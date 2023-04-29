@@ -137,8 +137,8 @@ if __name__ == "__main__":
     ) = parse_args_train(downstream=True)
 
     # Seed
-    pl.seed_everything
-np.random.seed(SEED)(SEED)
+    pl.seed_everything(SEED)
+    np.random.seed(SEED)
 
     # Setup device
     device = setup_device()

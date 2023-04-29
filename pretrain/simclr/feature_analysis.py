@@ -2,12 +2,16 @@ from copy import deepcopy
 import numpy as np
 import os
 import pytorch_lightning as pl
+import sys
+import torch
+from torch import Tensor
 
-from dimensionality_reduction import perform_pca
+
+from dimensionality_reduction import perform_feature_analysis, perform_pca, plot_reduced_feats
 from downloader import Downloader
 from pretrain.simclr.utils import get_pretrained_model
 from utils import (
-    PCA_SAMPLES,
+    DIMENSIONALITY_REDUCTION_SAMPLES,
     SEED,
     SIMCLR_CHECKPOINT_PATH,
     SplitType,
@@ -36,8 +40,20 @@ if __name__ == "__main__":
     # Load data
     downloader = Downloader()
     train_data = downloader.load(DATA_FLAG, SplitType.TRAIN)
-    test_data = downloader.load(DATA_FLAG, SplitType.TRAIN, num_samples=PCA_SAMPLES)
+    test_data = downloader.load(DATA_FLAG, SplitType.TRAIN, num_samples=DIMENSIONALITY_REDUCTION_SAMPLES)
     test_labels = get_labels(test_data)
+
+    # TODO Move to different file
+    # Want to see label distribution for DermaMNIST
+    train_labels = get_labels(train_data)
+
+    unique_labels, label_counts = np.unique(train_labels, return_counts=True)
+    print(label_counts)
+
+    unique_labels, label_counts = np.unique(test_labels, return_counts=True)
+    print(label_counts)
+
+    sys.exit()
 
     # Load SimCLR model
     encoder_path = os.path.join(SIMCLR_CHECKPOINT_PATH, MODEL_NAME)
@@ -50,12 +66,9 @@ if __name__ == "__main__":
     test_feats_data = encode_data_features(network, test_data, device, sort=False)
     print("Preparing data features: Done!")
 
-    train_feats = get_feats(train_feats_data)
-    test_feats = get_feats(test_feats_data)
-
-    # In SimCLR pretraining we used a batch size of 128 and features = size*4
-    assert train_feats.shape[1] == 512
-    assert test_feats.shape[1] == 512
-
-    # Perform PCA
-    perform_pca(train_feats, test_feats, test_labels, DATA_FLAG, legend=False)
+    perform_feature_analysis(
+        train_feats_data,
+        test_feats_data,
+        test_labels,
+        DATA_FLAG,
+    )
