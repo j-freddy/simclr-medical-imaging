@@ -2,6 +2,7 @@ from copy import deepcopy
 from matplotlib import pyplot as plt
 from medmnist import INFO
 import os
+import numpy as np
 import pytorch_lightning as pl
 import torch.nn as nn
 
@@ -30,6 +31,7 @@ if __name__ == "__main__":
 
     # Seed
     pl.seed_everything(SEED)
+    np.random.seed(SEED)
 
     # Setup device
     device = setup_device()

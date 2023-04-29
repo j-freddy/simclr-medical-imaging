@@ -1,5 +1,6 @@
 from copy import deepcopy
 from medmnist import INFO
+import numpy as np
 import os
 import sys
 import pytorch_lightning as pl
@@ -129,6 +130,7 @@ def finetune_resnet(
     )
 
     pl.seed_everything(SEED)
+    np.random.seed(SEED)
 
     # Train model
     if not use_existing_model:
@@ -164,7 +166,8 @@ if __name__ == "__main__":
     ) = parse_args_train(downstream=True)
 
     # Seed
-    pl.seed_everything(SEED)
+    pl.seed_everything
+np.random.seed(SEED)(SEED)
 
     # Setup device
     device = setup_device()

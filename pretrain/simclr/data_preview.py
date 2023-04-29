@@ -1,3 +1,4 @@
+import numpy as np
 import pytorch_lightning as pl
 import sys
 
@@ -18,6 +19,7 @@ if __name__ == "__main__":
 
     # Seed
     pl.seed_everything(SEED)
+    np.random.seed(SEED)
 
     # Setup device
     device = setup_device()

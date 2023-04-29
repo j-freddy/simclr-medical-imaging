@@ -1,3 +1,4 @@
+import numpy as np
 import os
 import pytorch_lightning as pl
 import torch.nn as nn
@@ -17,6 +18,7 @@ if __name__ == "__main__":
 
     # Seed
     pl.seed_everything(SEED)
+    np.random.seed(SEED)
 
     # Load data
     downloader = Downloader()

@@ -242,6 +242,10 @@ def convert_to_rgb(img):
     return img.convert("RGB")
 
 
+def convert_to_ycbcr(img):
+    return img.convert("YCbCr")
+
+
 def get_feats(feats_data):
     data_loader = data.DataLoader(
         feats_data,

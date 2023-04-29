@@ -1,6 +1,7 @@
 from copy import deepcopy
 from medmnist import INFO
 import os
+import numpy as np
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
 from pytorch_lightning.loggers import TensorBoardLogger
@@ -101,6 +102,7 @@ def train_logistic_regression(
     )
 
     pl.seed_everything(SEED)
+    np.random.seed(SEED)
 
     # Train model
     if not use_existing_model:
@@ -135,7 +137,8 @@ if __name__ == "__main__":
     ) = parse_args_train(downstream=True)
 
     # Seed
-    pl.seed_everything(SEED)
+    pl.seed_everything
+np.random.seed(SEED)(SEED)
 
     # Setup device
     device = setup_device()

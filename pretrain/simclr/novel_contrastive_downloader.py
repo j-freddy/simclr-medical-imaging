@@ -5,8 +5,21 @@ import torch
 import torch.utils.data as data
 from torchvision import transforms
 
+from custom_augs import RandomAdjustSharpness, RandomEqualize
 from utils import DATASET_PATH, convert_to_rgb
 
+# Medical images:
+# - low contrast and noise
+#   - solution: histogram equalisation enhances image contrast
+#   - alternatively: apply high contrast convolution filter, then apply median
+#     filter (or gaussian blur)
+# - greyscale colour space
+#   - solution: replace colour distortion with elastic deformation
+# - large dimensions
+#   - solution: if we get good performance with 28x28 MedMNIST images without
+#     upscaling & artificially resizing it to something larger, then
+#     self-supervised learning works fine if we downscale the original images
+#     for the categories we tested
 
 class NovelContrastiveDownloader:
     def __init__(self):
@@ -14,11 +27,25 @@ class NovelContrastiveDownloader:
         self.transforms = transforms.Compose([
             # Normalise to 3 channels
             transforms.Lambda(convert_to_rgb),
-            # Transformation 1: random horizontal flip
-            transforms.RandomHorizontalFlip(),
-            # Transformation 5: Gaussian blur
-            transforms.GaussianBlur(kernel_size=9),
-
+            # Crop-and-resize
+            transforms.RandomResizedCrop(size=28, scale=(0.5, 1)),
+            # Histogram equalisation and sharpness to tackle low contrast
+            RandomEqualize(0.5),
+            RandomAdjustSharpness(factor_low=1, factor_high=10),
+            # Apply smaller colour distortion
+            transforms.RandomApply(
+                [
+                    transforms.ColorJitter(
+                        brightness=0.2,
+                        contrast=0.2,
+                        saturation=0.2,
+                        hue=0.04,
+                    )
+                ],
+                p=0.8,
+            ),
+            # Gaussian blur: kept to tackle noise
+            transforms.GaussianBlur(kernel_size=3),
             transforms.ToTensor(),
             transforms.Normalize((0.5,), (0.5,)),
         ])
