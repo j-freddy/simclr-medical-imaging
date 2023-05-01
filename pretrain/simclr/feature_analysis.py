@@ -2,12 +2,9 @@ from copy import deepcopy
 import numpy as np
 import os
 import pytorch_lightning as pl
-import sys
-import torch
-from torch import Tensor
 
 
-from dimensionality_reduction import perform_feature_analysis, perform_pca, plot_reduced_feats
+from dimensionality_reduction import perform_feature_analysis
 from downloader import Downloader
 from pretrain.simclr.utils import get_pretrained_model
 from utils import (
@@ -16,7 +13,6 @@ from utils import (
     SIMCLR_CHECKPOINT_PATH,
     SplitType,
     encode_data_features,
-    get_feats,
     get_labels,
     parse_args_feature_analysis,
     setup_device,
@@ -40,20 +36,8 @@ if __name__ == "__main__":
     # Load data
     downloader = Downloader()
     train_data = downloader.load(DATA_FLAG, SplitType.TRAIN)
-    test_data = downloader.load(DATA_FLAG, SplitType.TRAIN, num_samples=DIMENSIONALITY_REDUCTION_SAMPLES)
+    test_data = downloader.load(DATA_FLAG, SplitType.TEST, num_samples=DIMENSIONALITY_REDUCTION_SAMPLES)
     test_labels = get_labels(test_data)
-
-    # TODO Move to different file
-    # Want to see label distribution for DermaMNIST
-    train_labels = get_labels(train_data)
-
-    unique_labels, label_counts = np.unique(train_labels, return_counts=True)
-    print(label_counts)
-
-    unique_labels, label_counts = np.unique(test_labels, return_counts=True)
-    print(label_counts)
-
-    sys.exit()
 
     # Load SimCLR model
     encoder_path = os.path.join(SIMCLR_CHECKPOINT_PATH, MODEL_NAME)
