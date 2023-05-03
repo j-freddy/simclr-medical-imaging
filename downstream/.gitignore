@@ -1,4 +1,3 @@
 models/
-models-baseline/
-# TODO Delete
-models-upscaled-delete/
+models_baseline/
+models_novel/
