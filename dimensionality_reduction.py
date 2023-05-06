@@ -64,9 +64,7 @@ def perform_feature_analysis(
         n, _ = train_feats.shape
 
         # Try perplexity [5, 10, 15, ..., 100]
-        # TODO
-        # perplexities = np.arange(5, 101, 5)
-        perplexities = np.arange(5, 11, 5)
+        perplexities = np.arange(5, 101, 5)
 
         for perplexity in perplexities:
             # Perform t-SNE on train data
