@@ -118,7 +118,15 @@ def parse_args_test(logistic_regression=False):
 
 
 def parse_args_feature_analysis():
-    return parse_args_test()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-c", type=str, help="Data category", required=True)
+    parser.add_argument("-fin", type=str, help="Model filename", required=True)
+    parser.add_argument("-tsne", type=bool, help="If true, explore t-SNE in-depth using various perplexities", default=False)
+
+    args = parser.parse_args()
+    args.fin += ".ckpt"
+
+    return args.c, args.fin, args.tsne
 
 
 def parse_args_img_viewer():

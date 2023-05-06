@@ -74,7 +74,7 @@ reduction techniques like principal component analysis (PCA).
 You must have an existing pretrained model.
 
 ```bash
-$ python -m pretrain.simclr.feature_analysis -c C -fin FIN
+$ python -m pretrain.simclr.feature_analysis -c C -fin FIN [-tsne TSNE]
 # Run for help/description
 $ python -m pretrain.simclr.feature_analysis -h
 ```
@@ -91,6 +91,11 @@ breastmnist, bloodmnist, tissuemnist, organamnist, organcmnist, organsmnist
 - Input pretrained model filename. Data is passed through base encoder to output
   features. Components are learned on train features and reduced test features
   are visualised.
+
+`tsne`
+- Default to False. If False, perform PCA then t-SNE with default parameters,
+  visualising the reduced test data points. If True, perform t-SNE with various
+  perplexity values, visualising both reduced train and test data points.
 
 ### Example
 

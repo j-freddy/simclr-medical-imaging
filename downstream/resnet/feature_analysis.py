@@ -41,7 +41,7 @@ if __name__ == "__main__":
     downloader = Downloader()
     train_data = downloader.load(DATA_FLAG, SplitType.TRAIN)
     test_data = downloader.load(DATA_FLAG, SplitType.TRAIN, num_samples=DIMENSIONALITY_REDUCTION_SAMPLES)
-    test_labels = get_labels(test_data)
+    labels = get_labels(test_data)
 
     # Load ResNet model
     encoder_path = os.path.join(RESNET_TRANSFER_CHECKPOINT_PATH, MODEL_NAME)
@@ -71,7 +71,7 @@ if __name__ == "__main__":
     perform_feature_analysis(
         train_feats_data,
         test_feats_data,
-        test_labels,
+        labels,
         DATA_FLAG,
         legend=False,
     )
