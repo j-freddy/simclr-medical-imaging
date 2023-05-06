@@ -1,3 +1,4 @@
+import os
 from matplotlib import pyplot as plt
 from medmnist import INFO
 import numpy as np
@@ -5,7 +6,7 @@ from sklearn import decomposition
 from sklearn.manifold import TSNE
 import torch
 
-from utils import COLORS, DIMENSIONALITY_REDUCTION_SAMPLES, MedMNISTCategory, get_feats
+from utils import COLORS, DIMENSIONALITY_REDUCTION_SAMPLES, OUT_PATH, MedMNISTCategory, get_feats
 
 
 def perform_feature_analysis(
@@ -24,6 +25,8 @@ def perform_feature_analysis(
     assert train_feats.shape[1] == 512
     assert test_feats.shape[1] == 512
 
+    os.makedirs(OUT_PATH, exist_ok=True)
+
     if not explore_tsne_only:
         # Perform PCA
         test_feats_reduced = perform_pca(train_feats, test_feats)
@@ -35,7 +38,8 @@ def perform_feature_analysis(
             legend,
         )
 
-        plt.savefig(f"pca-{data_flag}.png")
+        fig_name = f"pca-{data_flag}.png"
+        plt.savefig(os.path.join(OUT_PATH, fig_name))
 
         # Perform t-SNE
         test_feats_reduced = perform_tsne(
@@ -51,7 +55,8 @@ def perform_feature_analysis(
             legend,
         )
 
-        plt.savefig(f"tsne-{data_flag}.png")
+        fig_name = f"tsne-{data_flag}.png"
+        plt.savefig(os.path.join(OUT_PATH, fig_name))
     else:
         # We use this environment if t-SNE with default complexity does not
         # produce clusters
@@ -61,7 +66,7 @@ def perform_feature_analysis(
         # Try perplexity [5, 10, 15, ..., 100]
         # TODO
         # perplexities = np.arange(5, 101, 5)
-        perplexities = [30]
+        perplexities = np.arange(5, 11, 5)
 
         for perplexity in perplexities:
             # Perform t-SNE on train data
@@ -82,7 +87,8 @@ def perform_feature_analysis(
                 legend,
             )
 
-            plt.savefig(f"tsne-{data_flag}-{perplexity}-train.png")
+            fig_name = f"tsne-{data_flag}-{perplexity}-train.png"
+            plt.savefig(os.path.join(OUT_PATH, fig_name))
 
             # Perform t-SNE on test data
             test_feats_reduced = perform_tsne(
@@ -98,7 +104,8 @@ def perform_feature_analysis(
                 legend,
             )
 
-            plt.savefig(f"tsne-{data_flag}-{perplexity}-test.png")
+            fig_name = f"tsne-{data_flag}-{perplexity}-test.png"
+            plt.savefig(os.path.join(OUT_PATH, fig_name))
 
 
 def perform_pca(train_feats, test_feats):
@@ -135,6 +142,9 @@ def plot_reduced_feats(feats_reduced, labels, data_flag, legend=True):
 
     # Use stylish plots
     plt.style.use("ggplot")
+
+    # Clear plot
+    plt.clf()
 
     num_classes = len(labels_dict)
 

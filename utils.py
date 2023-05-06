@@ -11,6 +11,8 @@ import torchvision
 SEED = 1969
 NUM_WORKERS = os.cpu_count()
 DATASET_PATH = "data/"
+# out path for general output files (e.g. matplotlib graphs)
+OUT_PATH = "out/"
 
 SIMCLR_CHECKPOINT_PATH = "pretrain/simclr/models/"
 LOGISTIC_REGRESSION_CHECKPOINT_PATH = "downstream/logistic_regression/models/"
