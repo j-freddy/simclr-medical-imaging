@@ -7,6 +7,7 @@ from utils import convert_to_rgb
 
 class AugmentationSequenceType(Enum):
     NATURAL = "natural"
+    SIMPLE = "simple"
     NOVEL = "novel"
 
 
@@ -33,6 +34,30 @@ augmentation_sequence_map = {
             # Transformation 4: random greyscale
             transforms.RandomGrayscale(p=0.2),
             # Transformation 5: Gaussian blur
+            transforms.GaussianBlur(kernel_size=9),
+
+            transforms.ToTensor(),
+            transforms.Normalize((0.5,), (0.5,)),
+        ]),
+
+    AugmentationSequenceType.SIMPLE.value: transforms.Compose([
+            # Normalise to 3 channels
+            transforms.Lambda(convert_to_rgb),
+            # Transformation 1: crop-and-resize
+            transforms.RandomResizedCrop(size=28),
+            # Transformation 2: colour distortion
+            transforms.RandomApply(
+                [
+                    transforms.ColorJitter(
+                        brightness=0.5,
+                        contrast=0.5,
+                        saturation=0.5,
+                        hue=0.1
+                    )
+                ],
+                p=0.8,
+            ),
+            # Transformation 3: Gaussian blur
             transforms.GaussianBlur(kernel_size=9),
 
             transforms.ToTensor(),
