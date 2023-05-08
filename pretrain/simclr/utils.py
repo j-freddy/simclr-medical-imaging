@@ -1,10 +1,8 @@
 from copy import deepcopy
 import os
 
-from pretrain.simclr.contrastive_downloader import ContrastiveDownloader
-from pretrain.simclr.novel_contrastive_downloader import NovelContrastiveDownloader
 from pretrain.simclr.simclrlm import SimCLRLM
-from utils import AugmentationSequenceType, encode_data_features
+from utils import encode_data_features
 
 
 def get_pretrained_model(path):
@@ -26,15 +24,6 @@ def get_data_features_from_pretrained_model(
     # Deep copy convolutional network
     network = deepcopy(pretrained_model.convnet)
     return encode_data_features(network, dataset, device, batch_size)
-
-
-def get_contrastive_downloader(augtype):
-    if augtype == AugmentationSequenceType.NATURAL.value:
-        return ContrastiveDownloader()
-    elif augtype == AugmentationSequenceType.NOVEL.value:
-        return NovelContrastiveDownloader()
-    else:
-        raise ValueError("Augmentation flag is invalid")
 
 
 def summarise():

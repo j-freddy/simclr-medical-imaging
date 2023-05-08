@@ -54,11 +54,6 @@ class SplitType(Enum):
     TEST = "test"
 
 
-class AugmentationSequenceType(Enum):
-    NATURAL = "natural"
-    NOVEL = "novel"
-
-
 def parse_args_train(downstream=False):
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", type=str, help="Data category", required=True)

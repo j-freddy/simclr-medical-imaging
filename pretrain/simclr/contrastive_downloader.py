@@ -5,39 +5,17 @@ import torch
 import torch.utils.data as data
 from torchvision import transforms
 
+from pretrain.simclr.aug_sequences import AugmentationSequenceType, augmentation_sequence_map
 from utils import DATASET_PATH, convert_to_rgb
 
 
 class ContrastiveDownloader:
-    def __init__(self):
-        # Define augmentation sequence
-        self.transforms = transforms.Compose([
-            # Normalise to 3 channels
-            transforms.Lambda(convert_to_rgb),
-            # Transformation 1: random horizontal flip
-            transforms.RandomHorizontalFlip(),
-            # Transformation 2: crop-and-resize
-            transforms.RandomResizedCrop(size=28),
-            # Transformation 3: colour distortion
-            transforms.RandomApply(
-                [
-                    transforms.ColorJitter(
-                        brightness=0.5,
-                        contrast=0.5,
-                        saturation=0.5,
-                        hue=0.1
-                    )
-                ],
-                p=0.8,
-            ),
-            # Transformation 4: random greyscale
-            transforms.RandomGrayscale(p=0.2),
-            # Transformation 5: Gaussian blur
-            transforms.GaussianBlur(kernel_size=9),
-
-            transforms.ToTensor(),
-            transforms.Normalize((0.5,), (0.5,)),
-        ])
+    def __init__(self, aug_sequence=AugmentationSequenceType.NATURAL.value):
+        # Fetch augmentation sequence
+        try:
+            self.transforms = augmentation_sequence_map[aug_sequence]
+        except KeyError:
+            raise ValueError("Augmentation flag is invalid")
 
     def load(self, data_flag, split_type, num_samples=-1, views=2):
         DataClass = getattr(medmnist, INFO[data_flag]["python_class"])

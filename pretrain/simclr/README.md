@@ -106,7 +106,8 @@ $ python -m pretrain.simclr.feature_analysis -c dermamnist -fin pretrain-dermamn
 
 ## Data preview
 
-<!-- TODO Write this fully -->
+Visualise original and augmented images to compare the effect of data
+augmentations.
 
 ### Example
 
