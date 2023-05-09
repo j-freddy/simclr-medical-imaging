@@ -12,3 +12,6 @@ sandbox.py
 
 # Lightning logs
 lightning_logs/
+
+# Directory for miscellaneous output files
+out/

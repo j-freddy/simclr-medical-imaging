@@ -28,24 +28,24 @@ def perform_feature_analysis(
     os.makedirs(OUT_PATH, exist_ok=True)
 
     if not explore_tsne_only:
-        # Perform PCA
-        test_feats_reduced = perform_pca(train_feats, test_feats)
+        # # Perform PCA
+        # test_feats_reduced = perform_pca(train_feats, test_feats)
 
-        plot_reduced_feats(
-            test_feats_reduced,
-            test_labels,
-            data_flag,
-            legend,
-        )
+        # plot_reduced_feats(
+        #     test_feats_reduced,
+        #     test_labels,
+        #     data_flag,
+        #     legend,
+        # )
 
-        fig_name = f"pca-{data_flag}.png"
-        plt.savefig(os.path.join(OUT_PATH, fig_name))
+        # fig_name = f"pca-{data_flag}.png"
+        # plt.savefig(os.path.join(OUT_PATH, fig_name))
 
         # Perform t-SNE
         test_feats_reduced = perform_tsne(
             train_feats,
             test_feats,
-            perplexity=30
+            perplexity=30,
         )
 
         plot_reduced_feats(
@@ -53,6 +53,7 @@ def perform_feature_analysis(
             test_labels,
             data_flag,
             legend,
+            component_label="component",
         )
 
         fig_name = f"tsne-{data_flag}.png"
@@ -67,6 +68,8 @@ def perform_feature_analysis(
         perplexities = np.arange(5, 101, 5)
 
         for perplexity in perplexities:
+            print(f"Current perplexity: {perplexity}")
+
             # Perform t-SNE on train data
             indices = torch.randperm(n)[:DIMENSIONALITY_REDUCTION_SAMPLES]
             pseudo_test_feats = train_feats[indices]
@@ -82,10 +85,24 @@ def perform_feature_analysis(
                 train_feats_reduced,
                 pseudo_test_labels,
                 data_flag,
-                legend,
+                legend=False,
+                component_label="component",
             )
 
             fig_name = f"tsne-{data_flag}-{perplexity}-train.png"
+            plt.savefig(os.path.join(OUT_PATH, fig_name))
+
+            # Uncomment this to filter some labels
+            plot_reduced_feats(
+                train_feats_reduced,
+                pseudo_test_labels,
+                data_flag,
+                legend=False,
+                filter_indices=[5],
+                component_label="component",
+            )
+
+            fig_name = f"tsne-{data_flag}-{perplexity}-train-filtered.png"
             plt.savefig(os.path.join(OUT_PATH, fig_name))
 
             # Perform t-SNE on test data
@@ -99,10 +116,24 @@ def perform_feature_analysis(
                 test_feats_reduced,
                 test_labels,
                 data_flag,
-                legend,
+                legend=False,
+                component_label="component",
             )
 
             fig_name = f"tsne-{data_flag}-{perplexity}-test.png"
+            plt.savefig(os.path.join(OUT_PATH, fig_name))
+
+            # Uncomment this to filter some labels
+            plot_reduced_feats(
+                test_feats_reduced,
+                test_labels,
+                data_flag,
+                legend=False,
+                filter_indices=[5],
+                component_label="component",
+            )
+
+            fig_name = f"tsne-{data_flag}-{perplexity}-test-filtered.png"
             plt.savefig(os.path.join(OUT_PATH, fig_name))
 
 
@@ -135,7 +166,7 @@ def perform_tsne(train_feats, test_feats, perplexity):
     return tsne.fit_transform(feats_pca)
 
 
-def plot_reduced_feats(feats_reduced, labels, data_flag, legend=True):
+def plot_reduced_feats(feats_reduced, labels, data_flag, legend=True, filter_indices=[], component_label="principle component"):
     labels_dict = INFO[data_flag]["label"]
 
     # Use stylish plots
@@ -150,6 +181,9 @@ def plot_reduced_feats(feats_reduced, labels, data_flag, legend=True):
     colors = COLORS
 
     for i in range(num_classes):
+        if i in filter_indices:
+            continue
+
         curr_label = labels_dict[str(i)]
 
         # BloodMNIST: The original 3rd label is very long
@@ -167,8 +201,8 @@ def plot_reduced_feats(feats_reduced, labels, data_flag, legend=True):
             s=16,
         )
 
-        plt.xlabel("principle component 1")
-        plt.ylabel("principle component 2")
+        plt.xlabel(f"{component_label} 1")
+        plt.ylabel(f"{component_label} 2")
 
     if legend:
         plt.legend()

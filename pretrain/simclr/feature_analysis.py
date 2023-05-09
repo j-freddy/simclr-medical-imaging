@@ -72,5 +72,7 @@ if __name__ == "__main__":
         train_labels,
         labels,
         DATA_FLAG,
-        explore_tsne_only=EXPLORE_TSNE_ONLY
+        explore_tsne_only=EXPLORE_TSNE_ONLY,
+        # TODO Possibly revert
+        legend=False,
     )
