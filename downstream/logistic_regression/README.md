@@ -64,7 +64,7 @@ If training successful for the demo, the model can be found as
 ### Example
 
 ```bash
-python -m downstream.logistic_regression.test -c bloodmnist -fencoder pretrain-bloodmnist -fin downstream-bloodmnist-100-samples
+$ python -m downstream.logistic_regression.test -c bloodmnist -fencoder pretrain-bloodmnist -fin downstream-bloodmnist-100-samples
 ```
 
 ## TensorBoard
