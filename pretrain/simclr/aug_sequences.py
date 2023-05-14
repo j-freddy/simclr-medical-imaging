@@ -1,6 +1,6 @@
 from enum import Enum
 from torchvision import transforms
-from custom_augs import RandomAdjustSharpness, RandomEqualize
+from pretrain.simclr.custom_augs import RandomAdjustSharpness, RandomEqualize
 
 from utils import convert_to_rgb
 

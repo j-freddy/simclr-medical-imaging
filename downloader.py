@@ -6,7 +6,7 @@ import torch
 import torch.utils.data as data
 from torchvision import transforms
 
-from utils import DATASET_PATH, convert_to_rgb, get_labels, get_labels_as_tensor
+from utils import DATASET_PATH, convert_to_rgb, get_labels_as_tensor
 
 
 class Downloader:
@@ -43,7 +43,7 @@ class Downloader:
         # points, it just uses all the data points for that class.
 
         # The aim is to balance out dataset by performing undersampling
-        
+
         if samples_per_class > 0:
             assert num_samples == -1
 
