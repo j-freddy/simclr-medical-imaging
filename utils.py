@@ -59,7 +59,7 @@ def parse_args_train(downstream=False):
     parser.add_argument("-c", type=str, help="Data category", required=True)
     parser.add_argument("-epochs", type=int,
                         help="Maximum number of epochs", required=True)
-    
+
     if not downstream:
         parser.add_argument(
             "-aug",
@@ -118,7 +118,8 @@ def parse_args_feature_analysis():
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", type=str, help="Data category", required=True)
     parser.add_argument("-fin", type=str, help="Model filename", required=True)
-    parser.add_argument("-tsne", type=bool, help="If true, explore t-SNE in-depth using various perplexities", default=False)
+    parser.add_argument(
+        "-tsne", type=bool, help="If true, explore t-SNE in-depth using various perplexities", default=False)
 
     args = parser.parse_args()
     args.fin += ".ckpt"
@@ -193,6 +194,7 @@ def show_example_images(data, num_examples=12, reshape=False):
     plt.axis("off")
     plt.show()
 
+
 def show_original_and_augmented_example_images(
     data,
     augmented_data,
@@ -230,7 +232,7 @@ def show_original_and_augmented_example_images(
     img_grid = img_grid.permute(1, 2, 0)
     augmented_img_grid = augmented_img_grid.permute(1, 2, 0)
 
-    _, ax = plt.subplots(1, 2, gridspec_kw = {
+    _, ax = plt.subplots(1, 2, gridspec_kw={
         "width_ratios": [1, views],
         "wspace": 0,
         "hspace": 0,
@@ -268,7 +270,7 @@ def get_feats(feats_data):
     return features.numpy()
 
 
-def get_labels(dataset):
+def get_labels_as_tensor(dataset):
     dataloader = data.DataLoader(
         dataset,
         batch_size=64,
@@ -277,7 +279,11 @@ def get_labels(dataset):
 
     return torch.cat([
         batch_labels for _, batch_labels in dataloader
-    ]).flatten().numpy()
+    ]).flatten()
+
+
+def get_labels(dataset):
+    return get_labels_as_tensor(dataset).numpy()
 
 
 def encode_data_features(network, dataset, device, batch_size=64, sort=True):
