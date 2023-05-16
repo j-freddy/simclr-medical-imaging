@@ -10,6 +10,7 @@ import torch
 import torch.nn as nn
 import torch.utils.data as data
 
+from args_parser import Arguments
 from downloader import Downloader
 from downstream.logistic_regression.logistic_regressionlm import LogisticRegressionLM
 from downstream.logistic_regression.utils import summarise
@@ -20,7 +21,6 @@ from utils import (
     SEED,
     SIMCLR_CHECKPOINT_PATH,
     get_accelerator_info,
-    parse_args_train,
     setup_device,
     show_example_images,
     SplitType,
@@ -135,7 +135,7 @@ if __name__ == "__main__":
         NUM_SAMPLES,
         PRETRAINED_FILE,
         MODEL_NAME,
-    ) = parse_args_train(downstream=True)
+    ) = Arguments.parse_args_train(downstream=True)
 
     # Seed
     pl.seed_everything(SEED)

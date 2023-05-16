@@ -5,6 +5,7 @@ import pytorch_lightning as pl
 from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
 from pytorch_lightning.loggers import TensorBoardLogger
 import torch.utils.data as data
+from args_parser import Arguments
 
 from pretrain.simclr.contrastive_downloader import ContrastiveDownloader
 from pretrain.simclr.simclrlm import SimCLRLM
@@ -18,7 +19,6 @@ from utils import (
     SIMCLR_CHECKPOINT_PATH,
     SplitType,
     get_accelerator_info,
-    parse_args_train,
     setup_device,
     show_example_images,
 )
@@ -129,7 +129,7 @@ if __name__ == "__main__":
         NUM_SAMPLES,
         INITIAL_PRETRAIN,
         MODEL_NAME,
-    ) = parse_args_train()
+    ) = Arguments.parse_args_train()
 
     # Seed
     pl.seed_everything(SEED)
