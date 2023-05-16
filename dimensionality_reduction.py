@@ -5,7 +5,7 @@ from medmnist import INFO
 import numpy as np
 from sklearn import decomposition
 from sklearn.manifold import TSNE
-from sklearn.metrics import calinski_harabasz_score
+from sklearn.metrics import silhouette_score
 import torch
 
 from utils import COLORS, DIMENSIONALITY_REDUCTION_SAMPLES, OUT_PATH, MedMNISTCategory, get_feats
@@ -44,7 +44,7 @@ def perform_feature_analysis(
         fig_name = f"pca-{data_flag}.png"
         plt.savefig(os.path.join(OUT_PATH, fig_name))
 
-        print(f"Calinski-Harabasz: {calinski_harabasz_score(test_feats_reduced, test_labels)}")
+        print(f"Silhouette score: {silhouette_score(test_feats_reduced, test_labels)}")
 
         # Perform t-SNE
         test_feats_reduced = perform_tsne(
@@ -148,6 +148,7 @@ def perform_pca(train_feats, test_feats):
     pca.fit(train_feats)
 
     print(f"Explained variance: {pca.explained_variance_ratio_}")
+    print(f"Sum: {pca.explained_variance_ratio_.sum()}")
 
     return pca.transform(test_feats)
 

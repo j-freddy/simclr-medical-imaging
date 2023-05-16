@@ -4,6 +4,7 @@ import os
 import pytorch_lightning as pl
 
 
+from args_parser import Arguments
 from dimensionality_reduction import perform_feature_analysis
 from downloader import Downloader
 from pretrain.simclr.utils import get_pretrained_model
@@ -14,7 +15,6 @@ from utils import (
     SplitType,
     encode_data_features,
     get_labels,
-    parse_args_feature_analysis,
     setup_device,
 )
 
@@ -24,7 +24,7 @@ if __name__ == "__main__":
         DATA_FLAG,
         MODEL_NAME,
         EXPLORE_TSNE_ONLY,
-    ) = parse_args_feature_analysis()
+    ) = Arguments.parse_args_feature_analysis()
 
     # Seed
     pl.seed_everything(SEED)

@@ -101,7 +101,7 @@ breastmnist, bloodmnist, tissuemnist, organamnist, organcmnist, organsmnist
 
 ```bash
 $ python -m pretrain.simclr.feature_analysis -c breastmnist -fin simclr-demo
-$ python -m pretrain.simclr.feature_analysis -c bloodmnist -fin pretrain-bloodmnist -tsne False
+$ python -m pretrain.simclr.feature_analysis -c bloodmnist -fin pretrain-bloodmnist -tsne
 ```
 
 ## Data preview
