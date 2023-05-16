@@ -80,6 +80,8 @@ def parse_args_train(downstream=False):
         )
 
     if downstream:
+        # Optional.
+        parser.add_argument("-spc", type=int, help="Number of samples per class", default=-1)
         # Optional. Default is new ResNet model.
         parser.add_argument("-fin", type=str, help="Pretrained model filename")
 
@@ -92,7 +94,7 @@ def parse_args_train(downstream=False):
         args.fin += ".ckpt"
 
     if downstream:
-        return args.c, args.epochs, args.samples, args.fin, args.fout
+        return args.c, args.epochs, args.spc, args.samples, args.fin, args.fout
     return args.c, args.epochs, args.aug, args.samples, args.fin, args.fout
 
 

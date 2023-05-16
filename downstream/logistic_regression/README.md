@@ -15,7 +15,7 @@ model gets finetuned during transfer learning.
 ## Train
 
 ```bash
-$ python -m downstream.logistic_regression.train -c C -epochs EPOCHS -fin FIN [-samples SAMPLES] [-fout FOUT]
+$ python -m downstream.logistic_regression.train -c C -epochs EPOCHS -fin FIN [-samples SAMPLES] [-spc SPC] [-fout FOUT]
 # Run for help/description
 $ python -m downstream.logistic_regression.train -h
 ```
@@ -35,6 +35,10 @@ breastmnist, bloodmnist, tissuemnist, organamnist, organcmnist, organsmnist
 
 `samples`
 - Number of training samples
+- Default: uses all training samples
+
+`spc`
+- Number of training samples per class
 - Default: uses all training samples
 
 `fin`

@@ -14,7 +14,7 @@ finetuned during transfer learning.
 Train a model starting from a pretrained ResNet-18 architecture.
 
 ```bash
-$ python -m downstream.resnet.train -c C -epochs EPOCHS [-samples SAMPLES] [-fin FIN] [-fout FOUT]
+$ python -m downstream.resnet.train -c C -epochs EPOCHS [-samples SAMPLES] [-spc SPC] [-fin FIN] [-fout FOUT]
 # Run for help/description
 $ python -m downstream.resnet.train -h
 ```
@@ -36,9 +36,13 @@ breastmnist, bloodmnist, tissuemnist, organamnist, organcmnist, organsmnist
 - Number of training samples
 - Default: uses all training samples
 
+`spc`
+- Number of training samples per class
+- Default: uses all training samples
+
 `fin`
 - Pretrained model filename
-- Default: creates a  newly initialised ResNet-18 model
+- Default: creates a newly initialised ResNet-18 model
 
 `fout`
 - Output model filename

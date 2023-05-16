@@ -160,6 +160,7 @@ if __name__ == "__main__":
     (
         DATA_FLAG,
         MAX_EPOCHS,
+        SAMPLES_PER_CLASS,
         NUM_SAMPLES,
         PRETRAINED_FILE,
         MODEL_NAME,
@@ -178,7 +179,7 @@ if __name__ == "__main__":
     num_samples = NUM_SAMPLES or -1
 
     downloader = Downloader()
-    train_data = downloader.load(DATA_FLAG, SplitType.TRAIN, num_samples)
+    train_data = downloader.load(DATA_FLAG, SplitType.TRAIN, num_samples, SAMPLES_PER_CLASS)
     val_data = downloader.load(DATA_FLAG, SplitType.VALIDATION)
     test_data = downloader.load(DATA_FLAG, SplitType.TEST)
 
