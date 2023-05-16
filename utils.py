@@ -14,9 +14,11 @@ DATASET_PATH = "data/"
 # out path for general output files (e.g. matplotlib graphs)
 OUT_PATH = "out/"
 
-SIMCLR_CHECKPOINT_PATH = "pretrain/simclr/models/"
-LOGISTIC_REGRESSION_CHECKPOINT_PATH = "downstream/logistic_regression/models/"
-RESNET_TRANSFER_CHECKPOINT_PATH = "downstream/resnet/models/"
+MODEL_DIR = "models_novel/"
+
+SIMCLR_CHECKPOINT_PATH = f"pretrain/simclr/{MODEL_DIR}"
+LOGISTIC_REGRESSION_CHECKPOINT_PATH = f"downstream/logistic_regression/{MODEL_DIR}"
+RESNET_TRANSFER_CHECKPOINT_PATH = f"downstream/resnet/{MODEL_DIR}"
 
 DIMENSIONALITY_REDUCTION_SAMPLES = 2000
 
@@ -119,7 +121,11 @@ def parse_args_feature_analysis():
     parser.add_argument("-c", type=str, help="Data category", required=True)
     parser.add_argument("-fin", type=str, help="Model filename", required=True)
     parser.add_argument(
-        "-tsne", type=bool, help="If true, explore t-SNE in-depth using various perplexities", default=False)
+        "-tsne",
+        action=argparse.BooleanOptionalAction,
+        help="Explore t-SNE in-depth using various perplexities",
+        default=False,
+    )
 
     args = parser.parse_args()
     args.fin += ".ckpt"

@@ -1,9 +1,11 @@
 import os
+import sys
 from matplotlib import pyplot as plt
 from medmnist import INFO
 import numpy as np
 from sklearn import decomposition
 from sklearn.manifold import TSNE
+from sklearn.metrics import calinski_harabasz_score
 import torch
 
 from utils import COLORS, DIMENSIONALITY_REDUCTION_SAMPLES, OUT_PATH, MedMNISTCategory, get_feats
@@ -28,18 +30,21 @@ def perform_feature_analysis(
     os.makedirs(OUT_PATH, exist_ok=True)
 
     if not explore_tsne_only:
-        # # Perform PCA
-        # test_feats_reduced = perform_pca(train_feats, test_feats)
+        # Perform PCA
+        test_feats_reduced = perform_pca(train_feats, test_feats)
 
-        # plot_reduced_feats(
-        #     test_feats_reduced,
-        #     test_labels,
-        #     data_flag,
-        #     legend,
-        # )
+        plot_reduced_feats(
+            test_feats_reduced,
+            test_labels,
+            data_flag,
+            legend,
+            # filter_indices=[5],
+        )
 
-        # fig_name = f"pca-{data_flag}.png"
-        # plt.savefig(os.path.join(OUT_PATH, fig_name))
+        fig_name = f"pca-{data_flag}.png"
+        plt.savefig(os.path.join(OUT_PATH, fig_name))
+
+        print(f"Calinski-Harabasz: {calinski_harabasz_score(test_feats_reduced, test_labels)}")
 
         # Perform t-SNE
         test_feats_reduced = perform_tsne(
@@ -53,6 +58,7 @@ def perform_feature_analysis(
             test_labels,
             data_flag,
             legend,
+            # filter_indices=[5],
             component_label="component",
         )
 
@@ -140,6 +146,9 @@ def perform_feature_analysis(
 def perform_pca(train_feats, test_feats):
     pca = decomposition.PCA(n_components=2)
     pca.fit(train_feats)
+
+    print(f"Explained variance: {pca.explained_variance_ratio_}")
+
     return pca.transform(test_feats)
 
 
