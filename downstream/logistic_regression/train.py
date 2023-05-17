@@ -147,10 +147,8 @@ if __name__ == "__main__":
     print(f"Number of workers: {NUM_WORKERS}")
 
     # Load data
-    num_samples = NUM_SAMPLES or -1
-
     downloader = Downloader()
-    train_data = downloader.load(DATA_FLAG, SplitType.TRAIN, num_samples, SAMPLES_PER_CLASS)
+    train_data = downloader.load(DATA_FLAG, SplitType.TRAIN, NUM_SAMPLES, SAMPLES_PER_CLASS)
     val_data = downloader.load(DATA_FLAG, SplitType.VALIDATION)
     test_data = downloader.load(DATA_FLAG, SplitType.TEST)
 

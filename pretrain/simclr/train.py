@@ -141,10 +141,8 @@ if __name__ == "__main__":
     print(f"Number of workers: {NUM_WORKERS}")
 
     # Load data
-    num_samples = NUM_SAMPLES or -1
-
     downloader = ContrastiveDownloader(AUG_TYPE)
-    train_data = downloader.load(DATA_FLAG, SplitType.TRAIN, num_samples)
+    train_data = downloader.load(DATA_FLAG, SplitType.TRAIN, NUM_SAMPLES)
     val_data = downloader.load(DATA_FLAG, SplitType.VALIDATION)
 
     # Show example images

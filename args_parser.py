@@ -19,7 +19,8 @@ class Arguments:
             )
 
         # Optional. Default is to use all samples
-        parser.add_argument("-samples", type=int, help="Number of samples")
+        parser.add_argument("-samples", type=int,
+                            help="Number of samples", default=-1)
 
         if not downstream:
             # Optional. Default is new ResNet model.
