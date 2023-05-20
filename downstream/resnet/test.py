@@ -4,17 +4,24 @@ import pytorch_lightning as pl
 import torch.nn as nn
 import torch.utils.data as data
 
+from args_parser import Arguments
 from downloader import Downloader
 from downstream.resnet.resnet_transferlm import ResNetTransferLM
 from downstream.resnet.train import initialise_new_network
-from utils import NUM_WORKERS, RESNET_TRANSFER_CHECKPOINT_PATH, SEED, SplitType, get_accelerator_info, parse_args_test
+from utils import (
+    NUM_WORKERS,
+    RESNET_TRANSFER_CHECKPOINT_PATH,
+    SEED,
+    SplitType,
+    get_accelerator_info,
+)
 
 
 if __name__ == "__main__":
     (
         DATA_FLAG,
         MODEL_NAME,
-    ) = parse_args_test()
+    ) = Arguments.parse_args_test()
 
     # Seed
     pl.seed_everything(SEED)

@@ -3,19 +3,26 @@ import os
 import pytorch_lightning as pl
 import torch.utils.data as data
 
+from args_parser import Arguments
 from downloader import Downloader
 from downstream.logistic_regression.logistic_regressionlm import LogisticRegressionLM
 from pretrain.simclr.utils import get_data_features_from_pretrained_model, get_pretrained_model
-
-from utils import LOGISTIC_REGRESSION_CHECKPOINT_PATH, NUM_WORKERS, SEED, SIMCLR_CHECKPOINT_PATH, SplitType, get_accelerator_info, parse_args_test, setup_device
-
+from utils import (
+    LOGISTIC_REGRESSION_CHECKPOINT_PATH,
+    NUM_WORKERS,
+    SEED,
+    SIMCLR_CHECKPOINT_PATH,
+    SplitType,
+    get_accelerator_info,
+    setup_device,
+)
 
 if __name__ == "__main__":
     (
         DATA_FLAG,
         ENCODER_NAME,
         MODEL_NAME,
-    ) = parse_args_test(logistic_regression=True)
+    ) = Arguments.parse_args_test(logistic_regression=True)
 
     # Seed
     pl.seed_everything(SEED)
@@ -44,7 +51,8 @@ if __name__ == "__main__":
     print("Logistic regression loaded")
 
     print("Preparing data features...")
-    test_feats_data = get_data_features_from_pretrained_model(encoder_model, test_data, device)
+    test_feats_data = get_data_features_from_pretrained_model(
+        encoder_model, test_data, device)
     print("Preparing data features: Done!")
 
     # Test
