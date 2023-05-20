@@ -1,12 +1,11 @@
 from copy import deepcopy
-from matplotlib import pyplot as plt
-from medmnist import INFO
 import os
 import numpy as np
 import pytorch_lightning as pl
 import torch.nn as nn
+from args_parser import Arguments
 
-from dimensionality_reduction import perform_feature_analysis, perform_pca, plot_reduced_feats
+from dimensionality_reduction import perform_feature_analysis
 from downloader import Downloader
 from downstream.resnet.resnet_transferlm import ResNetTransferLM
 from downstream.resnet.train import initialise_new_network
@@ -16,9 +15,7 @@ from utils import (
     RESNET_TRANSFER_CHECKPOINT_PATH,
     SplitType,
     encode_data_features,
-    get_feats,
     get_labels,
-    parse_args_feature_analysis,
     setup_device,
 )
 
@@ -27,7 +24,7 @@ if __name__ == "__main__":
     (
         DATA_FLAG,
         MODEL_NAME,
-    ) = parse_args_feature_analysis()
+    ) = Arguments.parse_args_feature_analysis()
 
     # Seed
     pl.seed_everything(SEED)
@@ -40,7 +37,8 @@ if __name__ == "__main__":
     # Load data
     downloader = Downloader()
     train_data = downloader.load(DATA_FLAG, SplitType.TRAIN)
-    test_data = downloader.load(DATA_FLAG, SplitType.TRAIN, num_samples=DIMENSIONALITY_REDUCTION_SAMPLES)
+    test_data = downloader.load(
+        DATA_FLAG, SplitType.TRAIN, num_samples=DIMENSIONALITY_REDUCTION_SAMPLES)
     labels = get_labels(test_data)
 
     # Load ResNet model
@@ -64,8 +62,10 @@ if __name__ == "__main__":
     network = deepcopy(encoder_model.backbone)
 
     print("Preparing data features...")
-    train_feats_data = encode_data_features(network, train_data, device, sort=False)
-    test_feats_data = encode_data_features(network, test_data, device, sort=False)
+    train_feats_data = encode_data_features(
+        network, train_data, device, sort=False)
+    test_feats_data = encode_data_features(
+        network, test_data, device, sort=False)
     print("Preparing data features: Done!")
 
     perform_feature_analysis(

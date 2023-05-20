@@ -1,13 +1,13 @@
 from medmnist import INFO
 import numpy as np
 import pytorch_lightning as pl
+from args_parser import Arguments
 
 from downloader import Downloader
 from utils import (
     SEED,
     SplitType,
     get_labels,
-    parse_args_feature_analysis,
     setup_device,
 )
 
@@ -16,7 +16,7 @@ if __name__ == "__main__":
     (
         DATA_FLAG,
         MODEL_NAME,
-    ) = parse_args_feature_analysis()
+    ) = Arguments.parse_args_feature_analysis()
 
     # Seed
     pl.seed_everything(SEED)

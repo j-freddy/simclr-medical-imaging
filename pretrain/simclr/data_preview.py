@@ -1,6 +1,7 @@
 import numpy as np
 import pytorch_lightning as pl
 import sys
+from args_parser import Arguments
 
 from downloader import Downloader
 from pretrain.simclr.contrastive_downloader import ContrastiveDownloader
@@ -8,14 +9,13 @@ from utils import (
     NUM_WORKERS,
     SEED,
     SplitType,
-    parse_args_img_viewer,
     setup_device,
     show_original_and_augmented_example_images,
 )
 
 
 if __name__ == "__main__":
-    DATA_FLAG, AUG_TYPE = parse_args_img_viewer()
+    DATA_FLAG, AUG_TYPE = Arguments.parse_args_img_viewer()
 
     # Seed
     pl.seed_everything(SEED)

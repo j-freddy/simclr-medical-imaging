@@ -1,13 +1,9 @@
-from copy import deepcopy
 from medmnist import INFO
 import os
 import numpy as np
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
 from pytorch_lightning.loggers import TensorBoardLogger
-import sys
-import torch
-import torch.nn as nn
 import torch.utils.data as data
 
 from args_parser import Arguments
