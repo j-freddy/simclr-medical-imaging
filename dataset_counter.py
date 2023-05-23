@@ -1,3 +1,7 @@
+'''
+python dataset_counter.py -c retinamnist
+'''
+
 from medmnist import INFO
 import numpy as np
 import pytorch_lightning as pl
@@ -13,10 +17,7 @@ from utils import (
 
 
 if __name__ == "__main__":
-    (
-        DATA_FLAG,
-        MODEL_NAME,
-    ) = Arguments.parse_args_feature_analysis()
+    DATA_FLAG = Arguments.parse_data_flag()
 
     # Seed
     pl.seed_everything(SEED)

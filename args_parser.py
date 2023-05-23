@@ -103,3 +103,13 @@ class Arguments:
 
         args = parser.parse_args()
         return args.c, args.aug
+
+    @staticmethod
+    def parse_data_flag():
+        parser = argparse.ArgumentParser()
+        parser.add_argument(
+            "-c", type=str, help="Data category", required=True)
+        
+        args = parser.parse_args()
+
+        return args.c

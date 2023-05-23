@@ -9,6 +9,7 @@ class AugmentationSequenceType(Enum):
     NATURAL = "natural"
     SIMPLE = "simple"
     NOVEL = "novel"
+    NOVEL_GREYSCALE = "greyscale"
 
 
 augmentation_sequence_map = {
@@ -88,6 +89,24 @@ augmentation_sequence_map = {
         # Transformation 5: Gaussian blur
         transforms.GaussianBlur(kernel_size=9),
         # Transformation 6: Histogram equalisation and sharpness to tackle low
+        # contrast
+        RandomEqualize(0.5),
+        RandomAdjustSharpness(factor_low=1, factor_high=10),
+
+        transforms.ToTensor(),
+        transforms.Normalize((0.5,), (0.5,)),
+    ]),
+
+    AugmentationSequenceType.NOVEL_GREYSCALE.value: transforms.Compose([
+        # Normalise to 3 channels
+        transforms.Lambda(convert_to_rgb),
+        # Transformation 1: random horizontal flip
+        transforms.RandomHorizontalFlip(),
+        # Transformation 2: crop-and-resize
+        transforms.RandomResizedCrop(size=28),
+        # Transformation 3: Gaussian blur
+        transforms.GaussianBlur(kernel_size=9),
+        # Transformation 4: Histogram equalisation and sharpness to tackle low
         # contrast
         RandomEqualize(0.5),
         RandomAdjustSharpness(factor_low=1, factor_high=10),
