@@ -14,7 +14,7 @@ DATASET_PATH = "data/"
 # out path for general output files (e.g. matplotlib graphs)
 OUT_PATH = "out/"
 
-MODEL_DIR = "models_novel/"
+MODEL_DIR = "models_greyscale/"
 
 SIMCLR_CHECKPOINT_PATH = f"pretrain/simclr/{MODEL_DIR}"
 LOGISTIC_REGRESSION_CHECKPOINT_PATH = f"downstream/logistic_regression/{MODEL_DIR}"
