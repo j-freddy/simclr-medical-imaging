@@ -69,7 +69,8 @@ If training successful for the demo, the model can be found as
 ## Feature analysis
 
 Perform feature analysis on learned representations using dimensionality
-reduction techniques like principal component analysis (PCA).
+reduction techniques like PCA and t-SNE. Visualisations are saved in the root
+respository under `out/`.
 
 You must have an existing pretrained model.
 
@@ -101,7 +102,7 @@ breastmnist, bloodmnist, tissuemnist, organamnist, organcmnist, organsmnist
 
 ```bash
 $ python -m pretrain.simclr.feature_analysis -c breastmnist -fin simclr-demo
-$ python -m pretrain.simclr.feature_analysis -c bloodmnist -fin pretrain-bloodmnist -tsne
+$ python -m pretrain.simclr.feature_analysis -c bloodmnist -fin pretrain-dermamnist -tsne
 ```
 
 ## Data preview

@@ -10,7 +10,8 @@ passed into the encoder, then the encoded features are then passed into a
 predicted label. The base encoder stays fixed, and only the logistic regression
 model gets finetuned during transfer learning.
 
-## Train
+Since the base encoder is fixed, only the logistic regression head is saved
+after training for minimum redundancy.
 
 ## Train
 
@@ -65,11 +66,41 @@ If training successful for the demo, the model can be found as
 
 ## Test
 
+Calculate and print test metrics on an existing model.
+
+```bash
+$ python -m downstream.logistic_regression.test -c C -fencoder FENCODER -fin FIN
+# Run for help/description
+$ python -m downstream.logistic_regression.test -h
+```
+
+`-c`
+- Specifies MedMNIST2D dataset to be used: https://medmnist.com/
+- Accepted arguments below
+```py
+pathmnist, chestmnist, dermamnist, octmnist, pneumoniamnist, retinamnist, 
+breastmnist, bloodmnist, tissuemnist, organamnist, organcmnist, organsmnist
+```
+
+`fencoder`
+- Base encoder filename
+- The encoder file must reside under `/pretrain/simclr/models`
+
+`fin`
+- Input logistic regression model head filename
+
 ### Example
 
 ```bash
-$ python -m downstream.logistic_regression.test -c bloodmnist -fencoder pretrain-bloodmnist -fin downstream-bloodmnist-100-samples
+# Note that the encoder file (fencoder flag) is:
+#   /pretrain/simclr/models/simclr-demo.ckpt
+# and the logistic regression head file (fin flag) is:
+#   /downstream/logistic_reegression/models/simclr-demo.ckpt
+$ python -m downstream.logistic_regression.test -c breastmnist -fencoder simclr-demo -fin simclr-demo
+# A larger dataset can take 5-10 minutes
+$ python -m downstream.logistic_regression.test -c dermamnist -fencoder pretrain-dermamnist -fin downstream-dermamnist-100-samples
 ```
+
 
 ## TensorBoard
 

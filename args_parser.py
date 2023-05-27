@@ -18,25 +18,25 @@ class Arguments:
                 required=True,
             )
 
-        # Optional. Default is to use all samples
+        # Optional - Default is to use all samples
         parser.add_argument("-samples", type=int,
                             help="Number of samples", default=-1)
 
         if not downstream:
-            # Optional. Default is new ResNet model.
+            # Optional - Default is new ResNet model
             parser.add_argument(
                 "-fin", type=str, help="Initial model (to further pretrain)"
             )
 
         if downstream:
-            # Optional.
+            # Optional - Default is to use entire dataset
             parser.add_argument(
                 "-spc", type=int, help="Number of samples per class", default=-1)
-            # Optional. Default is new ResNet model.
+            # Optional - Default is new ResNet model.
             parser.add_argument(
                 "-fin", type=str, help="Pretrained model filename")
 
-        # Optional. Default is "[pretrain/downstream]-[category]"
+        # Optional - Default is "[pretrain/downstream]-[category]"
         parser.add_argument("-fout", type=str, help="Output model filename")
 
         args = parser.parse_args()

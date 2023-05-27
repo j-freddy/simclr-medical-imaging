@@ -70,23 +70,43 @@ If training successful for the demo, the model can be found as
 
 ## Test
 
-<!-- TODO Write this fully -->
+Calculate and print test metrics on an existing model.
+
+```bash
+$ python -m downstream.resnet.test -c C -fin FIN
+# Run for help/description
+$ python -m downstream.resnet.test -h
+```
+
+`-c`
+- Specifies MedMNIST2D dataset to be used: https://medmnist.com/
+- Accepted arguments below
+```py
+pathmnist, chestmnist, dermamnist, octmnist, pneumoniamnist, retinamnist, 
+breastmnist, bloodmnist, tissuemnist, organamnist, organcmnist, organsmnist
+```
+
+`fin`
+- Input downstream/baseline model filename
 
 ### Example
 
 ```bash
-$ python -m downstream.resnet.test -c bloodmnist -fin downstream-bloodmnist-100-samples
+$ python -m downstream.resnet.test -c breastmnist -fin simclr-demo
+# A larger dataset can take 5-10 minutes
+$ python -m downstream.resnet.test -c dermamnist -fin downstream-dermamnist-100-samples
 ```
 
 ## Feature analysis
 
 Perform feature analysis on learned representations using dimensionality
-reduction techniques like principal component analysis (PCA).
+reduction techniques like PCA and t-SNE. Visualisations are saved in the root
+respository under `out/`.
 
 You must have an existing downstream/baseline model.
 
 ```bash
-$ python -m downstream.resnet.feature_analysis -c C -fin FIN
+$ python -m downstream.resnet.feature_analysis -c C -fin FIN -tsne
 # Run for help/description
 $ python -m downstream.resnet.feature_analysis -h
 ```
@@ -108,7 +128,7 @@ breastmnist, bloodmnist, tissuemnist, organamnist, organcmnist, organsmnist
 
 ```bash
 $ python -m downstream.resnet.feature_analysis -c breastmnist -fin simclr-demo
-$ python -m downstream.resnet.feature_analysis -c pathmnist -fin baseline-pathmnist-18
+$ python -m downstream.resnet.feature_analysis -c pathmnist -fin baseline-pathmnist-18 -tsne
 ```
 
 ## TensorBoard
