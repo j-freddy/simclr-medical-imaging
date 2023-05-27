@@ -19,6 +19,33 @@ features that can be used in downstream tasks.
 
 We use ResNet-18 as the CNN architecture.
 
+Original SimCLR papers:
+- [A Simple Framework for Contrastive Learning of Visual Representations][1]
+```bibtex
+@inproceedings{chen2020simple,
+  title={A simple framework for contrastive learning of visual representations},
+  author={Chen, Ting and Kornblith, Simon and Norouzi, Mohammad and Hinton, Geoffrey},
+  booktitle={International conference on machine learning},
+  pages={1597--1607},
+  year={2020},
+  organization={PMLR}
+}
+```
+- [Big Self-Supervised Models are Strong Semi-Supervised Learners][2]
+```bibtex
+@article{chen2020big,
+  title={Big self-supervised models are strong semi-supervised learners},
+  author={Chen, Ting and Kornblith, Simon and Swersky, Kevin and Norouzi, Mohammad and Hinton, Geoffrey E},
+  journal={Advances in neural information processing systems},
+  volume={33},
+  pages={22243--22255},
+  year={2020}
+}
+```
+
+[1]: https://arxiv.org/pdf/2002.05709.pdf
+[2]: https://arxiv.org/pdf/2006.10029.pdf
+
 ## Setup
 
 ### Virtual environment
@@ -59,4 +86,21 @@ place the model in a different folder, you need to update `MODEL_DIR` in
 
 ```bash
 $ pip freeze > requirements.txt
+```
+
+## Credits
+
+We source medical images from [MedMNIST](https://medmnist.com/).
+
+```bibtex
+@article{medmnistv2,
+    title={MedMNIST v2-A large-scale lightweight benchmark for 2D and 3D biomedical image classification},
+    author={Yang, Jiancheng and Shi, Rui and Wei, Donglai and Liu, Zequan and Zhao, Lin and Ke, Bilian and Pfister, Hanspeter and Ni, Bingbing},
+    journal={Scientific Data},
+    volume={10},
+    number={1},
+    pages={41},
+    year={2023},
+    publisher={Nature Publishing Group UK London}
+}
 ```
