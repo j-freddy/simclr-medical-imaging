@@ -1,6 +1,6 @@
 models/
-models_natural/
 models_baseline/
-models_novel/
-models_novel_old/
+models_natural/
 models_simple/
+models_novel/
+models_greyscale/

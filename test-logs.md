@@ -51,15 +51,30 @@
 - downstream-lr             0.510  / 0.522 / 0.477
 - baseline-retina-1000      0.480
 
-## Limbo
+                                     novel greyscale
+- downstream-tissue-100-samples      0.459
+- downstream-lr                      0.486
+- baseline-tissue-100-samples        
+- downstream-tissue-250-samples      0.487
+- downstream-lr                      0.517
+- baseline-tissue-250-samples        
+- downstream-tissue-1000-samples     0.513
+- downstream-lr                      0.546
+- baseline-tissue-1000-samples       
+- downstream-tissue                  0.636
+- downstream-lr                      
+- baseline-tissue-18                 
 
-downstream-retinamnist-100-samples-path-retina.ckpt
-downstream-retinamnist-100-samples-path.ckpt
-downstream-retinamnist-100-samples.ckpt
-downstream-retinamnist-250-samples-path-retina.ckpt
-downstream-retinamnist-250-samples-path.ckpt
-downstream-retinamnist-250-samples.ckpt
-downstream-retinamnist-1000-samples-path-retina.ckpt
-downstream-retinamnist-1000-samples-path.ckpt
-downstream-retinamnist-1000-samples.ckpt
-
+                                     novel greyscale
+- downstream-oct-100-samples         0.570
+- downstream-lr                      0.665
+- baseline-oct-100-samples           
+- downstream-oct-250-samples         0.637
+- downstream-lr                      0.658
+- baseline-oct-250-samples           
+- downstream-oct-1000-samples        0.663
+- downstream-lr                      0.708
+- baseline-oct-1000-samples          
+- downstream-oct                     0.736
+- downstream-lr                      
+- baseline-oct-18                    
