@@ -54,27 +54,27 @@
                                      novel greyscale
 - downstream-tissue-100-samples      0.459
 - downstream-lr                      0.486
-- baseline-tissue-100-samples        
+- baseline-tissue-100-samples        0.403
 - downstream-tissue-250-samples      0.487
 - downstream-lr                      0.517
-- baseline-tissue-250-samples        
+- baseline-tissue-250-samples        0.437
 - downstream-tissue-1000-samples     0.513
 - downstream-lr                      0.546
-- baseline-tissue-1000-samples       
+- baseline-tissue-1000-samples       0.463
 - downstream-tissue                  0.636
 - downstream-lr                      
-- baseline-tissue-18                 
+- baseline-tissue-18                 0.637
 
                                      novel greyscale
 - downstream-oct-100-samples         0.570
 - downstream-lr                      0.665
-- baseline-oct-100-samples           
+- baseline-oct-100-samples           0.380
 - downstream-oct-250-samples         0.637
 - downstream-lr                      0.658
-- baseline-oct-250-samples           
+- baseline-oct-250-samples           0.475
 - downstream-oct-1000-samples        0.663
 - downstream-lr                      0.708
-- baseline-oct-1000-samples          
+- baseline-oct-1000-samples          0.601
 - downstream-oct                     0.736
 - downstream-lr                      
-- baseline-oct-18                    
+- baseline-oct-18                    0.723
