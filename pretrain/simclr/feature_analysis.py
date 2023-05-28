@@ -73,6 +73,5 @@ if __name__ == "__main__":
         labels,
         DATA_FLAG,
         explore_tsne_only=EXPLORE_TSNE_ONLY,
-        # TODO Possibly revert
         legend=False,
     )

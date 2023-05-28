@@ -28,7 +28,6 @@ class ResNetTransferLM(LightningModule):
         feats, labels = batch
         preds = self.backbone(feats)
 
-        # TODO Temporary fix
         labels = labels.squeeze()
 
         loss = F.cross_entropy(preds, labels.long())

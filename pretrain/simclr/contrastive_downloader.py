@@ -35,7 +35,6 @@ class ContrastiveDownloader:
             return dataclass
     
         indices = torch.randperm(len(dataclass))[:num_samples]
-        # TODO Validate dataclass has samples from each class
         return data.Subset(dataclass, indices)
 
 

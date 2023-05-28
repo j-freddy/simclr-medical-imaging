@@ -80,7 +80,8 @@ def get_accelerator_info():
         accelerator = "cpu"
         num_threads = torch.get_num_threads()
 
-    # TODO Getting error when setting devices > 1
+    # Temporarily overriding number of threads to 1
+    # Multi-GPU usage is not supported for current setup
     num_threads = 1
 
     return accelerator, num_threads

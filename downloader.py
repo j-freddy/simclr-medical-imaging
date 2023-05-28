@@ -50,8 +50,7 @@ class Downloader:
             class_indices = []
             num_classes = len(INFO[data_flag]["label"])
 
-            # TODO This is quite inefficient
-            # We go through the entire dataset and fetch corresponding labels
+            # Go through entire dataset and fetch corresponding labels
             labels = get_labels_as_tensor(dataclass)
 
             for idx in range(num_classes):

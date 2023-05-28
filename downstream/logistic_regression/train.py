@@ -157,8 +157,6 @@ if __name__ == "__main__":
     model_name = MODEL_NAME or f"downstream-{DATA_FLAG}"
 
     # Get pretrained model
-    # TODO This function should be in root/utils.py and should be able to load
-    # models other than SimCLR
     pretrained_path = os.path.join(SIMCLR_CHECKPOINT_PATH, PRETRAINED_FILE)
     pretrained_model = get_pretrained_model(pretrained_path)
 

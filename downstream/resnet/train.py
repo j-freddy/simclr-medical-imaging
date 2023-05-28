@@ -43,7 +43,6 @@ def finetune_resnet(
         train_data,
         test_data,
         model_name,
-        # TODO Infer from data
         num_classes,
         max_epochs=100,
         **kwargs
@@ -190,8 +189,6 @@ if __name__ == "__main__":
     model_name = MODEL_NAME or f"downstream-{DATA_FLAG}"
 
     # Get pretrained model
-    # TODO This function should be in root/utils.py and should be able to load
-    # models other than SimCLR
     pretrained_path = os.path.join(
         SIMCLR_CHECKPOINT_PATH,
         PRETRAINED_FILE
@@ -220,8 +217,6 @@ if __name__ == "__main__":
         lr=0.001,
         momentum=0.9,
     )
-
-    # TODO Print result
 
     summarise()
     print(result)
