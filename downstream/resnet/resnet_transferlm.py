@@ -27,25 +27,29 @@ class ResNetTransferLM(LightningModule):
     def forward(self, x):
         return self.backbone(x)
 
-    def loss(self, batch, mode="train"):
-        feats, labels = batch
-        preds = self.backbone(feats)
+    def loss(self, y, y_pred):
+        return F.cross_entropy(y_pred, y.long())
+    
+    def step(self, batch, mode="train"):
+        x, y = batch
+        y = y.squeeze()
 
-        labels = labels.squeeze()
+        y_pred = self.forward(x)
 
-        loss = F.cross_entropy(preds, labels.long())
-        acc = (preds.argmax(dim=-1) == labels).float().mean()
+        loss = self.loss(y, y_pred)
+        acc = (y_pred.argmax(dim=-1) == y).float().mean()
 
         self.log(mode + "_loss", loss)
         self.log(mode + "_acc", acc)
+
         return loss
-    
+
 
     def training_step(self, batch, batch_index):
-        return self.loss(batch, mode="train")
+        return self.step(batch, mode="train")
 
     def validation_step(self, batch, batch_index):
-        self.loss(batch, mode="val")
+        self.step(batch, mode="val")
 
     def test_step(self, batch, batch_index):
-        self.loss(batch, mode="test")
+        self.step(batch, mode="test")

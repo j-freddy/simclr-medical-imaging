@@ -45,15 +45,22 @@ class SimCLRLM(pl.LightningModule):
 
         return [optimizer], [lr_scheduler]
 
-    def info_nce_loss(self, batch, mode="train"):
-        imgs, _ = batch
+    def forward(self, x):
+        return self.convnet(x)
+
+    def loss(self, cos_sim, pos_mask):
+        nll = -cos_sim[pos_mask] + torch.logsumexp(cos_sim, dim=-1)
+        return nll.mean()
+
+    def step(self, batch, mode="train"):
+        x, _ = batch
         # Concatenates tensors into 1D
-        imgs = torch.cat(imgs, dim=0)
-        # Apply base encoder and projection head to imgs to get embedded
+        x = torch.cat(x, dim=0)
+        # Apply base encoder and projection head to images to get embedded
         # encoders
-        zs = self.convnet(imgs)
+        z = self.forward(x)
         # Calculate cosine similarity
-        cos_sim = F.cosine_similarity(zs[:, None, :], zs[None, :, :], dim=-1)
+        cos_sim = F.cosine_similarity(z[:, None, :], z[None, :, :], dim=-1)
         # Mask out cosine similarity to itself
         self_mask = torch.eye(
             cos_sim.shape[0],
@@ -64,13 +71,13 @@ class SimCLRLM(pl.LightningModule):
         # Find positive example
         pos_mask = self_mask.roll(shifts=cos_sim.shape[0] // 2, dims=0)
 
-        # InfoNCE loss
         cos_sim /= self.hparams.temperature
-        nll = -cos_sim[pos_mask] + torch.logsumexp(cos_sim, dim=-1)
-        nll = nll.mean()
+
+        # InfoNCE loss
+        loss = self.loss(cos_sim, pos_mask)
 
         # Logging loss
-        self.log(mode + "_loss", nll)
+        self.log(mode + "_loss", loss)
 
         # Get ranking position of positive example
         comb_sim = torch.cat(
@@ -86,10 +93,10 @@ class SimCLRLM(pl.LightningModule):
         self.log(mode + "_acc_top5", (sim_argsort < 5).float().mean())
         self.log(mode + "_acc_mean_pos", 1 + sim_argsort.float().mean())
 
-        return nll
+        return loss
 
     def training_step(self, batch, batch_index):
-        return self.info_nce_loss(batch, mode="train")
+        return self.step(batch, mode="train")
 
     def validation_step(self, batch, batch_index):
-        self.info_nce_loss(batch, mode="val")
+        self.step(batch, mode="val")
