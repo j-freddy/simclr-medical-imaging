@@ -91,4 +91,5 @@ if __name__ == "__main__":
     }
 
     print(f"Model name: {MODEL_NAME}")
+    print(f"Dataset: {DATA_FLAG}")
     print(result)
