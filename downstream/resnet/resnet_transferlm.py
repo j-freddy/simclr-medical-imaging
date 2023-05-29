@@ -23,6 +23,9 @@ class ResNetTransferLM(LightningModule):
         optimizer = optim.Adam(self.backbone.parameters(), lr=0.001)
 
         return optimizer
+    
+    def forward(self, x):
+        return self.backbone(x)
 
     def loss(self, batch, mode="train"):
         feats, labels = batch
@@ -36,6 +39,7 @@ class ResNetTransferLM(LightningModule):
         self.log(mode + "_loss", loss)
         self.log(mode + "_acc", acc)
         return loss
+    
 
     def training_step(self, batch, batch_index):
         return self.loss(batch, mode="train")

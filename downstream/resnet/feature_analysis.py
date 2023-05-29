@@ -40,6 +40,8 @@ if __name__ == "__main__":
     train_data = downloader.load(DATA_FLAG, SplitType.TRAIN)
     test_data = downloader.load(
         DATA_FLAG, SplitType.TRAIN, num_samples=DIMENSIONALITY_REDUCTION_SAMPLES)
+    
+    train_labels = get_labels(train_data)
     labels = get_labels(test_data)
 
     # Load ResNet model
@@ -72,6 +74,7 @@ if __name__ == "__main__":
     perform_feature_analysis(
         train_feats_data,
         test_feats_data,
+        train_labels,
         labels,
         DATA_FLAG,
         explore_tsne_only=EXPLORE_TSNE_ONLY,

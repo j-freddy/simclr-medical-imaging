@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import torch
 import torch.nn as nn
 import torch.utils.data as data
+from torchmetrics import AUROC
 import torchvision
 
 
@@ -14,7 +15,7 @@ DATASET_PATH = "data/"
 # out path for general output files (e.g. matplotlib graphs)
 OUT_PATH = "out/"
 
-MODEL_DIR = "models_greyscale/"
+MODEL_DIR = "models_novel/"
 
 SIMCLR_CHECKPOINT_PATH = f"pretrain/simclr/{MODEL_DIR}"
 LOGISTIC_REGRESSION_CHECKPOINT_PATH = f"downstream/logistic_regression/{MODEL_DIR}"
@@ -241,3 +242,19 @@ def encode_data_features(network, dataset, device, batch_size=64, sort=True):
         feats = feats[indexes]
 
     return data.TensorDataset(feats, labels)
+
+
+def get_auroc_metric(model, test_loader, num_classes):
+    y_true = []
+    y_pred = []
+
+    for batch in test_loader:
+        x, y = batch
+        y_true.extend(y)
+        y_pred.extend(model(x))
+    
+    y_true = torch.stack(y_true).squeeze()
+    y_pred = torch.stack(y_pred)
+
+    auroc_metric = AUROC(task="multiclass", num_classes=num_classes)
+    return auroc_metric(y_pred, y_true).item()

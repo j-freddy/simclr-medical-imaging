@@ -1,8 +1,11 @@
+from medmnist import INFO
 import numpy as np
 import os
 import pytorch_lightning as pl
+import torch
 import torch.nn as nn
 import torch.utils.data as data
+from torchmetrics import AUROC
 
 from args_parser import Arguments
 from downloader import Downloader
@@ -14,6 +17,7 @@ from utils import (
     SEED,
     SplitType,
     get_accelerator_info,
+    get_auroc_metric,
 )
 
 
@@ -75,8 +79,15 @@ if __name__ == "__main__":
     trainer.logger._default_hp_metric = None
 
     test_result = trainer.test(model, dataloaders=test_loader, verbose=False)
+
     result = {
-        "test": test_result[0]["test_acc"]
+        "top-1 acc": test_result[0]["test_acc"],
+        "auroc": get_auroc_metric(
+            model,
+            test_loader,
+            num_classes=len(INFO[DATA_FLAG]["label"])
+        ),
     }
 
+    print(f"Model name: {MODEL_NAME}")
     print(result)
