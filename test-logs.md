@@ -78,3 +78,87 @@
 - downstream-oct                     0.736
 - downstream-lr                      
 - baseline-oct-18                    0.723
+
+## Test AUROC logs
+
+                                     natural / simple / novel
+- downstream-pathmnist-100-samples   0.909   / 0.883  / 0.884
+- downstream-lr                      0.939   / 0.943  / 0.957
+- baseline-pathmnist-100-samples     0.780
+- downstream-pathmnist-250-samples   0.921   / 0.939  / 0.931
+- downstream-lr                      0.965   / 0.965  / 0.975
+- baseline-pathmnist-250-samples     0.839
+- downstream-pathmnist-1000-samples  0.950   / 0.955  / 0.959
+- downstream-lr                      0.977   / 0.979  / 0.982
+- baseline-pathmnist-1000-samples    0.879
+- downstream-pathmnist               0.964   / 0.973  / 0.972
+- downstream-lr                      
+- baseline-pathmnist-18              0.974
+
+                                                               path-derma / path
+- downstream-dermamnist-100-samples  0.756   / 0.741 / 0.741
+- downstream-lr                      0.735   / 0.759 / 0.757
+- baseline-dermamnist-100-samples    0.725
+- downstream-dermamnist-250-samples  0.839   / 0.846 / 0.843
+- downstream-lr                      0.811   / 0.840 / 0.846
+- baseline-dermamnist-250-samples    0.792
+- downstream-dermamnist-1000-samples 0.871   / 0.871 / 0.879
+- downstream-lr                      0.873   / 0.882 / 0.896
+- baseline-dermamnist-1000-samples   0.829
+- downstream-dermamnist              0.925   / 0.926 / 0.926
+- downstream-lr                      0.907   / 0.909 / 0.930
+- baseline-dermamnist-18             9.904
+
+- downstream-bloodmnist-100-samples  0.934   / 0.931 / 0.946
+- downstream-lr                      0.957   / 0.943 / 0.958
+- baseline-bloodmnist-100-samples    0.890
+- downstream-bloodmnist-250-samples  0.953   / 0.949 / 0.962
+- downstream-lr                      0.970   / 0.961 / 0.971
+- baseline-bloodmnist-250-samples    0.919
+- downstream-bloodmnist-1000-samples 0.982   / 0.981 / 0.983
+- downstream-lr                      0.984   / 0.981 / 0.985
+- baseline-bloodmnist-1000-samples   0.973
+- downstream-bloodmnist              0.997   / 0.996 / 0.996
+- downstream-lr                      0.992   / 0.989 / 0.992
+- baseline-bloodmnist-18             0.996
+
+<!-- TODO BELOW -->
+
+                            retina / path  / path-retina
+- downstream-retina-100     0.457  / 0.452 / 0.452
+- downstream-lr             0.460  / 0.488 / 0.455
+- baseline-retina-100       0.458
+- downstream-retina-250     0.455  / 0.455 / 0.450
+- downstream-lr             0.463  / 0.530 / 0.498
+- baseline-retina-250       0.498
+- downstream-retina-1000    0.468  / 0.480 / 0.477
+- downstream-lr             0.510  / 0.522 / 0.477
+- baseline-retina-1000      0.480
+
+                                     novel greyscale
+- downstream-tissue-100-samples      0.459
+- downstream-lr                      0.486
+- baseline-tissue-100-samples        0.403
+- downstream-tissue-250-samples      0.487
+- downstream-lr                      0.517
+- baseline-tissue-250-samples        0.437
+- downstream-tissue-1000-samples     0.513
+- downstream-lr                      0.546
+- baseline-tissue-1000-samples       0.463
+- downstream-tissue                  0.636
+- downstream-lr                      
+- baseline-tissue-18                 0.637
+
+                                     novel greyscale
+- downstream-oct-100-samples         0.570
+- downstream-lr                      0.665
+- baseline-oct-100-samples           0.380
+- downstream-oct-250-samples         0.637
+- downstream-lr                      0.658
+- baseline-oct-250-samples           0.475
+- downstream-oct-1000-samples        0.663
+- downstream-lr                      0.708
+- baseline-oct-1000-samples          0.601
+- downstream-oct                     0.736
+- downstream-lr                      
+- baseline-oct-18                    0.723
