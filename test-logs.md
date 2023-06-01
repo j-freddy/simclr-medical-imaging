@@ -123,40 +123,40 @@
 - baseline-bloodmnist-18             0.996
 
                             retina / path  / path-retina
-- downstream-retina-100     
-- downstream-lr             
-- baseline-retina-100       
-- downstream-retina-250     
-- downstream-lr             
-- baseline-retina-250       
-- downstream-retina-1000    
-- downstream-lr             
-- baseline-retina-1000      
+- downstream-retina-100     0.664  / 0.644 / 0.632
+- downstream-lr             0.660  / 0.677 / 0.683
+- baseline-retina-100       0.648
+- downstream-retina-250     0.663  / 0.651 / 0.644
+- downstream-lr             0.658  / 0.686 / 0.686
+- baseline-retina-250       0.630
+- downstream-retina-1000    0.667  / 0.680 / 0.695
+- downstream-lr             0.697  / 0.726 / 0.688
+- baseline-retina-1000      0.668
 
                                      novel greyscale
 - downstream-tissue-100-samples      
 - downstream-lr                      
-- baseline-tissue-100-samples        
+- baseline-tissue-100-samples        0.648
 - downstream-tissue-250-samples      
 - downstream-lr                      
-- baseline-tissue-250-samples        
+- baseline-tissue-250-samples        0.682
 - downstream-tissue-1000-samples     
 - downstream-lr                      
-- baseline-tissue-1000-samples       
+- baseline-tissue-1000-samples       0.728
 - downstream-tissue                  
 - downstream-lr                      
-- baseline-tissue-18                 
+- baseline-tissue-18                 0.917
 
                                      novel greyscale
 - downstream-oct-100-samples         
 - downstream-lr                      
-- baseline-oct-100-samples           
+- baseline-oct-100-samples           0.659
 - downstream-oct-250-samples         
 - downstream-lr                      
-- baseline-oct-250-samples           
+- baseline-oct-250-samples           0.755
 - downstream-oct-1000-samples        
 - downstream-lr                      
-- baseline-oct-1000-samples          
+- baseline-oct-1000-samples          0.818
 - downstream-oct                     
 - downstream-lr                      
-- baseline-oct-18                    
+- baseline-oct-18                    0.901
