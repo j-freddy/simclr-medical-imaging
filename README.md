@@ -1,26 +1,31 @@
-# Individual Project
+# Evaluating SimCLR for Medical Image Classification
 
-This is the main repository for my BEng dissertation at Imperial College titled
-"Evaluating Contrastive and Non-Contrastive Learning for Medical Image
-Classification".
+This repository contains the codebase for the experiments conducted and
+published in the paper "Evaluating SimCLR for Medical Image Classification" as
+part of my final year individual research project at Imperial College
+London (BEng JMC 2023).
 
 In this repository, we provide a comprehensive set of frameworks written in
 PyTorch Lightning to perform and evaluate self-supervised contrastive learning
 using SimCLR on medical imaging data pipelined from the MedMNIST database.
 
+<!-- Abstract here -->
+<!--
+> The quick brown fox jumps over the lazy dog! 
+-->
+
 ## Background
 
 A Simple Framework for Contrastive Learning of Visual Representations (SimCLR)
-is a contrastive learning method that aims to learn useful representations of
-images through training a convolutional neural network (CNN) to recognise
-similarities between a pair of augmented data points derived from the same input
-image. The idea is that the network may learn to extract useful, generalised
-features that can be used in downstream tasks.
-
-We use ResNet-18 as the CNN architecture.
+is a state-of-the-art contrastive learning method that aims to learn useful
+representations of images through training a convolutional neural network (the
+codebase uses ResNet-18) to recognise similarities between a pair of augmented
+data points derived from the same input image. The idea is that the network may
+learn to extract useful, generalisable features that can be used for downstream
+tasks.
 
 Original SimCLR papers:
-- [A Simple Framework for Contrastive Learning of Visual Representations][1]
+- [A Simple Framework for Contrastive Learning of Visual Representations][simclr]
 ```bibtex
 @inproceedings{chen2020simple,
   title={A simple framework for contrastive learning of visual representations},
@@ -31,7 +36,7 @@ Original SimCLR papers:
   organization={PMLR}
 }
 ```
-- [Big Self-Supervised Models are Strong Semi-Supervised Learners][2]
+- [Big Self-Supervised Models are Strong Semi-Supervised Learners][simclrv2]
 ```bibtex
 @article{chen2020big,
   title={Big self-supervised models are strong semi-supervised learners},
@@ -43,42 +48,70 @@ Original SimCLR papers:
 }
 ```
 
-[1]: https://arxiv.org/pdf/2002.05709.pdf
-[2]: https://arxiv.org/pdf/2006.10029.pdf
+[simclr]: https://arxiv.org/pdf/2002.05709.pdf
+[simclrv2]: https://arxiv.org/pdf/2006.10029.pdf
 
-## Setup
+<!-- Contributions -->
+<!--
+## Contributions
 
-### Virtual environment
+- how well does a SimCLR setup that works well for natural images transfer to medical images?
+- 4 augmentation sequences (list them out)
+- lack of data
+- unbalanced dataset
+- evaluation metrics & representations
+-->
 
+## Usage guide
+
+### Installation
+
+1. Clone this repository.
 ```bash
-# Create virtual environment
-$ python -m venv venv
-# Activate on Linux, OS X
-$ source venv/bin/activate
-# Activate on Windows
-$ source venv/Scripts/activate
-# Check Python 3.10.9 is used. Some scripts may fail on Python 3.11
-$ python
-Python 3.10.9
->>> exit()
-# Install requirements
-$ pip install -r requirements.txt
+git clone https://github.com/j-freddy/simclr-medical-imaging
 ```
 
-## Guide
+2. Create virtual environment with Python 3.10.9. Some scripts may fail on
+   Python 3.11.
+```bash
+# Go inside repo
+cd simclr-medical imaging
+# Create virtual environment
+python -m venv venv
+# Activate virtual environment
+source venv/bin/activate
+```
 
-To perform SimCLR pretraining, navigate to `pretrain/simclr` directory and read
-`README.md` for instructions. Then, to perform downstream transfer learning,
-navigate to `downstream/resnet` or `downstream/logistic_regression` and read
-`README.md`.
+3. Install required packages.
+```bash
+pip install -r requirements.txt
+```
 
-To perform baseline supervised learning, navigate to `downstream/resnet`.
+### Usage
 
-Regardless of the environment, all programs search for models (i.e. `.ckpt`
-files) in `models/`. For example, when performing downstream learning, the
-program searches for the pretrained file in `pretrain/simclr/models/`. If you
-place the model in a different folder, you need to update `MODEL_DIR` in
-`utils.py`.
+The codebase provides in-depth support for SimCLR pretraining, finetuning
+(downstream transfer learning), testing, data preview and feature analysis via
+PCA and t-SNE.
+
+Navigate to one of the following pages below. Each environment has a
+comprehensive documentation with example usage.
+
+Pretrain:
+- Go to `pretrain/simclr` directory and see `README.md`.
+
+Finetune with frozen encoder:
+- Go to `downstream/logistic_regression` and see `README.md`.
+
+Finetune with unfrozen encoder:
+- Go to `downstream/resnet` and see `README.md`.
+
+Baseline:
+- Go to `downstream/resnet` and see `README.md`.
+
+Regardless of the experiment, all programs search for models (`.ckpt` files) in
+`models/`. For example, when performing downstream learning, the program
+searches for the pretrained file in `pretrain/simclr/models/`. If you place the
+model in a different folder, you need to update `MODEL_DIR` in `utils.py`.
 
 ## Contribute
 
@@ -89,6 +122,12 @@ $ pip freeze > requirements.txt
 ```
 
 ## Credits
+
+The code for pretraining and downstream learning is heavily adapted from a
+tutorial within the PyTorch Lightning documentation authored by Phillip Lippe
+under the CC BY-SA license ([tutorial][tut]).
+
+[tut]: https://lightning.ai/docs/pytorch/stable/notebooks/course_UvA-DL/13-contrastive-learning.html
 
 We source medical images from [MedMNIST](https://medmnist.com/).
 
