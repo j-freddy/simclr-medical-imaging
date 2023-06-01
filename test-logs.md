@@ -20,8 +20,8 @@
 - downstream-dermamnist-250-samples  0.70075 / 0.709 / 0.704 / 0.637      / 0.590
 - downstream-lr                      0.70025 / 0.698 / 0.702 / 0.495      / 0.496
 - baseline-dermamnist-250-samples    0.67930
-- downstream-dermamnist-1000-samples 0.74065 / 0.735 / 0.744 / 0.653      / 0.600 <--
-- downstream-lr                      0.71920 / 0.714 / 0.741 / 0.575      / 0.546 <--
+- downstream-dermamnist-1000-samples 0.74065 / 0.735 / 0.744 / 0.653      / 0.600
+- downstream-lr                      0.71920 / 0.714 / 0.741 / 0.575      / 0.546
 - baseline-dermamnist-1000-samples   0.71222
 - downstream-dermamnist              0.78703 / 0.780 / 0.790
 - downstream-lr                      0.73865 / 0.741 / 0.771
@@ -96,14 +96,14 @@
 - baseline-pathmnist-18              0.974
 
                                                                path-derma / path
-- downstream-dermamnist-100-samples  0.756   / 0.741 / 0.741
-- downstream-lr                      0.735   / 0.759 / 0.757
+- downstream-dermamnist-100-samples  0.756   / 0.741 / 0.741 / 0.741      / 0.707
+- downstream-lr                      0.735   / 0.759 / 0.757 / 0.795      / 0.823
 - baseline-dermamnist-100-samples    0.725
-- downstream-dermamnist-250-samples  0.839   / 0.846 / 0.843
-- downstream-lr                      0.811   / 0.840 / 0.846
+- downstream-dermamnist-250-samples  0.839   / 0.846 / 0.843 / 0.706      / 0.750
+- downstream-lr                      0.811   / 0.840 / 0.846 / 0.866      / 0.767
 - baseline-dermamnist-250-samples    0.792
-- downstream-dermamnist-1000-samples 0.871   / 0.871 / 0.879
-- downstream-lr                      0.873   / 0.882 / 0.896
+- downstream-dermamnist-1000-samples 0.871   / 0.871 / 0.879 / 0.776      / 0.776
+- downstream-lr                      0.873   / 0.882 / 0.896 / 0.803      / 0.850
 - baseline-dermamnist-1000-samples   0.829
 - downstream-dermamnist              0.925   / 0.926 / 0.926
 - downstream-lr                      0.907   / 0.909 / 0.930
@@ -122,43 +122,41 @@
 - downstream-lr                      0.992   / 0.989 / 0.992
 - baseline-bloodmnist-18             0.996
 
-<!-- TODO BELOW -->
-
                             retina / path  / path-retina
-- downstream-retina-100     0.457  / 0.452 / 0.452
-- downstream-lr             0.460  / 0.488 / 0.455
-- baseline-retina-100       0.458
-- downstream-retina-250     0.455  / 0.455 / 0.450
-- downstream-lr             0.463  / 0.530 / 0.498
-- baseline-retina-250       0.498
-- downstream-retina-1000    0.468  / 0.480 / 0.477
-- downstream-lr             0.510  / 0.522 / 0.477
-- baseline-retina-1000      0.480
+- downstream-retina-100     
+- downstream-lr             
+- baseline-retina-100       
+- downstream-retina-250     
+- downstream-lr             
+- baseline-retina-250       
+- downstream-retina-1000    
+- downstream-lr             
+- baseline-retina-1000      
 
                                      novel greyscale
-- downstream-tissue-100-samples      0.459
-- downstream-lr                      0.486
-- baseline-tissue-100-samples        0.403
-- downstream-tissue-250-samples      0.487
-- downstream-lr                      0.517
-- baseline-tissue-250-samples        0.437
-- downstream-tissue-1000-samples     0.513
-- downstream-lr                      0.546
-- baseline-tissue-1000-samples       0.463
-- downstream-tissue                  0.636
+- downstream-tissue-100-samples      
 - downstream-lr                      
-- baseline-tissue-18                 0.637
+- baseline-tissue-100-samples        
+- downstream-tissue-250-samples      
+- downstream-lr                      
+- baseline-tissue-250-samples        
+- downstream-tissue-1000-samples     
+- downstream-lr                      
+- baseline-tissue-1000-samples       
+- downstream-tissue                  
+- downstream-lr                      
+- baseline-tissue-18                 
 
                                      novel greyscale
-- downstream-oct-100-samples         0.570
-- downstream-lr                      0.665
-- baseline-oct-100-samples           0.380
-- downstream-oct-250-samples         0.637
-- downstream-lr                      0.658
-- baseline-oct-250-samples           0.475
-- downstream-oct-1000-samples        0.663
-- downstream-lr                      0.708
-- baseline-oct-1000-samples          0.601
-- downstream-oct                     0.736
+- downstream-oct-100-samples         
 - downstream-lr                      
-- baseline-oct-18                    0.723
+- baseline-oct-100-samples           
+- downstream-oct-250-samples         
+- downstream-lr                      
+- baseline-oct-250-samples           
+- downstream-oct-1000-samples        
+- downstream-lr                      
+- baseline-oct-1000-samples          
+- downstream-oct                     
+- downstream-lr                      
+- baseline-oct-18                    
