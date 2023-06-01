@@ -2,15 +2,15 @@
 
 Make sure you are currently in the `root` folder.
 
-## Background
+## Context
 
-The base encoder of a pretrained model (e.g. ResNet-18) is extracted. Images are
+The base encoder of a pretrained model (ResNet-18) is extracted. Images are
 passed into the encoder, then the encoded features are then passed into a
-1-layer logistic regression model (with cross-entropy loss) to output a
-predicted label. The base encoder stays fixed, and only the logistic regression
-model gets finetuned during transfer learning.
+1-layer linear logistic regression head (with cross-entropy loss) to output a
+predicted label. The base encoder stays fixed and only the linear head gets
+finetuned during transfer learning.
 
-Since the base encoder is fixed, only the logistic regression head is saved
+Since the base encoder is fixed, only the linear head is saved
 after training for minimum redundancy.
 
 ## Train
