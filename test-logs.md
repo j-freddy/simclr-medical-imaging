@@ -107,7 +107,7 @@
 - baseline-dermamnist-1000-samples   0.829
 - downstream-dermamnist              0.925   / 0.926 / 0.926
 - downstream-lr                      0.907   / 0.909 / 0.930
-- baseline-dermamnist-18             9.904
+- baseline-dermamnist-18             0.904
 
 - downstream-bloodmnist-100-samples  0.934   / 0.931 / 0.946
 - downstream-lr                      0.957   / 0.943 / 0.958
