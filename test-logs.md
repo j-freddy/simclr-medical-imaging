@@ -134,29 +134,29 @@
 - baseline-retina-1000      0.668
 
                                      novel greyscale
-- downstream-tissue-100-samples      
-- downstream-lr                      
+- downstream-tissue-100-samples      0.725
+- downstream-lr                      0.778
 - baseline-tissue-100-samples        0.648
-- downstream-tissue-250-samples      
-- downstream-lr                      
+- downstream-tissue-250-samples      0.761
+- downstream-lr                      0.812
 - baseline-tissue-250-samples        0.682
-- downstream-tissue-1000-samples     
-- downstream-lr                      
+- downstream-tissue-1000-samples     0.790
+- downstream-lr                      0.853
 - baseline-tissue-1000-samples       0.728
-- downstream-tissue                  
+- downstream-tissue                  0.889
 - downstream-lr                      
 - baseline-tissue-18                 0.917
 
                                      novel greyscale
-- downstream-oct-100-samples         
-- downstream-lr                      
+- downstream-oct-100-samples         0.786
+- downstream-lr                      0.899
 - baseline-oct-100-samples           0.659
-- downstream-oct-250-samples         
-- downstream-lr                      
+- downstream-oct-250-samples         0.851
+- downstream-lr                      0.915
 - baseline-oct-250-samples           0.755
-- downstream-oct-1000-samples        
-- downstream-lr                      
+- downstream-oct-1000-samples        0.857
+- downstream-lr                      0.909
 - baseline-oct-1000-samples          0.818
-- downstream-oct                     
+- downstream-oct                     0.903
 - downstream-lr                      
 - baseline-oct-18                    0.901
