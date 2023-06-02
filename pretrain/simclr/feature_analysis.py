@@ -24,6 +24,7 @@ if __name__ == "__main__":
         DATA_FLAG,
         MODEL_NAME,
         EXPLORE_TSNE_ONLY,
+        LEGEND,
     ) = Arguments.parse_args_feature_analysis()
 
     # Seed
@@ -73,5 +74,5 @@ if __name__ == "__main__":
         labels,
         DATA_FLAG,
         explore_tsne_only=EXPLORE_TSNE_ONLY,
-        legend=False,
+        legend=LEGEND,
     )

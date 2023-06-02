@@ -83,11 +83,17 @@ class Arguments:
             help="Explore t-SNE in-depth using various perplexities",
             default=False,
         )
+        parser.add_argument(
+            "-legend",
+            action=argparse.BooleanOptionalAction,
+            help="Show legend in plots",
+            default=False,
+        )
 
         args = parser.parse_args()
         args.fin += ".ckpt"
 
-        return args.c, args.fin, args.tsne
+        return args.c, args.fin, args.tsne, args.legend
 
     @staticmethod
     def parse_args_img_viewer():
