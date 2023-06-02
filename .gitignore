@@ -10,8 +10,9 @@ data/
 # Testing
 sandbox.py
 
-# Lightning logs
+# Logs
 lightning_logs/
+logs.txt
 
 # Directory for miscellaneous output files
 out/
