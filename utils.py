@@ -1,4 +1,3 @@
-import argparse
 from enum import Enum
 import os
 import matplotlib.pyplot as plt
@@ -9,20 +8,27 @@ from torchmetrics import AUROC
 import torchvision
 
 
+# ==============================================================================
+#     CONSTANTS
+# ==============================================================================
+
+# Global seed for pseudorandom numbers for reproducibility
 SEED = 1969
 NUM_WORKERS = os.cpu_count()
+# Path to data files
 DATASET_PATH = "data/"
-# out path for general output files (e.g. matplotlib graphs)
+# Path to general output files (e.g. matplotlib graphs)
 OUT_PATH = "out/"
 
+# Path to ResNet models
 MODEL_DIR = "models_novel/"
-
 SIMCLR_CHECKPOINT_PATH = f"pretrain/simclr/{MODEL_DIR}"
 LOGISTIC_REGRESSION_CHECKPOINT_PATH = f"downstream/logistic_regression/{MODEL_DIR}"
 RESNET_TRANSFER_CHECKPOINT_PATH = f"downstream/resnet/{MODEL_DIR}"
 
 DIMENSIONALITY_REDUCTION_SAMPLES = 2000
 
+# Colours for plots
 COLORS = [
     "#212529",  # Black
     "#c92a2a",  # Red
@@ -35,9 +41,17 @@ COLORS = [
     "#f08c00",  # Yellow
 ]
 
+# ==============================================================================
+#     ENUMS
+# ==============================================================================
+
 
 class MedMNISTCategory(Enum):
+    """
+    MedMNIST v2 modalities - https://medmnist.com/
+    """
     PATH = "pathmnist"
+
     CHEST = "chestmnist"
     DERMA = "dermamnist"
     OCT = "octmnist"
@@ -56,8 +70,19 @@ class SplitType(Enum):
     VALIDATION = "val"
     TEST = "test"
 
+# ==============================================================================
+#     FUNCTIONS
+# ==============================================================================
+
 
 def setup_device():
+    """
+    Set up Torch device and set seed. Enforce all operations to be
+    deterministic.
+
+    Returns:
+        torch.device: Device used for Torch scripts.
+    """
     # Use GPU if available
     device = torch.device("cuda") if torch.cuda.is_available()\
         else torch.device("cpu")
@@ -74,6 +99,13 @@ def setup_device():
 
 
 def get_accelerator_info():
+    """
+    Get accelerator type (GPU or CPU) and the number of available threads.
+
+    Returns:
+        accelerator (str): The accelerator being used.
+        num_threads (int): The number of threads being used.
+    """
     if torch.cuda.is_available():
         accelerator = "gpu"
         num_threads = torch.cuda.device_count()
@@ -89,6 +121,16 @@ def get_accelerator_info():
 
 
 def show_example_images(data, num_examples=12, reshape=False):
+    """
+    Display a grid of example images.
+
+    Args:
+        data (torch.Tensor): Images data.
+        num_examples (int, optional): The number of examples to display.
+            Defaults to 12.
+        reshape (bool, optional): Corrects the shape of data. Defaults to
+            False.
+    """
     imgs = torch.stack(
         [img for idx in range(num_examples) for img in data[idx][0]],
         dim=0
@@ -118,6 +160,17 @@ def show_original_and_augmented_example_images(
     num_examples=6,
     views=2,
 ):
+    """
+    Display a grid of original and augmented example images side by side.
+
+    Args:
+        data (torch.Tensor): Images data.
+        augmented_data (torch.Tensor): Augmented images data.
+        num_examples (int, optional): The number of examples to display.
+            Defaults to 6.
+        views (int, optional): The number of augmented images to display per
+            example. Defaults to 2.
+    """
     imgs = torch.stack(
         [img for idx in range(num_examples) for img in data[idx][0]],
         dim=0
@@ -163,14 +216,43 @@ def show_original_and_augmented_example_images(
 
 
 def convert_to_rgb(img):
+    """
+    Convert an image to RGB.
+
+    Args:
+        img (PIL.Image.Image): The input image.
+
+    Returns:
+        PIL.Image.Image: The same image in RGB.
+    """
     return img.convert("RGB")
 
 
 def convert_to_ycbcr(img):
+    """
+    Convert an image to YCbCr.
+
+    Args:
+        img (PIL.Image.Image): The input image.
+
+    Returns:
+        PIL.Image.Image: The same image in YCbCr.
+    """
     return img.convert("YCbCr")
 
 
 def get_feats(feats_data):
+    """
+    Given a Torch dataset feats_data consisting of features and labels, extract
+    the features only as a numpy array.
+
+    Args:
+        feats_data (torch.data.TensorDataset): Dataset with features and labels.
+
+    Returns:
+        numpy.ndarray: The features extracted from feats_data.
+    """
+
     data_loader = data.DataLoader(
         feats_data,
         batch_size=64,
@@ -188,6 +270,15 @@ def get_feats(feats_data):
 
 
 def get_labels_as_tensor(dataset):
+    """
+    Given a Torch dataset, extract the labels only as a Tensor.
+
+    Args:
+        dataset (torch.data.TensorDataset): Dataset with features and labels.
+
+    Returns:
+        torch.Tensor: The labels corresponding to dataset.
+    """
     dataloader = data.DataLoader(
         dataset,
         batch_size=64,
@@ -200,10 +291,34 @@ def get_labels_as_tensor(dataset):
 
 
 def get_labels(dataset):
+    """
+    Given a Torch dataset, extract the labels only as a numpy array.
+
+    Args:
+        dataset (torch.data.TensorDataset): Dataset with features and labels.
+
+    Returns:
+        numpy.ndarray: The labels corresponding to dataset.
+    """
     return get_labels_as_tensor(dataset).numpy()
 
 
 def encode_data_features(network, dataset, device, batch_size=64, sort=True):
+    """
+    Given a network encoder, pass the dataset through the encoder and return the
+    encoded features.
+
+    Args:
+        network (torch.nn.Module): The network used for encoding features.
+        dataset (torch.utils.data.Dataset): The input dataset.
+        device (torch.device): Device used for computation.
+        batch_size (int, optional): The batch size. Defaults to 64.
+        sort (bool, optional): Sort the features by labels. Defaults to True.
+
+    Returns:
+        torch.utils.data.TensorDataset: Dataset containing the encoded
+            features and labels.
+    """
     # Remove projection head g(.)
     network.fc = nn.Identity()
     # Set network to evaluation mode
@@ -245,6 +360,19 @@ def encode_data_features(network, dataset, device, batch_size=64, sort=True):
 
 
 def get_auroc_metric(model, test_loader, num_classes):
+    """
+    Compute the AUROC (Area Under the Receiver Operating Characteristic) metric
+    for a multiclass classification task.
+
+    Args:
+        model (torch.nn.Module): -
+        test_loader (torch.utils.data.DataLoader): The data loader for the test
+            dataset used to compute the metric.
+        num_classes (int): The number of classes in the classification task.
+
+    Returns:
+        float: The AUROC metric value.
+    """
     y_true = []
     y_pred = []
 
@@ -252,7 +380,7 @@ def get_auroc_metric(model, test_loader, num_classes):
         x, y = batch
         y_true.extend(y)
         y_pred.extend(model(x))
-    
+
     y_true = torch.stack(y_true).squeeze()
     y_pred = torch.stack(y_pred)
 
