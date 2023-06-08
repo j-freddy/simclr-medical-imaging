@@ -2,10 +2,8 @@ from medmnist import INFO
 import numpy as np
 import os
 import pytorch_lightning as pl
-import torch
 import torch.nn as nn
 import torch.utils.data as data
-from torchmetrics import AUROC
 
 from args_parser import Arguments
 from downloader import Downloader

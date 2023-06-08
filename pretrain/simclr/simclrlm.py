@@ -103,14 +103,6 @@ class SimCLRLM(pl.LightningModule):
         """
         Performs a forward pass for a given batch. This method should not be
         called. Use fit() instead.
-
-        Args:
-            batch (torch.Tensor): -
-            mode (str, optional): Train, test or validation. For logging
-                purposes only. Defaults to "train".
-
-        Returns:
-            torch.Tensor: The computed loss.
         """
         x, _ = batch
         # Concatenates tensors into 1D
@@ -158,13 +150,6 @@ class SimCLRLM(pl.LightningModule):
         """
         Performs a forward training pass for a given batch. Lightning Module
         utility method. This method should not be called. Use fit() instead.
-
-        Args:
-            batch (torch.Tensor): -
-            batch_index (int): Index of current batch.
-
-        Returns:
-            torch.Tensor: The computed loss.
         """
         return self.step(batch, mode="train")
 
@@ -172,12 +157,5 @@ class SimCLRLM(pl.LightningModule):
         """
         Performs a forward validation pass for a given batch. Lightning Module
         utility method. This method should not be called. Use fit() instead.
-
-        Args:
-            batch (torch.Tensor): -
-            batch_index (int): Index of current batch.
-
-        Returns:
-            torch.Tensor: The computed loss.
         """
         self.step(batch, mode="val")

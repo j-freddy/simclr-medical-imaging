@@ -2,7 +2,6 @@ from copy import deepcopy
 from medmnist import INFO
 import numpy as np
 import os
-import sys
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
 from pytorch_lightning.loggers import TensorBoardLogger
@@ -22,7 +21,6 @@ from utils import (
     SIMCLR_CHECKPOINT_PATH,
     get_accelerator_info,
     setup_device,
-    show_example_images,
     SplitType,
 )
 
@@ -37,16 +35,16 @@ def initialise_new_network():
 
 
 def finetune_resnet(
-        network,
-        device,
-        batch_size,
-        train_data,
-        test_data,
-        model_name,
-        num_classes,
-        max_epochs=100,
-        **kwargs
-    ):
+    network,
+    device,
+    batch_size,
+    train_data,
+    test_data,
+    model_name,
+    num_classes,
+    max_epochs=100,
+    **kwargs
+):
     destination_path = os.path.join(
         RESNET_TRANSFER_CHECKPOINT_PATH,
         f"{model_name}.ckpt"
@@ -176,15 +174,10 @@ if __name__ == "__main__":
 
     # Load data
     downloader = Downloader()
-    train_data = downloader.load(DATA_FLAG, SplitType.TRAIN, NUM_SAMPLES, SAMPLES_PER_CLASS)
+    train_data = downloader.load(
+        DATA_FLAG, SplitType.TRAIN, NUM_SAMPLES, SAMPLES_PER_CLASS)
     val_data = downloader.load(DATA_FLAG, SplitType.VALIDATION)
     test_data = downloader.load(DATA_FLAG, SplitType.TEST)
-
-    # Show example images
-    # show_example_images(train_data, reshape=True)
-    # show_example_images(val_data, reshape=True)
-    # show_example_images(test_data, reshape=True)
-    # sys.exit()
 
     model_name = MODEL_NAME or f"downstream-{DATA_FLAG}"
 
