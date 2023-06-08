@@ -1,5 +1,4 @@
 import os
-import sys
 import numpy as np
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
@@ -20,7 +19,6 @@ from utils import (
     SplitType,
     get_accelerator_info,
     setup_device,
-    show_example_images,
 )
 
 def train_simclr(
@@ -144,11 +142,6 @@ if __name__ == "__main__":
     downloader = ContrastiveDownloader(AUG_TYPE)
     train_data = downloader.load(DATA_FLAG, SplitType.TRAIN, NUM_SAMPLES)
     val_data = downloader.load(DATA_FLAG, SplitType.VALIDATION)
-
-    # Show example images
-    # show_example_images(train_data)
-    # show_example_images(val_data)
-    # sys.exit()
 
     model_name = MODEL_NAME or f"pretrain-{DATA_FLAG}"
 

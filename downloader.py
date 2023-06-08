@@ -10,6 +10,16 @@ from utils import DATASET_PATH, convert_to_rgb, get_labels_as_tensor
 
 
 class Downloader:
+    """
+    A pipeline to fetch images from the MedMNIST dataset.
+
+    Attributes:
+        transforms (torchvision.transforms.Compose): A fixed sequence of
+            transforms to apply to every data point: convert to RGB, store as a
+            Tensor and normalise image. This sequence is applied when data point
+            is loaded (e.g. during a forward pass in training).
+    """
+
     def __init__(self):
         self.transforms = transforms.Compose([
             # Normalise to 3 channels
@@ -19,6 +29,23 @@ class Downloader:
         ])
 
     def load(self, data_flag, split_type, num_samples=-1, samples_per_class=-1):
+        """
+        Load dataset corresponding to data_flag. If dataset is not found
+        locally, download dataset from MedMNIST and load it.
+
+        Args:
+            data_flag (str): Data modality.
+            split_type (SplitType): Whether to load train, validation or test
+                data.
+            num_samples (int, optional): The number of samples to load. Defaults
+                to -1.
+            samples_per_class (int, optional): The number of samples per class
+                to load. Takes priority over num_samples if both specified.
+                Defaults to -1.
+
+        Returns:
+            torch.utils.data.Dataset: The loaded dataset.
+        """
         DataClass = getattr(medmnist, INFO[data_flag]["python_class"])
 
         if not os.path.exists(DATASET_PATH):

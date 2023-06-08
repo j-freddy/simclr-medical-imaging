@@ -1,6 +1,5 @@
 import numpy as np
 import pytorch_lightning as pl
-import sys
 from args_parser import Arguments
 
 from downloader import Downloader

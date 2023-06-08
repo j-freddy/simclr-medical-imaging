@@ -8,6 +8,29 @@ import torchvision
 
 class SimCLRLM(pl.LightningModule):
     def __init__(self, hidden_dim, lr, temperature, weight_decay, max_epochs=100):
+        """
+        SimCLR PyTorch Lightning module.
+
+        A Simple Framework for Contrastive Learning of Visual Representations
+        (SimCLR) is a state-of-the-art contrastive learning method that aims to
+        learn useful representations of images through training a convolutional
+        neural network (the codebase uses ResNet-18) to recognise similarities
+        between a pair of augmented data points derived from the same input
+        image. The idea is that the network may learn to extract useful,
+        generalisable features that can be used for downstream tasks.
+
+        Original papers: See README.md in root repository
+
+        Args:
+            hidden_dim (int): Number of dimensions in the projected layer. This
+                is the embedding space where we compare similarity of projected
+                views.
+            lr (float): The learning rate.
+            temperature (float): The temperature in InfoNCE loss.
+            weight_decay (float): Weight decay for AdamW optimizer.
+            max_epochs (int, optional): Maximum number of training epochs.
+                Defaults to 100.
+        """
         super().__init__()
 
         # Save constructor parameters to self.hparams
@@ -28,6 +51,10 @@ class SimCLRLM(pl.LightningModule):
         )
 
     def configure_optimizers(self):
+        """
+        Lightning Module utility method. Using AdamW optimiser with
+        CosineAnnealingLR scheduler. Do not call this method. 
+        """
         # AdamW decouples weight decay from gradient updates
         optimizer = optim.AdamW(
             self.parameters(),
@@ -46,13 +73,45 @@ class SimCLRLM(pl.LightningModule):
         return [optimizer], [lr_scheduler]
 
     def forward(self, x):
+        """
+        Performs forward pass on the input data.
+
+        Args:
+            x (torch.Tensor): The input data.
+
+        Returns:
+            torch.Tensor: The output data.
+        """
         return self.convnet(x)
 
     def loss(self, cos_sim, pos_mask):
+        """
+        Computes the InfoNCE loss given the cosine similarity and the positive
+        pair of examples.
+
+        Args:
+            cos_sim (torch.Tensor): The cosine similarity matrix.
+            pos_mask (torch.Tensor): The mask to get the positive pair.
+
+        Returns:
+            torch.Tensor: The computed loss.
+        """
         nll = -cos_sim[pos_mask] + torch.logsumexp(cos_sim, dim=-1)
         return nll.mean()
 
     def step(self, batch, mode="train"):
+        """
+        Performs a forward pass for a given batch. This method should not be
+        called. Use fit() instead.
+
+        Args:
+            batch (torch.Tensor): -
+            mode (str, optional): Train, test or validation. For logging
+                purposes only. Defaults to "train".
+
+        Returns:
+            torch.Tensor: The computed loss.
+        """
         x, _ = batch
         # Concatenates tensors into 1D
         x = torch.cat(x, dim=0)
@@ -96,7 +155,29 @@ class SimCLRLM(pl.LightningModule):
         return loss
 
     def training_step(self, batch, batch_index):
+        """
+        Performs a forward training pass for a given batch. Lightning Module
+        utility method. This method should not be called. Use fit() instead.
+
+        Args:
+            batch (torch.Tensor): -
+            batch_index (int): Index of current batch.
+
+        Returns:
+            torch.Tensor: The computed loss.
+        """
         return self.step(batch, mode="train")
 
     def validation_step(self, batch, batch_index):
+        """
+        Performs a forward validation pass for a given batch. Lightning Module
+        utility method. This method should not be called. Use fit() instead.
+
+        Args:
+            batch (torch.Tensor): -
+            batch_index (int): Index of current batch.
+
+        Returns:
+            torch.Tensor: The computed loss.
+        """
         self.step(batch, mode="val")

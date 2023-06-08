@@ -6,6 +6,22 @@ from utils import convert_to_rgb
 
 
 class AugmentationSequenceType(Enum):
+    """
+    Augmentation sequence for SimCLR pretraining
+
+    Natural:
+        random horizontal flip > crop-and-resize > colour distortion > random
+        greyscale > Gaussian blur
+    Simple:
+        crop-and-resize > colour distortion > Gaussian blur
+    Novel:
+        random horizontal flip > crop-and-resize > colour distortion > random
+        greyscale > Gaussian blur > random histogram equalisation > random
+        sharpness
+    Greyscale:
+        random horizontal flip > crop-and-resize > random greyscale > Gaussian
+        blur > random histogram equalisation > random sharpness
+    """
     NATURAL = "natural"
     SIMPLE = "simple"
     NOVEL = "novel"

@@ -51,7 +51,6 @@ class MedMNISTCategory(Enum):
     MedMNIST v2 modalities - https://medmnist.com/
     """
     PATH = "pathmnist"
-
     CHEST = "chestmnist"
     DERMA = "dermamnist"
     OCT = "octmnist"
@@ -305,8 +304,8 @@ def get_labels(dataset):
 
 def encode_data_features(network, dataset, device, batch_size=64, sort=True):
     """
-    Given a network encoder, pass the dataset through the encoder and return the
-    encoded features.
+    Given a network encoder, pass the dataset through the encoder, remove the FC
+    layers and return the encoded features.
 
     Args:
         network (torch.nn.Module): The network used for encoding features.

@@ -79,7 +79,8 @@ cd simclr-medical imaging
 # Create virtual environment
 python -m venv venv
 # Activate virtual environment
-source venv/bin/activate
+source venv/bin/activate     # For Linux, Mac OS X
+source venv/Scripts/activate # For Windows
 ```
 
 3. Install required packages.

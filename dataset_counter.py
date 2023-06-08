@@ -1,6 +1,10 @@
-'''
+"""
+A short script to count the distribution of labels across classes in a MedMNIST
+dataset.
+
+Example usage:
 python dataset_counter.py -c retinamnist
-'''
+"""
 
 from medmnist import INFO
 import numpy as np

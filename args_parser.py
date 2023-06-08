@@ -2,6 +2,13 @@ import argparse
 
 
 class Arguments:
+    """
+    Utility class containing methods for argument parsing across different
+    Python scripts.
+
+    This class should never be instantiated.
+    """
+
     @staticmethod
     def parse_args_train(downstream=False):
         parser = argparse.ArgumentParser()
