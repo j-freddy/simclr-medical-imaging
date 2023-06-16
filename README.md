@@ -128,6 +128,11 @@ Regardless of the experiment, all programs search for models (`.ckpt` files) in
 searches for the pretrained file in `pretrain/simclr/models/`. If you place the
 model in a different folder, you need to update `MODEL_DIR` in `utils.py`.
 
+Note that the saved model is always the latest model after training with the
+specified number of epochs. To replace the model with the best-performing
+version in terms of validation accuracy, read instructions in
+`scripts/replace-with-best-checkpoint.sh`.
+
 ## Contribute
 
 ### Update requirements
