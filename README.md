@@ -9,10 +9,24 @@ In this repository, we provide a comprehensive set of frameworks written in
 PyTorch Lightning to perform and evaluate self-supervised contrastive learning
 using SimCLR on medical imaging data pipelined from the MedMNIST database.
 
-<!-- Abstract here -->
-<!--
-> The quick brown fox jumps over the lazy dog! 
--->
+Abstract:
+> Computer-aided diagnosis (CADx) plays a crucial role in assisting
+  radiologists with interpreting medical images. Over recent years, there has
+  been significant advancements in image classification models, such as deep
+  neural networks and Vision Transformers. Training such models require lots
+  of labelled data, a prerequisite often not met in medical environments as
+  labelling images is time-consuming and requires expertise.<br><br>
+  An alternative training paradigm is self-supervised learning, which involves
+  pretraining a model with unlabelled data followed by finetuning it with
+  labelled data. This paradigm has achieved strong performance on classifying
+  natural images, even with limited labelled data.<br><br>
+  This thesis aims to explore the potential of SimCLR, a state-of-the-art
+  self-supervised learning framework, for medical image classification. We
+  provide a comprehensive evaluation on multiple medical imaging modalities
+  and find significant improvement over baseline supervised metrics. We
+  simulate different settings and explore tackling class imbalance, as well as
+  transfer learning on different datasets. We propose a novel augmentation
+  sequence which shows consistent improvement over the original framework.
 
 ## Background
 
