@@ -133,6 +133,12 @@ specified number of epochs. To replace the model with the best-performing
 version in terms of validation accuracy, read instructions in
 `scripts/replace-with-best-checkpoint.sh`.
 
+### Existing models
+
+A collection of pretrained and finetuned models can be accessed on [Zenodo][zenodo].
+
+[zenodo]: https://zenodo.org/record/8048780
+
 ## Contribute
 
 ### Update requirements
