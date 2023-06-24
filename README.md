@@ -10,11 +10,11 @@ PyTorch Lightning to perform and evaluate self-supervised contrastive learning
 using SimCLR on medical imaging data pipelined from the MedMNIST database.
 
 Abstract:
-> Computer-aided diagnosis (CADx) plays a crucial role in assisting
-  radiologists with interpreting medical images. Over recent years, there has
-  been significant advancements in image classification models, such as deep
-  neural networks and Vision Transformers. Training such models require lots
-  of labelled data, a prerequisite often not met in medical environments as
+> Computer-aided diagnosis (CADx) plays a crucial role in assisting radiologists
+  with interpreting medical images. Over recent years, there has been
+  significant advancements in image classification models, such as deep neural
+  networks and Vision Transformers. Training such models require lots of
+  labelled data, a prerequisite often not met in medical environments as
   labelling images is time-consuming and requires expertise.<br><br>
   An alternative training paradigm is self-supervised learning, which involves
   pretraining a model with unlabelled data followed by finetuning it with
@@ -22,11 +22,16 @@ Abstract:
   natural images, even with limited labelled data.<br><br>
   This thesis aims to explore the potential of SimCLR, a state-of-the-art
   self-supervised learning framework, for medical image classification. We
-  provide a comprehensive evaluation on multiple medical imaging modalities
-  and find significant improvement over baseline supervised metrics. We
-  simulate different settings and explore tackling class imbalance, as well as
-  transfer learning on different datasets. We propose a novel augmentation
-  sequence which shows consistent improvement over the original framework.
+  evaluate this framework on a wide range of medical imaging modalities,
+  including colon pathology, dermatology, blood cells, retina fundus and other
+  medical scans. We find significant improvement over baseline supervised
+  metrics (an increase of up to 30.6% in accuracy). We simulate different data
+  settings and explore tackling class imbalance, as well as transfer learning on
+  different datasets. We find downsampling images to be a viable solution for
+  some modalities in bringing down training times (12 hours to pretrain a model
+  for classifying blood cells that achieves over 0.95 AUC after finetuning). We
+  propose a novel augmentation sequence which shows consistent improvement over
+  the original framework.
 
 ## Background
 
