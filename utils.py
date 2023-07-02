@@ -21,7 +21,7 @@ DATASET_PATH = "data/"
 OUT_PATH = "out/"
 
 # Path to ResNet models
-MODEL_DIR = "models_novel/"
+MODEL_DIR = "models/"
 SIMCLR_CHECKPOINT_PATH = f"pretrain/simclr/{MODEL_DIR}"
 LOGISTIC_REGRESSION_CHECKPOINT_PATH = f"downstream/logistic_regression/{MODEL_DIR}"
 RESNET_TRANSFER_CHECKPOINT_PATH = f"downstream/resnet/{MODEL_DIR}"
